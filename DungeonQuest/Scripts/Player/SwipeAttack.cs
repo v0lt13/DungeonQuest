@@ -6,8 +6,8 @@ namespace DungeonQuest.Player
 {
 	public class SwipeAttack : MonoBehaviour
 	{
-		private const float KNOCKBACK_DURATION = 0.08f;
-		private const float KNOCKBACK_POWER = 3000f;
+		private const float KNOCKBACK_DURATION = 0.07f;
+		private const float KNOCKBACK_POWER = 300f;
 
 		void Start() 
 		{

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using DungeonQuest.DebugConsole;
 
 namespace DungeonQuest.Menus

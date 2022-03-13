@@ -18,6 +18,9 @@ namespace DungeonQuest.Grid
 		private Vector3 originPosition;
 		private TGridObject[,] gridArray;
 
+		public int GetWidth { get { return width; } }
+		public int GetHeight { get { return height; } }
+
 		public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
 		{
 			this.width = width;
@@ -47,7 +50,15 @@ namespace DungeonQuest.Grid
 			if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x , y = y });
 		}
 
-		public void SetGridObject(int x, int y, TGridObject value)
+		/*public void SetGridObject(Vector3 worldPosition, TGridObject value)
+		{
+			int x, y;
+			GetXY(worldPosition, out x, out y);
+
+			SetGridObject(x, y, value);
+		}*/
+
+		/*public void SetGridObject(int x, int y, TGridObject value)
 		{
 			if (x >= 0 && y >= 0 && x < width && y < height)
 			{
@@ -55,15 +66,15 @@ namespace DungeonQuest.Grid
 
 				if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x , y = y });
 			}
-		}
+		}*/
 
-		public void SetGridObject(Vector3 worldPosition, TGridObject value)
+		/*public TGridObject GetGridObject(Vector3 worldPosition)
 		{
 			int x, y;
 			GetXY(worldPosition, out x, out y);
 
-			SetGridObject(x, y, value);
-		}
+			return GetGridObject(x, y);
+		}*/
 
 		public TGridObject GetGridObject(int x, int y)
 		{
@@ -75,14 +86,6 @@ namespace DungeonQuest.Grid
 			{
 				return default(TGridObject);
 			}
-		}
-
-		public TGridObject GetGridObject(Vector3 worldPosition)
-		{
-			int x, y;
-			GetXY(worldPosition, out x, out y);
-
-			return GetGridObject(x, y);
 		}
 
 		public void DrawGrid(bool drawGird)
@@ -102,21 +105,6 @@ namespace DungeonQuest.Grid
 				Gizmos.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width, height));
 				Gizmos.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width, height));
 			}
-		}
-
-		public int GetWidth()
-		{
-			return width;
-		}
-
-		public int GetHeight()
-		{
-			return height;
-		}
-
-		public float GetCellSize()
-		{
-			return cellSize;
 		}
 
 		private Vector3 GetWorldPosition(int x, int y)

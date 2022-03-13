@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using DungeonQuest.Player;
-using DungeonQuest.Enemy;
+using System.Collections.Generic;
 
 namespace DungeonQuest
 {
 	public class GameManager : MonoBehaviour
 	{
-		public PlayerManager playerManager;
-		public EnemyManager enemyManager;
+		[HideInInspector] public List<GameObject> enemyList;
+		[HideInInspector] public PlayerManager playerManager;
 
 		public static GameManager INSTANCE { get; private set; }
 
@@ -20,6 +20,10 @@ namespace DungeonQuest
 				INSTANCE = this;
 			#endregion
 
+			var playerObject = GameObject.FindGameObjectWithTag("Player");
+			if (playerObject != null) playerManager = playerObject.GetComponent<PlayerManager>();
+
+			AddEnemies();
 			EnableCursor(false);
 		}
 
@@ -27,6 +31,21 @@ namespace DungeonQuest
 		{
 			Screen.lockCursor = !toogle;
 			Screen.showCursor = toogle;
+		}
+
+		public void AddEnemies()
+		{
+			var enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
+			var enemyHolder = GameObject.Find("EnemyHolder");
+
+			if (enemyObjects != null && enemyHolder != null)
+			{
+				foreach (var enemyObject in enemyObjects)
+				{
+					enemyObject.transform.SetParent(enemyHolder.transform);
+					enemyList.Add(enemyObject);
+				}
+			}
 		}
 	}
 }

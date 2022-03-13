@@ -7,64 +7,64 @@ namespace DungeonQuest.Player
 {
 	public class PlayerManager : MonoBehaviour
 	{
-		[HideInInspector] public Vector2 moveDirection;
-		[HideInInspector] public Animator playerAnimation;
-		[HideInInspector] public Vector2 faceingDirection;
 		[HideInInspector] public BoxCollider2D boxCollider;
+		[HideInInspector] public PlayerAttack playerAttack;
+		[HideInInspector] public PlayerAnimationHandler playerAnim;
 
 		private const float MOVE_LIMITER = 0.7f;
 		private float x, y;
-		private bool hasMovementInput;
 
-		private Vector2 lastMoveDirection;
-		private PlayerAttack playerAttack;
-		private Slider healthBar;
-
-		[Header("PlayerConfig:")]
+		[Header("Player Config:")]
 		public float playerSpeed;
-		public float playerHealth;
-
+		public int playerHealth;
+		[Space(10f)]
 		[SerializeField] private AudioClip deathSFX;
+		[SerializeField] private Slider[] healthBars;
 
-		public bool PlayerDied { get; private set; }
+		public bool HasMovementInput { get; private set; }
 		public bool IsMoveing { get; private set; }
 		public bool GodMode { private get; set; }
+		public bool IsDead { get; private set; }
+
+		public Vector2 LastMoveDirection { get; private set; }
+		public Vector2 FaceingDirection { get; private set; }
+		public Vector2 MoveDirection { get; private set; }
 
 		void Awake()
 		{
-			playerAnimation = GetComponent<Animator>();
+			playerAnim = GetComponent<PlayerAnimationHandler>();
 			playerAttack = GetComponent<PlayerAttack>();
 			boxCollider = GetComponent<BoxCollider2D>();
-			healthBar = GetComponentInChildren<Slider>();
 
-			healthBar.maxValue = playerHealth;
+			foreach (var healthBar in healthBars) healthBar.maxValue = playerHealth;
 		}
 
 		void Update()
 		{
-			hasMovementInput = x != 0 || y != 0;
-			IsMoveing = moveDirection.x != 0 || moveDirection.y != 0;
-			healthBar.value = playerHealth;
+			HasMovementInput = x != 0 || y != 0;
+			IsMoveing = MoveDirection.x != 0 || MoveDirection.y != 0;
+
+			foreach (var healthBar in healthBars) healthBar.value = playerHealth;
+
+			if (playerAttack.IsAttacking) MoveDirection = Vector2.zero;
 
 			if (playerHealth <= 0)
 			{
 				playerHealth = 0;
-				PlayerDied = true;
-				healthBar.fillRect.GetComponent<Image>().color = Color.black;
 				Die();
 			}
 
-			if (hasMovementInput && IsMoveing)
+			if (HasMovementInput && IsMoveing)
 			{
-				faceingDirection = moveDirection;
+				FaceingDirection = MoveDirection;
 			}
 			else
 			{
-				faceingDirection = lastMoveDirection;
+				FaceingDirection = LastMoveDirection;
 			}
 
 			MovementInputs();
-			AnimateMovement();
+			playerAnim.Animate();
 		}
 
 		void FixedUpdate()
@@ -72,7 +72,7 @@ namespace DungeonQuest.Player
 			Move();
 		}
 
-		public void DamagePlayer(float damage)
+		public void DamagePlayer(int damage)
 		{
 			if (GodMode) return;
 
@@ -80,22 +80,6 @@ namespace DungeonQuest.Player
 			{
 				playerHealth -= damage;
 			}
-		}
-
-		public void Die()
-		{
-			if (DebugController.IS_CONSOLE_ON || PauseMenu.IS_GAME_PAUSED) return;
-
-			playerAnimation.SetBool("AnimDeath", PlayerDied);
-			rigidbody2D.isKinematic = true;
-
-			var deathSound = GetComponent<AudioSource>();
-			deathSound.clip = deathSFX;
-			deathSound.Play();
-
-			Destroy(boxCollider);
-			Destroy(playerAttack);
-			Destroy(this);
 		}
 
 		private void MovementInputs()
@@ -109,10 +93,10 @@ namespace DungeonQuest.Player
 
 			if (IsMoveing)
 			{
-				lastMoveDirection = moveDirection;
+				LastMoveDirection = MoveDirection;
 			}
 
-			moveDirection = new Vector2(x, y).normalized;
+			MoveDirection = new Vector2(x, y).normalized;
 		}
 
 		private void Move()
@@ -125,23 +109,26 @@ namespace DungeonQuest.Player
 				y *= MOVE_LIMITER;
 			}
 			
-			rigidbody2D.velocity = new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed);
+			rigidbody2D.velocity = new Vector2(MoveDirection.x * playerSpeed, MoveDirection.y * playerSpeed);
 		}
 
-		private void AnimateMovement()
+		private void Die()
 		{
-			playerAnimation.SetFloat("AnimMoveX", moveDirection.x);
-			playerAnimation.SetFloat("AnimMoveY", moveDirection.y);
+			if (DebugController.IS_CONSOLE_ON || PauseMenu.IS_GAME_PAUSED) return;
 
-			playerAnimation.SetFloat("AnimLastMoveX", lastMoveDirection.x);
-			playerAnimation.SetFloat("AnimLastMoveY", lastMoveDirection.y);
+			IsDead = true;
+			rigidbody2D.isKinematic = true;
 
-			playerAnimation.SetFloat("AnimAttackDirX", faceingDirection.x);
-			playerAnimation.SetFloat("AnimAttackDirY", faceingDirection.y);
+			foreach (var healthBar in healthBars) healthBar.fillRect.GetComponent<Image>().color = Color.black;
 
-			playerAnimation.SetFloat("AnimMoveMagnitude", moveDirection.magnitude);
+			var deathSound = GetComponent<AudioSource>();
+			deathSound.clip = deathSFX;
+			deathSound.Play();
 
-			playerAnimation.SetBool("AnimIsMoveing", hasMovementInput);
+			Destroy(boxCollider);
+			Destroy(playerAttack);
+			Destroy(GetComponentInChildren<PlayerFootsteps>());
+			Destroy(this);
 		}
 	}
 }

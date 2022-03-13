@@ -9,29 +9,24 @@ namespace DungeonQuest.Grid
 		
 		public GridPathfinding pathfinding;
 
-		public int GridX { get { return gridX; } }
-		public int GridY { get { return gridY; } }
-
 		void Awake() 
 		{
 			pathfinding = new GridPathfinding(gridX, gridY);
-		}
 
-		void Start()
-		{
 			MarkObstructions();
 		}
 
 		[ExecuteInEditMode]
 		void OnDrawGizmos()
 		{
-			GridPathfinding grid = new GridPathfinding(gridX, gridY);
+			var grid = new GridPathfinding(gridX, gridY);
+
 			grid.GetGrid.DrawGrid(drawGrid);
 		}
 
 		private void MarkObstructions()
 		{
-			GameObject[] walls = GameObject.FindGameObjectsWithTag("Wall");
+			var walls = GameObject.FindGameObjectsWithTag("Wall");
 
 			foreach (var wall in walls)
 			{

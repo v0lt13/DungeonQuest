@@ -12,12 +12,10 @@ namespace DungeonQuest.Grid
 		private List<PathNode> openList;
 		private List<PathNode> closedList;
 
-		public static GridPathfinding Instance { get; private set; }
 		public Grid<PathNode> GetGrid { get { return grid; } }
 
 		public GridPathfinding(int width, int height)
 		{
-			Instance = this;
 			grid = new Grid<PathNode>(width, height, 10f, Vector3.zero, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
 		}
 
@@ -33,16 +31,15 @@ namespace DungeonQuest.Grid
 
 			if (startNode == null || endNode == null)
 			{
-				// Invalid Path
-				return null;
+				return null; // Invalid Path
 			}
 
 			openList = new List<PathNode> { startNode };
 			closedList = new List<PathNode>();
 
-			for (int x = 0; x < grid.GetWidth(); x++)
+			for (int x = 0; x < grid.GetWidth; x++)
 			{
-				for (int y = 0; y < grid.GetHeight(); y++)
+				for (int y = 0; y < grid.GetHeight; y++)
 				{
 					PathNode pathNode = grid.GetGridObject(x, y);
 
@@ -63,8 +60,7 @@ namespace DungeonQuest.Grid
 
 				if (currentNode == endNode)
 				{
-					// Reached final node
-					return CalculatePath(endNode);
+					return CalculatePath(endNode); // Reached final node
 				}
 
 				openList.Remove(currentNode);
@@ -96,9 +92,7 @@ namespace DungeonQuest.Grid
 					}
 				}
 			}
-
-			// Out of nodes on the openList
-			return null;
+			return null; // Out of nodes on the openList
 		}
 
 		private List<PathNode> GetNeighbourList(PathNode currentNode)
@@ -112,23 +106,23 @@ namespace DungeonQuest.Grid
 				// Left Down
 				if (currentNode.y - 1 >= 0) neighbourList.Add(GetNode(currentNode.x - 1, currentNode.y - 1));
 				// Left Up
-				if (currentNode.y + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
+				if (currentNode.y + 1 < grid.GetHeight) neighbourList.Add(GetNode(currentNode.x - 1, currentNode.y + 1));
 			}
 
-			if (currentNode.x + 1 < grid.GetWidth())
+			if (currentNode.x + 1 < grid.GetWidth)
 			{
 				// Right
 				neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y));
 				// Right Down
 				if (currentNode.y - 1 >= 0) neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y - 1));
 				// Right Up
-				if (currentNode.y + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
+				if (currentNode.y + 1 < grid.GetHeight) neighbourList.Add(GetNode(currentNode.x + 1, currentNode.y + 1));
 			}
 
 			// Down
 			if (currentNode.y - 1 >= 0) neighbourList.Add(GetNode(currentNode.x, currentNode.y - 1));
 			// Up
-			if (currentNode.y + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.x, currentNode.y + 1));
+			if (currentNode.y + 1 < grid.GetHeight) neighbourList.Add(GetNode(currentNode.x, currentNode.y + 1));
 
 			return neighbourList;
 		}
@@ -155,8 +149,9 @@ namespace DungeonQuest.Grid
 			int xDistance = Mathf.Abs(a.x - b.x);
 			int yDistance = Mathf.Abs(a.y - b.y);
 			int remaining = Mathf.Abs(xDistance - yDistance);
+			int distanceCost = MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
 
-			return MOVE_DIAGONAL_COST * Mathf.Min(xDistance, yDistance) + MOVE_STRAIGHT_COST * remaining;
+			return distanceCost;
 		}
 
 		private PathNode GetLowestFCostNode(List<PathNode> pathNodeList)

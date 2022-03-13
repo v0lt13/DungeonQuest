@@ -30,7 +30,7 @@ namespace DungeonQuest
 
 		void OnGUI()
 		{
-			Object[] obj = Resources.LoadAll("Prefabs/Tiles", typeof(GameObject));
+			var obj = Resources.LoadAll("Prefabs/Tiles", typeof(GameObject));
 
 			prefabs = new GameObject[obj.Length];
 
@@ -104,11 +104,11 @@ namespace DungeonQuest
 			{
 				if (selectedGameObject != null && selectedGameObject.GetComponent<SpriteRenderer>())
 				{
-					var selectedGameObjectWidth = selectedGameObject.GetComponent<SpriteRenderer>().bounds.size.x;
-					var selectedGameObjectHeight = selectedGameObject.GetComponent<SpriteRenderer>().bounds.size.y;
+					float selectedGameObjectWidth = selectedGameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+					float selectedGameObjectHeight = selectedGameObject.GetComponent<SpriteRenderer>().bounds.size.y;
 
-					var selectedPrefabWidth = selectedPrefab.GetComponent<SpriteRenderer>().bounds.size.x;
-					var selectedPrefabHeight = selectedPrefab.GetComponent<SpriteRenderer>().bounds.size.y;
+					float selectedPrefabWidth = selectedPrefab.GetComponent<SpriteRenderer>().bounds.size.x;
+					float selectedPrefabHeight = selectedPrefab.GetComponent<SpriteRenderer>().bounds.size.y;
 
 					if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.UpArrow)
 					{
@@ -154,10 +154,7 @@ namespace DungeonQuest
 
 			spawnedGameObjects.Add(gameObject);
 
-			if (spawnedGameObjects.Count > 3)
-			{
-				spawnedGameObjects.RemoveAt(0);
-			}
+			if (spawnedGameObjects.Count > 3) spawnedGameObjects.RemoveAt(0);
 		}
 	}
 }

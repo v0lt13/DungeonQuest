@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
 using DungeonQuest.Menus;
-using System.Collections.Generic;
 using DungeonQuest.DebugConsole;
+using System.Collections.Generic;
 
 namespace DungeonQuest.Enemy
 {
@@ -15,27 +15,27 @@ namespace DungeonQuest.Enemy
 			Attack
 		}
 
+		[Header ("AI Config:")]
+		[SerializeField] private int damage;
+		[SerializeField] private float timeBetweenAttacks;
+		[SerializeField] private float enemySpeed;
+		public bool showPath;
+
 		[HideInInspector] public AIstate state;
 		[HideInInspector] public List<PathNode> path;
 
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
 
-		[SerializeField] private float timeBetweenAttacks;
-		[SerializeField] private float enemySpeed;
-		[SerializeField] private float damage;
-		[SerializeField] private bool showPath;
-
 		public float TimeBetweenAttacks { get; set; }
 		public float StunTime { get; set; }
 
 		void Awake()
 		{
-			enemySpeed /= 10;
-			TimeBetweenAttacks = timeBetweenAttacks;
-
 			grid = GameObject.Find("Grid").GetComponent<GridGenerator>();
 			enemyManager = GetComponent<EnemyManager>();
+
+			enemySpeed /= 10;
 		}
 
 		void Update()
@@ -68,13 +68,13 @@ namespace DungeonQuest.Enemy
 
 		private void Idle(Vector3 targetPosition) 
 		{
-			TimeBetweenAttacks = timeBetweenAttacks;
+			TimeBetweenAttacks = 0;
 			FindPathToPlayer(targetPosition, out path);
 		}
 
 		private void Chase(Vector3 targetPosition)
 		{
-			TimeBetweenAttacks = timeBetweenAttacks;
+			TimeBetweenAttacks = 0;
 			FindPathToPlayer(targetPosition, out path);
 
 			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
@@ -83,7 +83,7 @@ namespace DungeonQuest.Enemy
 			{
 				try
 				{
-					transform.position = Vector3.MoveTowards(transform.position, new Vector3(path[1].x, path[1].y) * 10f + Vector3.one * 5f, enemySpeed);
+					transform.position = Vector2.MoveTowards(transform.position, new Vector3(path[1].x, path[1].y) * 10f + Vector3.one * 5f, enemySpeed);
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
