@@ -15,13 +15,13 @@ namespace DungeonQuest.Grid
 		private int width, height;
 		private float cellSize;
 
-		private Vector3 originPosition;
+		private Vector2 originPosition;
 		private TGridObject[,] gridArray;
 
 		public int GetWidth { get { return width; } }
 		public int GetHeight { get { return height; } }
 
-		public Grid(int width, int height, float cellSize, Vector3 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
+		public Grid(int width, int height, float cellSize, Vector2 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
 		{
 			this.width = width;
 			this.height = height;
@@ -39,7 +39,7 @@ namespace DungeonQuest.Grid
 			}
 		}
 
-		public void GetXY(Vector3 worldPosition, out int x, out int y)
+		public void GetXY(Vector2 worldPosition, out int x, out int y)
 		{
 			x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
 			y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
@@ -50,7 +50,7 @@ namespace DungeonQuest.Grid
 			if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x , y = y });
 		}
 
-		/*public void SetGridObject(Vector3 worldPosition, TGridObject value)
+		/*public void SetGridObject(Vector2 worldPosition, TGridObject value)
 		{
 			int x, y;
 			GetXY(worldPosition, out x, out y);
@@ -68,7 +68,7 @@ namespace DungeonQuest.Grid
 			}
 		}*/
 
-		/*public TGridObject GetGridObject(Vector3 worldPosition)
+		/*public TGridObject GetGridObject(Vector2 worldPosition)
 		{
 			int x, y;
 			GetXY(worldPosition, out x, out y);
@@ -107,9 +107,9 @@ namespace DungeonQuest.Grid
 			}
 		}
 
-		private Vector3 GetWorldPosition(int x, int y)
+		private Vector2 GetWorldPosition(int x, int y)
 		{
-			return new Vector3(x, y) * cellSize + originPosition;
+			return new Vector2(x, y) * cellSize + originPosition;
 		}
 	}
 }

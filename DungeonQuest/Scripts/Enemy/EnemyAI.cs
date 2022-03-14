@@ -66,13 +66,13 @@ namespace DungeonQuest.Enemy
 			}
 		}
 
-		private void Idle(Vector3 targetPosition) 
+		private void Idle(Vector2 targetPosition) 
 		{
 			TimeBetweenAttacks = 0;
 			FindPathToPlayer(targetPosition, out path);
 		}
 
-		private void Chase(Vector3 targetPosition)
+		private void Chase(Vector2 targetPosition)
 		{
 			TimeBetweenAttacks = 0;
 			FindPathToPlayer(targetPosition, out path);
@@ -83,11 +83,11 @@ namespace DungeonQuest.Enemy
 			{
 				try
 				{
-					transform.position = Vector2.MoveTowards(transform.position, new Vector3(path[1].x, path[1].y) * 10f + Vector3.one * 5f, enemySpeed);
+					transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, enemySpeed);
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
-					state = AIstate.Idle;
+					state = AIstate.Idle;					
 				}
 			}
 		}
@@ -105,7 +105,7 @@ namespace DungeonQuest.Enemy
 			}
 		}
 
-		private void FindPathToPlayer(Vector3 targetPosition, out List<PathNode> path)
+		private void FindPathToPlayer(Vector2 targetPosition, out List<PathNode> path)
 		{
 			int startX, startY, endX, endY;
 
@@ -118,7 +118,7 @@ namespace DungeonQuest.Enemy
 			{
 				for (int i = 0; i < path.Count - 1; i++)
 				{
-					Debug.DrawLine(new Vector3(path[i].x, path[i].y) * 10f + Vector3.one * 5f, new Vector3(path[i + 1].x, path[i + 1].y) * 10f + Vector3.one * 5f, Color.green);
+					Debug.DrawLine(new Vector2(path[i].x, path[i].y) * 10f + Vector2.one * 5f, new Vector2(path[i + 1].x, path[i + 1].y) * 10f + Vector2.one * 5f, Color.green);
 				}
 			}
 		}

@@ -58,11 +58,11 @@ namespace DungeonQuest.Enemy
 			{
 				try
 				{
-					MoveDirection = transform.InverseTransformPoint(new Vector3(enemyAI.path[1].x, enemyAI.path[1].y) * 10f + Vector3.one * 5f).normalized;
+					MoveDirection = transform.InverseTransformPoint(new Vector2(enemyAI.path[1].x, enemyAI.path[1].y) * 10f + Vector2.one * 5f).normalized;
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
-					MoveDirection = transform.InverseTransformPoint(player.transform.position);
+					MoveDirection = Vector2.zero;
 				}
 			}
 
@@ -81,7 +81,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-			if (distanceFromPlayer <= followDistance && distanceFromPlayer >= attackDistance && enemyAI.path != null && !playerManager.IsDead && enemyAI.StunTime == 0)
+			if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.path != null && !playerManager.IsDead && enemyAI.StunTime == 0)
 			{
 				enemyAI.state = EnemyAI.AIstate.Chase;
 				rigidbody2D.velocity = Vector2.zero;

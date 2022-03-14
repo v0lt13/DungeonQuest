@@ -13,18 +13,23 @@ namespace DungeonQuest.Player
 
 		private const float MOVE_LIMITER = 0.7f;
 		private float x, y;
+		private Vector2 unmodifiedMoveDirection;
 
 		[Header("Player Config:")]
 		public float playerSpeed;
-		public int playerHealth;
+		public int defaultPlayerHealth;
+		public int defaultPlayerArmor;
 		[Space(10f)]
 		[SerializeField] private AudioClip deathSFX;
-		[SerializeField] private Slider[] healthBars;
+		[SerializeField] private Slider healthBar;
+		[SerializeField] private Slider armorBar;
 
 		public bool HasMovementInput { get; private set; }
 		public bool IsMoveing { get; private set; }
 		public bool GodMode { private get; set; }
 		public bool IsDead { get; private set; }
+		public int PlayerHealth { get; private set; }
+		public int PlayerArmor { get; private set; }
 
 		public Vector2 LastMoveDirection { get; private set; }
 		public Vector2 FaceingDirection { get; private set; }
@@ -36,7 +41,10 @@ namespace DungeonQuest.Player
 			playerAttack = GetComponent<PlayerAttack>();
 			boxCollider = GetComponent<BoxCollider2D>();
 
-			foreach (var healthBar in healthBars) healthBar.maxValue = playerHealth;
+			PlayerHealth = defaultPlayerHealth;
+			PlayerArmor = defaultPlayerArmor;
+			healthBar.maxValue = defaultPlayerHealth;
+			armorBar.maxValue = defaultPlayerArmor;
 		}
 
 		void Update()
@@ -44,19 +52,20 @@ namespace DungeonQuest.Player
 			HasMovementInput = x != 0 || y != 0;
 			IsMoveing = MoveDirection.x != 0 || MoveDirection.y != 0;
 
-			foreach (var healthBar in healthBars) healthBar.value = playerHealth;
+			healthBar.value = PlayerHealth;
+			armorBar.value = PlayerArmor;
 
 			if (playerAttack.IsAttacking) MoveDirection = Vector2.zero;
 
-			if (playerHealth <= 0)
+			if (PlayerHealth <= 0)
 			{
-				playerHealth = 0;
+				PlayerHealth = 0;
 				Die();
 			}
 
 			if (HasMovementInput && IsMoveing)
 			{
-				FaceingDirection = MoveDirection;
+				FaceingDirection = unmodifiedMoveDirection;
 			}
 			else
 			{
@@ -76,10 +85,36 @@ namespace DungeonQuest.Player
 		{
 			if (GodMode) return;
 
-			if (playerHealth > 0)
+			if (PlayerHealth > 0 && PlayerArmor == 0)
 			{
-				playerHealth -= damage;
+				PlayerHealth -= damage;
 			}
+
+			if (PlayerArmor > 0)
+			{
+				PlayerArmor -= damage;
+			}
+
+			if (PlayerArmor < 0)
+			{
+				// The player armor will be a negative number so we have to add it to the player health to substract from it cuz M A T H
+				PlayerHealth += PlayerArmor;
+				PlayerArmor = 0;
+			}
+		}
+
+		public void HealPlayer(int amount)
+		{
+			PlayerHealth += amount;
+
+			if (PlayerHealth > defaultPlayerHealth) PlayerHealth = defaultPlayerHealth;
+		}
+
+		public void ArmorPlayer(int amount)
+		{
+			PlayerArmor += amount;
+
+			if (PlayerArmor > defaultPlayerArmor) PlayerArmor = defaultPlayerArmor;
 		}
 
 		private void MovementInputs()
@@ -97,6 +132,7 @@ namespace DungeonQuest.Player
 			}
 
 			MoveDirection = new Vector2(x, y).normalized;
+			unmodifiedMoveDirection = MoveDirection;
 		}
 
 		private void Move()
@@ -118,8 +154,6 @@ namespace DungeonQuest.Player
 
 			IsDead = true;
 			rigidbody2D.isKinematic = true;
-
-			foreach (var healthBar in healthBars) healthBar.fillRect.GetComponent<Image>().color = Color.black;
 
 			var deathSound = GetComponent<AudioSource>();
 			deathSound.clip = deathSFX;

@@ -36,7 +36,7 @@ namespace DungeonQuest.Player
 
 				if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
 
-				if (Input.GetMouseButton(0))
+				if (Input.GetMouseButtonDown(0))
 				{
 					TimeBetweenAttacks = timeBetweenAttacks;
 					StartCoroutine(Attack());

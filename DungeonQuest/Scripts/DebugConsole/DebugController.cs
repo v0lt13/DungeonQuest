@@ -11,7 +11,8 @@ namespace DungeonQuest.DebugConsole
 		private const float OUTPUT_WINDOW_HEIGHT = 150f;
 		private string input;
 
-		private static DebugCommand<int> SET_HP;
+		private static DebugCommand<int> HEAL;
+		private static DebugCommand<int> ARMOR;
 		private static DebugCommand<int> SET_DAMAGE;
 		private static DebugCommand<bool> SHOW_FPS;
 		private static DebugCommand<bool> GOD_MODE;
@@ -33,11 +34,18 @@ namespace DungeonQuest.DebugConsole
 		{
 			outputList.Add("Type help to view the list of available commands");
 
-			SET_HP = new DebugCommand<int>("sethp", "Sets the player health", "sethp <amount>", (health) =>
+			HEAL = new DebugCommand<int>("heal", "Heals the player", "heal <amount>", (amount) =>
 			{
-				GameManager.INSTANCE.playerManager.playerHealth = health;
+				GameManager.INSTANCE.playerManager.HealPlayer(amount);
 
-				outputList.Add("Player has health set to " + health);
+				outputList.Add("Player has been healed");
+			});
+
+			ARMOR = new DebugCommand<int>("armor", "Armors the player", "armor <amount>", (amount) =>
+			{
+				GameManager.INSTANCE.playerManager.ArmorPlayer(amount);
+
+				outputList.Add("Player has been armored");
 			});
 
 			SET_DAMAGE = new DebugCommand<int>("setdamage", "Sets the player damage", "setdamage <amount>", (damage) =>
@@ -53,7 +61,7 @@ namespace DungeonQuest.DebugConsole
 
 				if (framerate != null) framerate.enabled = toogle;
 
-				outputList.Add("Showfps has been set to " + toogle);
+				outputList.Add("FPS counter has been toogled");
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (toogle) =>
@@ -115,7 +123,8 @@ namespace DungeonQuest.DebugConsole
 
 			commandList = new List<object>
 			{
-				SET_HP,
+				HEAL,
+				ARMOR,
 				SET_DAMAGE,
 				SHOW_FPS,
 				GOD_MODE,
