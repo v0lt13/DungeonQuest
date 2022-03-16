@@ -4,7 +4,7 @@ namespace DungeonQuest.Pickups
 {
 	public class HealthPickup : MonoBehaviour
 	{
-		[SerializeField] private bool destroyOnCollision;
+		[SerializeField] private bool destroyOnPickup;
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
@@ -12,7 +12,7 @@ namespace DungeonQuest.Pickups
 			{
 				collider.GetComponent<Player.PlayerHealing>().HealingPotions++;
 
-				if (destroyOnCollision) Destroy(gameObject);
+				if (destroyOnPickup) Destroy(gameObject);
 			}
 		}
 	}

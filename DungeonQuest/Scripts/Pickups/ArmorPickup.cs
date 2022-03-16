@@ -6,7 +6,7 @@ namespace DungeonQuest.Pickups
 	public class ArmorPickup : MonoBehaviour
 	{
 		[SerializeField] private int amountGiven;
-		[SerializeField] private bool destroyOnCollision;
+		[SerializeField] private bool destroyOnPickup;
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
@@ -18,7 +18,7 @@ namespace DungeonQuest.Pickups
 					
 				player.ArmorPlayer(amountGiven);
 
-				if (destroyOnCollision) Destroy(gameObject);
+				if (destroyOnPickup) Destroy(gameObject);
 			}
 		}
 	}

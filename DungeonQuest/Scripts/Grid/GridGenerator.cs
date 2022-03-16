@@ -26,7 +26,7 @@ namespace DungeonQuest.Grid
 
 		private void MarkObstructions()
 		{
-			var walls = GameObject.FindGameObjectsWithTag("Wall");
+			var walls = GameObject.FindGameObjectsWithTag("Blockable");
 
 			foreach (var wall in walls)
 			{
