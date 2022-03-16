@@ -30,7 +30,7 @@ namespace DungeonQuest
 
 		void OnGUI()
 		{
-			var obj = Resources.LoadAll("Prefabs/Tiles", typeof(GameObject));
+			var obj = Resources.LoadAll("Prefabs/Map", typeof(GameObject));
 
 			prefabs = new GameObject[obj.Length];
 
@@ -46,12 +46,12 @@ namespace DungeonQuest
 				{
 					elementsInThisRow++;
 
-					var prefabTexture = prefabs[i].GetComponent<SpriteRenderer>().sprite.texture;
+					var prefabTexture = AssetPreview.GetAssetPreview(prefabs[i]);
 
 					if (GUILayout.Button(prefabTexture, GUILayout.MaxWidth(50), GUILayout.MaxHeight(50)))
 					{
 						selectedPrefab = prefabs[i];
-						handleContent.image = (Texture2D)selectedPrefab.GetComponent<SpriteRenderer>().sprite.texture;
+						handleContent.image = AssetPreview.GetAssetPreview(prefabs[i]);
 
 						SceneView.onSceneGUIDelegate -= OnSceneGUI;
 						SceneView.onSceneGUIDelegate += OnSceneGUI;
@@ -71,17 +71,21 @@ namespace DungeonQuest
 			GUILayout.EndHorizontal();
 		}
 
-		private void OnSceneGUI(SceneView sceneView)
+		void OnSceneGUI(SceneView sceneView)
 		{
 			Handles.BeginGUI();
 
+			var style = new GUIStyle();
+			style.normal.textColor = Color.white;
+
+			GUILayout.Label(selectedPrefab.name, style);
 			GUILayout.Box(handleContent, GUILayout.MinWidth(40), GUILayout.MinHeight(40));
 
 			if (GUILayout.Button("Done", GUILayout.MaxWidth(40), GUILayout.MaxHeight(20))) SceneView.onSceneGUIDelegate -= OnSceneGUI;
 
 			Handles.EndGUI();
 
-			var spawnPosition = HandleUtility.GUIPointToWorldRay(Event.current.mousePosition).origin;
+			var spawnPosition = new Vector2(5, 5);
 
 			if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.A) Spawn(spawnPosition);
 
