@@ -25,7 +25,7 @@ namespace DungeonQuest.Enemy
 		public Vector2 MoveDirection { get; private set; }
 
 		public bool IsDead { get; private set; }
-		public bool IsAttacking { get; private set; }
+		public bool IsAttacking { get; set; }
 
 		void Awake()
 		{
@@ -62,7 +62,7 @@ namespace DungeonQuest.Enemy
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
-					MoveDirection = Vector2.zero;
+					MoveDirection = transform.InverseTransformPoint(player.transform.position).normalized;
 				}
 			}
 
@@ -92,8 +92,6 @@ namespace DungeonQuest.Enemy
 			else if (distanceFromPlayer <= attackDistance && !playerManager.IsDead && enemyAI.StunTime == 0)
 			{
 				enemyAI.state = EnemyAI.AIstate.Attack;
-
-				StartCoroutine(SetAttackBool());
 			}
 			else
 			{
@@ -119,15 +117,6 @@ namespace DungeonQuest.Enemy
 			Destroy(enemyAI);
 			Destroy(this);
 			Destroy(gameObject, 5f);
-		}
-
-		private IEnumerator SetAttackBool()
-		{
-			IsAttacking = true;
-
-			yield return new WaitForSeconds(enemyAI.TimeBetweenAttacks);
-
-			IsAttacking = false;
 		}
 	}
 }

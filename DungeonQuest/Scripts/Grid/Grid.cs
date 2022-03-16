@@ -68,13 +68,13 @@ namespace DungeonQuest.Grid
 			}
 		}*/
 
-		public TGridObject GetGridObject(Vector2 worldPosition)
+		/*public TGridObject GetGridObject(Vector2 worldPosition)
 		{
 			int x, y;
 			GetXY(worldPosition, out x, out y);
 
 			return GetGridObject(x, y);
-		}
+		}*/
 
 		public TGridObject GetGridObject(int x, int y)
 		{

@@ -17,7 +17,7 @@ namespace DungeonQuest.Enemy
 
 		[Header ("AI Config:")]
 		[SerializeField] private int damage;
-		[SerializeField] private float timeBetweenAttacks;
+		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float enemySpeed;
 		public bool showPath;
 
@@ -27,24 +27,23 @@ namespace DungeonQuest.Enemy
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
 
-		public float TimeBetweenAttacks { get; set; }
+		public float TimeBetweenAttacks { get; private set; }
 		public float StunTime { get; set; }
+		public float GetDefaultTimeBetweenAttacks { get { return defaultTimeBetweenAttacks; } }
 
 		void Awake()
 		{
 			grid = GameObject.Find("Grid").GetComponent<GridGenerator>();
 			enemyManager = GetComponent<EnemyManager>();
-
-			enemySpeed /= 10;
 		}
 
 		void Update()
 		{
-			if (StunTime < 0)
+			if (StunTime < 0f)
 			{
-				StunTime = 0;
+				StunTime = 0f;
 			}
-			else if (StunTime > 0)
+			else if (StunTime > 0f)
 			{
 				StunTime -= Time.deltaTime;
 			}
@@ -68,36 +67,37 @@ namespace DungeonQuest.Enemy
 
 		private void Idle(Vector2 targetPosition) 
 		{
-			TimeBetweenAttacks = 0;
+			TimeBetweenAttacks = 0f;
 			FindPathToPlayer(targetPosition, out path);
 		}
 
 		private void Chase(Vector2 targetPosition)
-		{
-			TimeBetweenAttacks = 0;
+		{			
 			FindPathToPlayer(targetPosition, out path);
 
 			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
 
-			if (path != null && StunTime == 0)
+			if (path != null && StunTime == 0f)
 			{
 				try
 				{
-					transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, enemySpeed);
+					transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, enemySpeed * Time.deltaTime);
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
-					state = AIstate.Idle;					
+					transform.position = Vector2.MoveTowards(transform.position, enemyManager.player.transform.position, enemySpeed * Time.deltaTime);				
 				}
 			}
 		}
 
 		private void Attack()
 		{
-			if (TimeBetweenAttacks <= 0)
+			if (TimeBetweenAttacks <= 0f)
 			{
+				TimeBetweenAttacks = defaultTimeBetweenAttacks;
+				enemyManager.IsAttacking = true;
+
 				enemyManager.playerManager.DamagePlayer(damage);
-				TimeBetweenAttacks = timeBetweenAttacks;
 			}
 			else
 			{

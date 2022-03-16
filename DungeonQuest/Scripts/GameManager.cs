@@ -6,7 +6,7 @@ namespace DungeonQuest
 {
 	public class GameManager : MonoBehaviour
 	{
-		[HideInInspector] public List<GameObject> enemyList;
+		public List<GameObject> enemyList;
 		[HideInInspector] public PlayerManager playerManager;
 
 		public static GameManager INSTANCE { get; private set; }
@@ -38,13 +38,16 @@ namespace DungeonQuest
 			var enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
 			var enemyHolder = GameObject.Find("EnemyHolder");
 
-			if (enemyObjects != null && enemyHolder != null)
+			if (enemyObjects == null && enemyHolder == null) return;
+
+			enemyList.Clear();
+
+			foreach (var enemyObject in enemyObjects)
 			{
-				foreach (var enemyObject in enemyObjects)
-				{
-					enemyObject.transform.SetParent(enemyHolder.transform);
-					enemyList.Add(enemyObject);
-				}
+				if (enemyObject.GetComponent<Enemy.EnemyManager>() == null) continue;
+
+				enemyObject.transform.SetParent(enemyHolder.transform);
+				enemyList.Add(enemyObject);
 			}
 		}
 	}

@@ -82,12 +82,21 @@ namespace DungeonQuest.DebugConsole
 			{
 				var enemyList = GameManager.INSTANCE.enemyList;
 
-				for (int i = 0; i < enemyList.Count; i++)
+				if (enemyList.Count != 0)
 				{
-					enemyList[i].GetComponent<Enemy.EnemyManager>().DamageEnemy(int.MaxValue);
+					for (int i = 0; i < enemyList.Count; i++)
+					{
+						enemyList[i].GetComponent<Enemy.EnemyManager>().DamageEnemy(int.MaxValue);
+					}
+
+					outputList.Add(enemyList.Count + " enemies killed");
+					enemyList.Clear();
+				}
+				else
+				{
+					outputList.Add("No enemies found");
 				}
 
-				outputList.Add("All enemies killed");			
 			});
 
 			SPAWN_ENEMY = new DebugCommand("spawnenemy", "Spawns an enemy in the scene", "spawnenemy", () =>
