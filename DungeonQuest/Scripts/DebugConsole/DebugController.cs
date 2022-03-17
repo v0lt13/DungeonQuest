@@ -150,7 +150,7 @@ namespace DungeonQuest.DebugConsole
 		{
 			if (PauseMenu.IS_GAME_PAUSED) return;
 
-			if (Input.GetKeyDown(KeyCode.F3))
+			if (Input.GetButtonDown("Console"))
 			{
 				IS_CONSOLE_ON = !IS_CONSOLE_ON;
 				input = "";

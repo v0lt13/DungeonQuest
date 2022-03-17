@@ -13,7 +13,7 @@ namespace DungeonQuest.Menus
 		{
 			if (DebugController.IS_CONSOLE_ON) return;
 			
-			if (Input.GetKeyDown(KeyCode.Escape))
+			if (Input.GetButtonDown("Back"))
 			{
 				ToogleGamePause();
 			}

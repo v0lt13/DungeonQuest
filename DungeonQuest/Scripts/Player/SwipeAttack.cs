@@ -6,10 +6,10 @@ namespace DungeonQuest.Player
 {
 	public class SwipeAttack : MonoBehaviour
 	{
-		private const float KNOCKBACK_DURATION = 0.07f;
-		private const float KNOCKBACK_POWER = 300f;
+		private const float KNOCKBACK_DURATION = 0.1f;
+		private const float KNOCKBACK_POWER = 200f;
 
-		void Start() 
+		void Start()
 		{
 			Destroy(gameObject, 0.1f);
 		}
@@ -27,17 +27,8 @@ namespace DungeonQuest.Player
 				enemy.DamageEnemy(damage);
 				enemy.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
 
-				StartCoroutine(Knockback(enemy.rigidbody2D));
-
-				other.GetComponent<EnemyAI>().StunTime = 1f;
+				other.GetComponent<EnemyAI>().StunTime = KNOCKBACK_DURATION;
 			}
-		}
-		
-		private IEnumerator Knockback(Rigidbody2D enemy)
-		{
-			yield return new WaitForSeconds(KNOCKBACK_DURATION);
-
-			if (enemy != null) enemy.velocity = Vector2.zero;
 		}
 	}
 }

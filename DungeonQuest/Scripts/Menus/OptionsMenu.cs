@@ -8,7 +8,7 @@ namespace DungeonQuest.Menus
 
 		void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Escape))
+			if (Input.GetButtonDown("Back"))
 			{
 				GoBack();
 			}
