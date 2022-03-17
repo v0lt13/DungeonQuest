@@ -22,6 +22,8 @@ namespace DungeonQuest.Player
 				var damage = GameObject.FindObjectOfType<PlayerAttack>().damage;
 				var player = GameObject.Find("Player");
 
+				if (enemy == null) return;
+
 				Vector2 difference = (enemy.transform.position - player.transform.position).normalized * KNOCKBACK_POWER;
 
 				enemy.DamageEnemy(damage);

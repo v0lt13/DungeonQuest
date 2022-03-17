@@ -43,9 +43,15 @@ namespace DungeonQuest.Enemy
 			healthBar.value = enemyHealth;
 			PlayerDirection = transform.InverseTransformPoint(player.transform.position);
 
-			if (MoveDirection.x != 0 || MoveDirection.y != 0)
+			var isMoveing = MoveDirection.x != 0 || MoveDirection.y != 0;
+
+			if (isMoveing)
 			{
 				LastMoveDirection = MoveDirection;
+			}
+			else
+			{
+				LastMoveDirection = PlayerDirection;
 			}
 
 			if (enemyHealth <= 0)

@@ -34,25 +34,25 @@ namespace DungeonQuest.DebugConsole
 		{
 			outputList.Add("Type help to view the list of available commands");
 
-			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (amount) =>
+			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.HealPlayer(amount);
+				GameManager.INSTANCE.playerManager.HealPlayer(value);
 
 				outputList.Add("Player health set");
 			});
 
-			ARMOR = new DebugCommand<int>("armor", "Armors the player, negative numbers substract the armor", "armor <amount>", (amount) =>
+			ARMOR = new DebugCommand<int>("armor", "Armors the player, negative numbers substract the armor", "armor <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.ArmorPlayer(amount);
+				GameManager.INSTANCE.playerManager.ArmorPlayer(value);
 
 				outputList.Add("Player armor set");
 			});
 
-			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (damage) =>
+			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerAttack.damage = (int)damage;
+				GameManager.INSTANCE.playerManager.playerAttack.damage = (int)value;
 
-				outputList.Add("Player has damage set to " + damage);
+				outputList.Add("Player has damage set to " + value);
 			});
 
 			SHOW_FPS = new DebugCommand<bool>("showfps", "Toogles FPS counter", "showfps <true/false>", (toogle) =>
@@ -226,6 +226,17 @@ namespace DungeonQuest.DebugConsole
 						catch (System.Exception)
 						{
 							outputList.Add("Prameter must be a positive integer");
+						}
+					}
+					else if (commandList[i] as DebugCommand<float> != null)
+					{
+						try
+						{
+							(commandList[i] as DebugCommand<float>).Invoke(float.Parse(proprieties[1]));
+						}
+						catch (System.Exception)
+						{
+							outputList.Add("Prameter must be a float");
 						}
 					}
 					else if (commandList[i] as DebugCommand<bool> != null)

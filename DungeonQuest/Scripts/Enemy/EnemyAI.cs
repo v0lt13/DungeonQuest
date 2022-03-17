@@ -15,10 +15,19 @@ namespace DungeonQuest.Enemy
 			Attack
 		}
 
-		[Header ("AI Config:")]
-		[SerializeField] private int damage;
+		public enum AIType
+		{
+			Melee,
+			Ranged
+		}
+
+		[Header("AI Config:")]
+		public AIType type;
+		public int damage;
 		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float enemySpeed;
+		[SerializeField] private GameObject projectilePrefab;
+		[Space(10f)]
 		public bool showPath;
 
 		[HideInInspector] public AIstate state;
@@ -68,7 +77,7 @@ namespace DungeonQuest.Enemy
 
 		private void Idle(Vector2 targetPosition) 
 		{
-			TimeBetweenAttacks = 0f;
+			TimeBetweenAttacks = 0.3f;
 			FindPathToPlayer(targetPosition, out path);
 		}
 
@@ -98,7 +107,15 @@ namespace DungeonQuest.Enemy
 				TimeBetweenAttacks = defaultTimeBetweenAttacks;
 				enemyManager.IsAttacking = true;
 
-				enemyManager.playerManager.DamagePlayer(damage);
+				switch (type)
+				{
+					case AIType.Melee:
+						enemyManager.playerManager.DamagePlayer(damage);
+						break;
+					case AIType.Ranged:
+						Invoke("ShootArrow", 0.3f);
+						break;
+				}
 			}
 			else
 			{
@@ -122,6 +139,11 @@ namespace DungeonQuest.Enemy
 					Debug.DrawLine(new Vector2(path[i].x, path[i].y) * 10f + Vector2.one * 5f, new Vector2(path[i + 1].x, path[i + 1].y) * 10f + Vector2.one * 5f, Color.green);
 				}
 			}
+		}
+
+		private void ShootArrow()
+		{
+			Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 		}
 	}
 }
