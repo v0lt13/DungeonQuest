@@ -6,9 +6,16 @@ namespace DungeonQuest.Pickups
 	{
 		[SerializeField] private bool destroyOnPickup;
 
+		private Collider2D playerCollider;
+
+		void Awake()
+		{
+			playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
+		}
+
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (collider.CompareTag("Player"))
+			if (playerCollider == collider)
 			{
 				collider.GetComponent<Player.PlayerHealing>().HealingPotions++;
 

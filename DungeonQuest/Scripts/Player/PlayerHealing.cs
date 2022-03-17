@@ -30,16 +30,12 @@ namespace DungeonQuest.Player
 			cooldownSlider.value = Cooldown;
 			healingPotionsAmount.text = HealingPotions.ToString();
 
-			if (Cooldown <= 0)
-			{
-				Cooldown = 0;
-			}
-			else if (Cooldown > 0)
+			if (Cooldown > 0f)
 			{
 				Cooldown -= Time.deltaTime;
 			}
 
-			if (Input.GetKeyDown(KeyCode.E) && Cooldown == 0 && HealingPotions != 0 && !playerManager.IsDead)
+			if (Input.GetButtonDown("Heal") && Cooldown <= 0f && HealingPotions != 0 && !playerManager.IsDead)
 			{
 				Cooldown = defaultCooldown;
 				HealingPotions--;

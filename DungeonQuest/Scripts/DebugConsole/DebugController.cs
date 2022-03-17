@@ -13,7 +13,7 @@ namespace DungeonQuest.DebugConsole
 
 		private static DebugCommand<int> HEAL;
 		private static DebugCommand<int> ARMOR;
-		private static DebugCommand<int> SET_DAMAGE;
+		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<bool> SHOW_FPS;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
@@ -34,48 +34,54 @@ namespace DungeonQuest.DebugConsole
 		{
 			outputList.Add("Type help to view the list of available commands");
 
-			HEAL = new DebugCommand<int>("heal", "Heals the player", "heal <amount>", (amount) =>
+			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (amount) =>
 			{
 				GameManager.INSTANCE.playerManager.HealPlayer(amount);
 
-				outputList.Add("Player has been healed");
+				outputList.Add("Player health set");
 			});
 
-			ARMOR = new DebugCommand<int>("armor", "Armors the player", "armor <amount>", (amount) =>
+			ARMOR = new DebugCommand<int>("armor", "Armors the player, negative numbers substract the armor", "armor <amount>", (amount) =>
 			{
 				GameManager.INSTANCE.playerManager.ArmorPlayer(amount);
 
-				outputList.Add("Player has been armored");
+				outputList.Add("Player armor set");
 			});
 
-			SET_DAMAGE = new DebugCommand<int>("setdamage", "Sets the player damage", "setdamage <amount>", (damage) =>
+			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (damage) =>
 			{
-				GameManager.INSTANCE.playerManager.playerAttack.damage = damage;
+				GameManager.INSTANCE.playerManager.playerAttack.damage = (int)damage;
 
 				outputList.Add("Player has damage set to " + damage);
 			});
 
-			SHOW_FPS = new DebugCommand<bool>("showfps", "Toogles FPS counter", "showfps <true or false>", (toogle) =>
+			SHOW_FPS = new DebugCommand<bool>("showfps", "Toogles FPS counter", "showfps <true/false>", (toogle) =>
 			{
 				var framerate = GameObject.Find("Framerate").GetComponent<UnityEngine.UI.Text>();
 
 				if (framerate != null) framerate.enabled = toogle;
 
-				outputList.Add("FPS counter has been toogled");
+				var toogleText = toogle ? "On" : "Off";
+
+				outputList.Add("FPS counter is " + toogleText);
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (toogle) =>
 			{
 				GameManager.INSTANCE.playerManager.GodMode = toogle;
 
-				outputList.Add("Godmode has been set to " + toogle);
+				var toogleText = toogle ? "On" : "Off";
+
+				outputList.Add("Godmode " + toogleText);
 			});
 
 			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (toogle) =>
 			{
 				GameManager.INSTANCE.playerManager.boxCollider.enabled = !toogle;
 
-				outputList.Add("Noclip has been set to " + toogle);
+				var toogleText = toogle ? "On" : "Off";
+
+				outputList.Add("Noclip " + toogleText);
 			});
 
 			KILL_ENEMIES = new DebugCommand("killenemies", "Kills all enemies in the level", "killenemies", () =>
@@ -200,17 +206,6 @@ namespace DungeonQuest.DebugConsole
 					{
 						(commandList[i] as DebugCommand).Invoke();
 					}
-					else if (commandList[i] as DebugCommand<string> != null)
-					{
-						try
-						{
-							(commandList[i] as DebugCommand<string>).Invoke(proprieties[1]);
-						}
-						catch (System.Exception)
-						{
-							outputList.Add("Prameter must be a string");
-						}
-					}
 					else if (commandList[i] as DebugCommand<int> != null)
 					{
 						try
@@ -222,15 +217,15 @@ namespace DungeonQuest.DebugConsole
 							outputList.Add("Prameter must be an integer");
 						}
 					}
-					else if (commandList[i] as DebugCommand<float> != null)
+					else if (commandList[i] as DebugCommand<uint> != null)
 					{
 						try
 						{
-							(commandList[i] as DebugCommand<float>).Invoke(float.Parse(proprieties[1]));
+							(commandList[i] as DebugCommand<uint>).Invoke(uint.Parse(proprieties[1]));
 						}
 						catch (System.Exception)
 						{
-							outputList.Add("Prameter must be a float");
+							outputList.Add("Prameter must be a positive integer");
 						}
 					}
 					else if (commandList[i] as DebugCommand<bool> != null)

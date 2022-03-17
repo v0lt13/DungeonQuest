@@ -39,7 +39,7 @@ namespace DungeonQuest.Enemy
 
 		void Update()
 		{
-			if (StunTime < 0f)
+			if (StunTime <= 0f)
 			{
 				StunTime = 0f;
 				enemyManager.rigidbody2D.velocity = Vector2.zero;
