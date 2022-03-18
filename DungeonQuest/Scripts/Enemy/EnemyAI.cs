@@ -113,6 +113,7 @@ namespace DungeonQuest.Enemy
 						enemyManager.playerManager.DamagePlayer(damage);
 						break;
 					case AIType.Ranged:
+						if (StunTime != 0f) return;
 						Invoke("ShootArrow", 0.3f);
 						break;
 				}

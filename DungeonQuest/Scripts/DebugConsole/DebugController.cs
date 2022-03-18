@@ -17,8 +17,10 @@ namespace DungeonQuest.DebugConsole
 		private static DebugCommand<bool> SHOW_FPS;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
+		private static DebugCommand<bool> INVISIBILITY;
 		private static DebugCommand KILL_ENEMIES;
 		private static DebugCommand SPAWN_ENEMY;
+		private static DebugCommand LEVEL_UP;
 		private static DebugCommand DIE;
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
@@ -84,6 +86,22 @@ namespace DungeonQuest.DebugConsole
 				outputList.Add("Noclip " + toogleText);
 			});
 
+			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (toogle) =>
+			{
+				GameManager.INSTANCE.playerManager.Invisible = toogle;
+
+				var toogleText = toogle ? "On" : "Off";
+
+				outputList.Add("Invisiblity " + toogleText);
+			});
+
+			LEVEL_UP = new DebugCommand("levelup", "Levels up the player", "levelup", () =>
+			{
+				GameManager.INSTANCE.playerManager.playerLeveling.LevelUp();
+
+				outputList.Add("Player has leveled up");
+			});
+
 			KILL_ENEMIES = new DebugCommand("killenemies", "Kills all enemies in the level", "killenemies", () =>
 			{
 				var enemyList = GameManager.INSTANCE.enemyList;
@@ -144,8 +162,10 @@ namespace DungeonQuest.DebugConsole
 				SHOW_FPS,
 				GOD_MODE,
 				NOCLIP,
+				INVISIBILITY,
 				KILL_ENEMIES,
 				SPAWN_ENEMY,
+				LEVEL_UP,
 				DIE,
 				CLEAR,
 				HELP

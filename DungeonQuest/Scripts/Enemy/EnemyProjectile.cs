@@ -29,18 +29,17 @@ namespace DungeonQuest.Enemy
 			playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
 
 			direction = (playerTransform.position - transform.position).normalized;
-			transform.up = playerTransform.position - transform.position;
 
-			var pos = transform.rotation;
-			pos.x = 0;
-			pos.y = 0;
-			transform.rotation = pos;
+			// Make the projectile face the player
+			float angle = Mathf.Atan2(direction.y, direction.x);
+			transform.rotation = Quaternion.Euler(0f, 0f, angle * Mathf.Rad2Deg - 90f);
 		}
 
 		void Update()
 		{
 			transform.position += direction * speed * Time.deltaTime;
 
+			// Lock the z coordonate
 			var pos = transform.position;
 			pos.z = 0;
 			transform.position = pos;

@@ -30,11 +30,11 @@ namespace DungeonQuest
 
 		void OnGUI()
 		{
-			var obj = Resources.LoadAll("Prefabs/Map", typeof(GameObject));
+			var objects = Resources.LoadAll("Prefabs/Map", typeof(GameObject));
 
-			prefabs = new GameObject[obj.Length];
+			prefabs = new GameObject[objects.Length];
 
-			for (int i = 0; i < obj.Length; i++) prefabs[i] = (GameObject)obj[i];
+			for (int i = 0; i < objects.Length; i++) prefabs[i] = (GameObject)objects[i];
 
 			GUILayout.BeginHorizontal();
 

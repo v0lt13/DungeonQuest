@@ -10,6 +10,7 @@ namespace DungeonQuest.Player
 		[HideInInspector] public BoxCollider2D boxCollider;
 		[HideInInspector] public PlayerAttack playerAttack;
 		[HideInInspector] public PlayerAnimationHandler playerAnim;
+		[HideInInspector] public PlayerLeveling playerLeveling;
 
 		private const float MOVE_LIMITER = 0.7f;
 		private float x, y;
@@ -20,14 +21,15 @@ namespace DungeonQuest.Player
 		public int defaultPlayerHealth;
 		public int defaultPlayerArmor;
 		[Space(10f)]
+		public Slider healthBar;
+		public Slider armorBar;
 		[SerializeField] private AudioClip deathSFX;
-		[SerializeField] private Slider healthBar;
-		[SerializeField] private Slider armorBar;
 
 		public bool HasMovementInput { get; private set; }
 		public bool IsMoveing { get; private set; }
 		public bool GodMode { private get; set; }
 		public bool IsDead { get; private set; }
+		public bool Invisible { get; set; }
 		public int PlayerHealth { get; private set; }
 		public int PlayerArmor { get; private set; }
 
@@ -38,6 +40,7 @@ namespace DungeonQuest.Player
 		void Awake()
 		{
 			playerAnim = GetComponent<PlayerAnimationHandler>();
+			playerLeveling = GetComponent<PlayerLeveling>();
 			playerAttack = GetComponent<PlayerAttack>();
 			boxCollider = GetComponent<BoxCollider2D>();
 
