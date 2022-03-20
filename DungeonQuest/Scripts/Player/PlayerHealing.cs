@@ -10,6 +10,7 @@ namespace DungeonQuest.Player
 		[Space(10f)]
 		[SerializeField] private Slider cooldownSlider;
 		[SerializeField] private Text healingPotionsAmount;
+		[SerializeField] private AudioSource healingSFX;
 
 		private PlayerManager playerManager;
 
@@ -41,6 +42,7 @@ namespace DungeonQuest.Player
 				HealingPotions--;
 
 				playerManager.HealPlayer(playerManager.defaultPlayerHealth);
+				healingSFX.Play();
 			}
 		}
 	}

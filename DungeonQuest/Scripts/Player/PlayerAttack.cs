@@ -10,11 +10,11 @@ namespace DungeonQuest.Player
 		private PlayerManager playerManager;
 		private Vector2 swipeDirection;
 		private Quaternion swipeRotation;
-		private AudioSource swipeSFX;
 
 		[Header("Attack Config:")]
 		public int damage;
 		[SerializeField] private float timeBetweenAttacks;
+	    [SerializeField] private AudioSource swipeSFX;
 		[SerializeField] private GameObject swipe;
 
 		public float TimeBetweenAttacks { private get; set; }

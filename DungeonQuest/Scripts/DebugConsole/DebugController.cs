@@ -18,19 +18,26 @@ namespace DungeonQuest.DebugConsole
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
 		private static DebugCommand<bool> INVISIBILITY;
+		private static DebugCommand<string> SPAWN_ENEMY;
 		private static DebugCommand KILL_ENEMIES;
-		private static DebugCommand SPAWN_ENEMY;
+		private static DebugCommand ENEMY_LIST;
 		private static DebugCommand LEVEL_UP;
 		private static DebugCommand DIE;
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
 
-		private List<string> outputList = new List<string>();
 		private List<object> commandList;
+		private List<string> outputList = new List<string>();
+		private List<string> enemyList = new List<string>
+		{
+			"melee",
+			"ranged"
+		};
 
 		private Vector2 scroll;
 
 		[SerializeField] private GameObject enemyPrefab;
+		[SerializeField] private GameObject rangedEnemyPrefab;
 
 		void Awake()
 		{
@@ -95,6 +102,13 @@ namespace DungeonQuest.DebugConsole
 				outputList.Add("Invisiblity " + toogleText);
 			});
 
+			SPAWN_ENEMY = new DebugCommand<string>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name>", (name) =>
+			{
+				EnemySpawner(name);
+
+				GameManager.INSTANCE.AddEnemies();
+			});
+
 			LEVEL_UP = new DebugCommand("levelup", "Levels up the player", "levelup", () =>
 			{
 				GameManager.INSTANCE.playerManager.playerLeveling.LevelUp();
@@ -120,16 +134,14 @@ namespace DungeonQuest.DebugConsole
 				{
 					outputList.Add("No enemies found");
 				}
-
 			});
 
-			SPAWN_ENEMY = new DebugCommand("spawnenemy", "Spawns an enemy in the scene", "spawnenemy", () =>
+			ENEMY_LIST = new DebugCommand("enemylist", "Displays a list of all names of enemies", "enemylist", () =>
 			{
-				Instantiate(enemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
-
-				GameManager.INSTANCE.AddEnemies();
-
-				outputList.Add("Enemy spawned");
+				for (int i = 0; i < enemyList.Count; i++)
+				{
+					outputList.Add(enemyList[i]);
+				}
 			});
 
 			DIE = new DebugCommand("die", "Kills the player", "die", () =>
@@ -163,8 +175,9 @@ namespace DungeonQuest.DebugConsole
 				GOD_MODE,
 				NOCLIP,
 				INVISIBILITY,
-				KILL_ENEMIES,
 				SPAWN_ENEMY,
+				KILL_ENEMIES,
+				ENEMY_LIST,
 				LEVEL_UP,
 				DIE,
 				CLEAR,
@@ -226,6 +239,17 @@ namespace DungeonQuest.DebugConsole
 					{
 						(commandList[i] as DebugCommand).Invoke();
 					}
+					else if (commandList[i] as DebugCommand<string> != null)
+					{
+						try
+						{
+							(commandList[i] as DebugCommand<string>).Invoke(proprieties[1]);
+						}
+						catch (System.Exception)
+						{
+							outputList.Add("Prameter must be a string");
+						}
+					}
 					else if (commandList[i] as DebugCommand<int> != null)
 					{
 						try
@@ -286,6 +310,24 @@ namespace DungeonQuest.DebugConsole
 
 				GUI.Label(labelRect, label);
 				GUI.EndScrollView();
+			}
+		}
+
+		private void EnemySpawner(string name)
+		{
+			switch (name)
+			{
+				case "melee":
+					Instantiate(enemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					outputList.Add(name + " enemy spawned");
+					break;
+				case "ranged":
+					Instantiate(rangedEnemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					outputList.Add(name + " enemy spawned");
+					break;
+				default:
+					outputList.Add("Enemy not found");
+					break;
 			}
 		}
 	}

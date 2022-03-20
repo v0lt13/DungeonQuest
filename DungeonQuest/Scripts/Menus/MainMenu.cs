@@ -8,7 +8,8 @@ namespace DungeonQuest.Menus
 
 		public void Play()
 		{
-			Application.LoadLevel("mainScene");
+			LoadingScreen.SCENE_NAME = "mainScene";
+			Application.LoadLevel("LoadingScreen");
 		}
 
 		public void Options()

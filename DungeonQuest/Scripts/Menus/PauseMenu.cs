@@ -19,6 +19,7 @@ namespace DungeonQuest.Menus
 			}
 
 			Time.timeScale = IS_GAME_PAUSED ? 0f : 1f;
+			AudioListener.pause = IS_GAME_PAUSED;
 			pauseMenu.SetActive(IS_GAME_PAUSED);
 		}
 
@@ -34,7 +35,8 @@ namespace DungeonQuest.Menus
 			IS_GAME_PAUSED = false;
 
 			GameManager.INSTANCE.EnableCursor(IS_GAME_PAUSED);
-			Application.LoadLevel("mainScene");
+			LoadingScreen.SCENE_NAME = "mainScene";
+			Application.LoadLevel("LoadingScreen");
 		}
 
 		public void QuitGame()
@@ -42,7 +44,8 @@ namespace DungeonQuest.Menus
 			IS_GAME_PAUSED = false;
 
 			GameManager.INSTANCE.EnableCursor(true);
-			Application.LoadLevel("MainMenu");
+			LoadingScreen.SCENE_NAME = "MainMenu";
+			Application.LoadLevel("LoadingScreen");
 		}
 	}
 }
