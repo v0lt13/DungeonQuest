@@ -7,14 +7,29 @@ namespace DungeonQuest.Player
 {
 	public class PlayerManager : MonoBehaviour
 	{
-		[HideInInspector] public BoxCollider2D boxCollider;
-		[HideInInspector] public PlayerAttack playerAttack;
-		[HideInInspector] public PlayerAnimationHandler playerAnim;
-		[HideInInspector] public PlayerLeveling playerLeveling;
+		public enum FaceingDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
 
-		private const float MOVE_LIMITER = 0.7f;
-		private float x, y;
-		private Vector2 unmodifiedMoveDirection;
+		public enum LastMoveDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
+		public enum MoveDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
 
 		[Header("Player Config:")]
 		public float playerSpeed;
@@ -25,6 +40,22 @@ namespace DungeonQuest.Player
 		public Slider armorBar;
 		[SerializeField] private AudioClip deathSFX;
 
+		[HideInInspector] public LastMoveDirection lastMoveDir;
+		[HideInInspector] public FaceingDirection faceingDir;
+		[HideInInspector] public MoveDirection moveDir;
+
+		[HideInInspector] public BoxCollider2D boxCollider;
+		[HideInInspector] public PlayerAttack playerAttack;
+		[HideInInspector] public PlayerLeveling playerLeveling;
+
+		private const float MOVE_LIMITER = 0.7f;
+		private float x, y;
+
+		private Vector2 unmodifiedMoveDirection;
+		private Vector2 faceingDirection;
+		private Vector2 lastMoveDirection;
+		private Vector2 moveDirection;
+
 		public bool HasMovementInput { get; private set; }
 		public bool IsMoveing { get; private set; }
 		public bool GodMode { private get; set; }
@@ -33,13 +64,8 @@ namespace DungeonQuest.Player
 		public int PlayerHealth { get; private set; }
 		public int PlayerArmor { get; private set; }
 
-		public Vector2 LastMoveDirection { get; private set; }
-		public Vector2 FaceingDirection { get; private set; }
-		public Vector2 MoveDirection { get; private set; }
-
 		void Awake()
 		{
-			playerAnim = GetComponent<PlayerAnimationHandler>();
 			playerLeveling = GetComponent<PlayerLeveling>();
 			playerAttack = GetComponent<PlayerAttack>();
 			boxCollider = GetComponent<BoxCollider2D>();
@@ -53,12 +79,16 @@ namespace DungeonQuest.Player
 		void Update()
 		{
 			HasMovementInput = x != 0 || y != 0;
-			IsMoveing = MoveDirection.x != 0 || MoveDirection.y != 0;
+			IsMoveing = moveDirection.x != 0 || moveDirection.y != 0;
 
 			healthBar.value = PlayerHealth;
 			armorBar.value = PlayerArmor;
 
-			if (playerAttack.IsAttacking) MoveDirection = Vector2.zero;
+			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
+			faceingDir = (FaceingDirection)DirectionCheck(faceingDirection);
+			moveDir = (MoveDirection)DirectionCheck(unmodifiedMoveDirection);
+
+			if (playerAttack.IsAttacking) moveDirection = Vector2.zero;
 
 			if (PlayerHealth <= 0)
 			{
@@ -68,15 +98,14 @@ namespace DungeonQuest.Player
 
 			if (HasMovementInput && IsMoveing)
 			{
-				FaceingDirection = unmodifiedMoveDirection;
+				faceingDirection = unmodifiedMoveDirection;
 			}
 			else
 			{
-				FaceingDirection = LastMoveDirection;
+				faceingDirection = lastMoveDirection;
 			}
 
 			MovementInputs();
-			playerAnim.Animate();
 		}
 
 		void FixedUpdate()
@@ -131,11 +160,11 @@ namespace DungeonQuest.Player
 
 			if (IsMoveing)
 			{
-				LastMoveDirection = MoveDirection;
+				lastMoveDirection = moveDirection;
 			}
 
-			MoveDirection = new Vector2(x, y).normalized;
-			unmodifiedMoveDirection = MoveDirection;
+			moveDirection = new Vector2(x, y).normalized;
+			unmodifiedMoveDirection = moveDirection;
 		}
 
 		private void Move()
@@ -148,7 +177,7 @@ namespace DungeonQuest.Player
 				y *= MOVE_LIMITER;
 			}
 			
-			rigidbody2D.velocity = new Vector2(MoveDirection.x * playerSpeed, MoveDirection.y * playerSpeed);
+			rigidbody2D.velocity = new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed);
 		}
 
 		private void Die()
@@ -166,6 +195,30 @@ namespace DungeonQuest.Player
 			Destroy(playerAttack);
 			Destroy(GetComponentInChildren<PlayerFootsteps>());
 			Destroy(this);
+		}
+
+		private int DirectionCheck(Vector2 direction)
+		{
+			if (direction.x >= -1f && direction.y < 0f) // Down
+			{
+				return 0;
+			}
+			else if (direction.x >= -1f && direction.y > 0f) // Up
+			{
+				return 1;
+			}
+			else if (direction == new Vector2(-1f, 0f)) // Left
+			{
+				return 2;
+			}
+			else if (direction == new Vector2(1f, 0f)) // Right
+			{
+				return 3;
+			}
+			else // Defaults to down
+			{
+				return 0;
+			}
 		}
 	}
 }

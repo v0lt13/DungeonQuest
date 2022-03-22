@@ -195,6 +195,7 @@ namespace DungeonQuest.DebugConsole
 				input = "";
 
 				Time.timeScale = IS_CONSOLE_ON ? 0f : 1f;
+				AudioListener.pause = IS_CONSOLE_ON;
 				GameManager.INSTANCE.EnableCursor(IS_CONSOLE_ON);
 			}
 		}

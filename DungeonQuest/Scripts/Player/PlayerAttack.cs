@@ -51,30 +51,28 @@ namespace DungeonQuest.Player
 
 		private void SetSwipeTransform()
 		{
-			if (playerManager.FaceingDirection == new Vector2(1, 0)) // Right
+			switch (playerManager.faceingDir)
 			{
-				swipeDirection = new Vector2(transform.position.x + 5, transform.position.y);
-				swipeRotation = Quaternion.Euler(0, 0, 0);
-			}
-			else if (playerManager.FaceingDirection == new Vector2(-1, 0)) // Left
-			{
-				swipeDirection = new Vector2(transform.position.x - 5, transform.position.y);
-				swipeRotation = Quaternion.Euler(0, 0, 180);
-			}
-			else if (playerManager.FaceingDirection.x >= -1 && playerManager.FaceingDirection.y > 0) // Up
-			{
-				swipeDirection = new Vector2(transform.position.x, transform.position.y + 5);
-				swipeRotation = Quaternion.Euler(0, 0, 90);
-			}
-			else if (playerManager.FaceingDirection.x >= -1 && playerManager.FaceingDirection.y < 0) // Down
-			{
-				swipeDirection = new Vector2(transform.position.x, transform.position.y - 5);
-				swipeRotation = Quaternion.Euler(0, 0, -90);
-			}
-			else // Defaults to Down
-			{
-				swipeDirection = new Vector2(transform.position.x, transform.position.y - 5);
-				swipeRotation = Quaternion.Euler(0, 0, -90);
+				default:
+				case PlayerManager.FaceingDirection.DOWN:
+					swipeDirection = new Vector2(transform.position.x, transform.position.y - 5);
+					swipeRotation = Quaternion.Euler(0, 0, -90);
+					break;
+
+				case PlayerManager.FaceingDirection.UP:
+					swipeDirection = new Vector2(transform.position.x, transform.position.y + 5);
+					swipeRotation = Quaternion.Euler(0, 0, 90);
+					break;
+
+				case PlayerManager.FaceingDirection.LEFT:
+					swipeDirection = new Vector2(transform.position.x - 5, transform.position.y);
+					swipeRotation = Quaternion.Euler(0, 0, 180);
+					break;
+
+				case PlayerManager.FaceingDirection.RIGHT:
+					swipeDirection = new Vector2(transform.position.x + 5, transform.position.y);
+					swipeRotation = Quaternion.Euler(0, 0, 0);
+					break;
 			}
 		}
 

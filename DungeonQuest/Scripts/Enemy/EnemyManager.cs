@@ -7,6 +7,30 @@ namespace DungeonQuest.Enemy
 {
 	public class EnemyManager : MonoBehaviour
 	{
+		public enum PlayerDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
+		public enum LastMoveDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
+		public enum MoveDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
 		[Header("Enemy Config:")]
 		[SerializeField] private float followDistance;
 		[SerializeField] private float attackDistance;
@@ -18,15 +42,19 @@ namespace DungeonQuest.Enemy
 		[SerializeField] private GameObject healthPotionDrop;
 		[SerializeField] private AudioClip deathSFX;
 
+		[HideInInspector] public LastMoveDirection lastMoveDir;
+		[HideInInspector] public PlayerDirection playerDir;
+		[HideInInspector] public MoveDirection moveDir;
+
 		[HideInInspector] public PlayerManager playerManager;
 		[HideInInspector] public GameObject player;
 		[HideInInspector] public EnemyAI enemyAI;
 
 		private Slider healthBar;
 
-		public Vector2 LastMoveDirection { get; private set; }
-		public Vector2 PlayerDirection { get; private set; }
-		public Vector2 MoveDirection { get; private set; }
+		private Vector2 lastMoveDirection;
+		private Vector2 playerDirection;
+		private Vector2 moveDirection;
 
 		public bool IsDead { get; private set; }
 		public bool IsAttacking { get; set; }
@@ -45,7 +73,7 @@ namespace DungeonQuest.Enemy
 		void Update()
 		{
 			healthBar.value = enemyHealth;
-			PlayerDirection = transform.InverseTransformPoint(player.transform.position);
+			playerDirection = transform.InverseTransformPoint(player.transform.position);
 
 			if (enemyHealth <= 0)
 			{
@@ -57,26 +85,30 @@ namespace DungeonQuest.Enemy
 			{
 				try
 				{
-					MoveDirection = transform.InverseTransformPoint(new Vector2(enemyAI.path[1].x, enemyAI.path[1].y) * 10f + Vector2.one * 5f).normalized;
+					moveDirection = transform.InverseTransformPoint(new Vector2(enemyAI.path[1].x, enemyAI.path[1].y) * 10f + Vector2.one * 5f).normalized;
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
-					MoveDirection = transform.InverseTransformPoint(player.transform.position).normalized;
+					moveDirection = transform.InverseTransformPoint(player.transform.position).normalized;
 				}
 			}
 
-			var isMoveing = MoveDirection.x != 0 || MoveDirection.y != 0;
+			var isMoveing = moveDirection.x != 0 || moveDirection.y != 0;
 
 			if (isMoveing)
 			{
-				LastMoveDirection = MoveDirection;
+				lastMoveDirection = moveDirection;
 			}
 			else
 			{
-				LastMoveDirection = PlayerDirection.normalized;
+				lastMoveDirection = playerDirection.normalized;
 			}
 
 			SetAIState();
+
+			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
+			playerDir = (PlayerDirection)DirectionCheck(playerDirection.normalized);
+			moveDir = (MoveDirection)DirectionCheck(moveDirection);
 		}
 
 		public void DamageEnemy(int damage)
@@ -96,8 +128,6 @@ namespace DungeonQuest.Enemy
 				enemyAI.state = EnemyAI.AIstate.Chase;
 				rigidbody2D.velocity = Vector2.zero;
 				IsAttacking = false;
-
-				GetComponent<EnemyAnimationHandler>().Animate();
 			}
 			else if (distanceFromPlayer <= attackDistance && !playerManager.IsDead && !playerManager.Invisible)
 			{
@@ -139,6 +169,32 @@ namespace DungeonQuest.Enemy
 			if (dropChance <= healthDropChance)
 			{
 				Instantiate(healthPotionDrop, transform.position, Quaternion.identity);
+			}
+		}
+
+		private int DirectionCheck(Vector2 direction)
+		{
+			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
+			{
+				if (direction.x > 0)
+				{
+					return 3;
+				}
+				else
+				{
+					return 2;
+				}
+			}
+			else
+			{
+				if (direction.y > 0)
+				{
+					return 1;
+				}
+				else
+				{
+					return 0;
+				}
 			}
 		}
 	}

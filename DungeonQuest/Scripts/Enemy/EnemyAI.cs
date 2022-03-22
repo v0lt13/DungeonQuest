@@ -36,7 +36,7 @@ namespace DungeonQuest.Enemy
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
 
-		public float TimeBetweenAttacks { get; private set; }
+		public float TimeBetweenAttacks { get; set; }
 		public float StunTime { get; set; }
 		public float GetDefaultTimeBetweenAttacks { get { return defaultTimeBetweenAttacks; } }
 
@@ -77,12 +77,13 @@ namespace DungeonQuest.Enemy
 
 		private void Idle(Vector2 targetPosition) 
 		{
-			TimeBetweenAttacks = 0.3f;
+			TimeBetweenAttacks = 0.1f;
 			FindPathToPlayer(targetPosition, out path);
 		}
 
 		private void Chase(Vector2 targetPosition)
-		{			
+		{
+			TimeBetweenAttacks = 0.1f;
 			FindPathToPlayer(targetPosition, out path);
 
 			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
@@ -104,19 +105,8 @@ namespace DungeonQuest.Enemy
 		{
 			if (TimeBetweenAttacks <= 0f)
 			{
-				TimeBetweenAttacks = defaultTimeBetweenAttacks;
 				enemyManager.IsAttacking = true;
-
-				switch (type)
-				{
-					case AIType.Melee:
-						enemyManager.playerManager.DamagePlayer(damage);
-						break;
-					case AIType.Ranged:
-						if (StunTime != 0f) return;
-						Invoke("ShootArrow", 0.3f);
-						break;
-				}
+				TimeBetweenAttacks = defaultTimeBetweenAttacks;
 			}
 			else
 			{
@@ -142,8 +132,15 @@ namespace DungeonQuest.Enemy
 			}
 		}
 
+		private void SlashPlayer()
+		{
+			enemyManager.playerManager.DamagePlayer(damage);
+		}
+
 		private void ShootArrow()
 		{
+			if (StunTime != 0f) return;
+
 			Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 		}
 	}
