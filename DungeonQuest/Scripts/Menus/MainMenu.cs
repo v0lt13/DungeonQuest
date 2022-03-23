@@ -20,7 +20,7 @@ namespace DungeonQuest.Menus
 
 		public void Exit()
 		{
-			Application.Quit();
+			if (!Application.isEditor) System.Diagnostics.Process.GetCurrentProcess().Kill();
 		}
 	}
 }

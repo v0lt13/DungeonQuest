@@ -29,7 +29,7 @@ namespace DungeonQuest.Player
 				enemy.DamageEnemy(damage);
 				enemy.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
 
-				other.GetComponent<EnemyAI>().StunTime = KNOCKBACK_DURATION;
+				other.GetComponent<EnemyAI>().StunEnemy(KNOCKBACK_DURATION);
 			}
 		}
 	}

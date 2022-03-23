@@ -20,8 +20,7 @@ namespace DungeonQuest
 				INSTANCE = this;
 			#endregion
 
-			var playerObject = GameObject.FindGameObjectWithTag("Player");
-			if (playerObject != null) playerManager = playerObject.GetComponent<PlayerManager>();
+			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 
 			AddEnemies();
 			EnableCursor(false);

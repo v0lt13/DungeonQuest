@@ -35,12 +35,14 @@ namespace DungeonQuest.DebugConsole
 		};
 
 		private Vector2 scroll;
-
-		[SerializeField] private GameObject enemyPrefab;
-		[SerializeField] private GameObject rangedEnemyPrefab;
+		private Object meleeEnemyPrefab;
+		private Object rangedEnemyPrefab;
 
 		void Awake()
 		{
+			meleeEnemyPrefab = Resources.Load("Prefabs/MeleeEnemy", typeof(GameObject));
+			rangedEnemyPrefab = Resources.Load("Prefabs/RangedEnemy", typeof(GameObject));
+
 			outputList.Add("Type help to view the list of available commands");
 
 			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
@@ -319,7 +321,7 @@ namespace DungeonQuest.DebugConsole
 			switch (name)
 			{
 				case "melee":
-					Instantiate(enemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					Instantiate(meleeEnemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
 					outputList.Add(name + " enemy spawned");
 					break;
 				case "ranged":

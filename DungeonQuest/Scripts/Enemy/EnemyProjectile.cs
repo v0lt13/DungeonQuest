@@ -10,23 +10,28 @@ namespace DungeonQuest.Enemy
 			Other
 		}
 
-
 		[Header("Projectile Config:")]
 		public ProjectileType projectileType;
+		[Space(10f)]
 		[SerializeField] private int projectileDamage;
 		[SerializeField] private float speed;
+
 		private bool itHitObject;
 
+		private GameObject player;
 		private Animation fadeOutAnim;
 		private Transform playerTransform;
+		private Collider2D playerCollider;
 		private Vector3 direction;
-
 
 		void Awake()
 		{
 			fadeOutAnim = GetComponent<Animation>();
 
-			playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+			player = GameObject.Find("Player");
+
+			playerTransform = player.GetComponent<Transform>();
+			playerCollider = player.GetComponent<Collider2D>();
 
 			direction = (playerTransform.position - transform.position).normalized;
 
@@ -39,7 +44,7 @@ namespace DungeonQuest.Enemy
 		{
 			transform.position += direction * speed * Time.deltaTime;
 
-			// Lock the z coordonate
+			// Lock the z coordonate to 0
 			var pos = transform.position;
 			pos.z = 0;
 			transform.position = pos;
@@ -49,13 +54,12 @@ namespace DungeonQuest.Enemy
 		{
 			if (itHitObject) return;
 
-			if (collider.CompareTag("Player"))
+			if (collider == playerCollider)
 			{
 				collider.GetComponent<Player.PlayerManager>().DamagePlayer(projectileDamage);
 				Destroy(gameObject);
 			}
-
-			if (collider.CompareTag("Blockable"))
+			else if (collider.CompareTag("Blockable"))
 			{
 				switch (projectileType)
 				{

@@ -36,18 +36,19 @@ namespace DungeonQuest.Enemy
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
 
-		public float TimeBetweenAttacks { get; set; }
-		public float StunTime { get; set; }
+		public float TimeBetweenAttacks { get; private set; }
+		public float StunTime { get; private set; }
 		public float GetDefaultTimeBetweenAttacks { get { return defaultTimeBetweenAttacks; } }
 
 		void Awake()
 		{
-			grid = GameObject.Find("Grid").GetComponent<GridGenerator>();
+			grid = GameObject.Find("GameManager").GetComponent<GridGenerator>();
 			enemyManager = GetComponent<EnemyManager>();
 		}
 
 		void Update()
 		{
+			// Wait for the stun to wear off, then stop the knockback
 			if (StunTime <= 0f)
 			{
 				StunTime = 0f;
@@ -73,6 +74,11 @@ namespace DungeonQuest.Enemy
 					Attack();
 					break;
 			}
+		}
+
+		public void StunEnemy(float duration)
+		{
+			StunTime = duration;
 		}
 
 		private void Idle(Vector2 targetPosition) 

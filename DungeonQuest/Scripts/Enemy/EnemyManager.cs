@@ -154,7 +154,7 @@ namespace DungeonQuest.Enemy
 			healthBar.gameObject.SetActive(false);
 
 			DropLoot();
-			Destroy(GetComponent<BoxCollider2D>());
+			Destroy(GetComponent<CircleCollider2D>());
 			Destroy(enemyAI);
 			Destroy(this);
 			Destroy(gameObject, 5f);
