@@ -13,6 +13,7 @@ namespace DungeonQuest.DebugConsole
 
 		private static DebugCommand<int> HEAL;
 		private static DebugCommand<int> ARMOR;
+		private static DebugCommand<int> GIVE_COINS;
 		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<bool> SHOW_FPS;
 		private static DebugCommand<bool> GOD_MODE;
@@ -30,8 +31,8 @@ namespace DungeonQuest.DebugConsole
 		private List<string> outputList = new List<string>();
 		private List<string> enemyList = new List<string>
 		{
-			"melee",
-			"ranged"
+			"meleeSkeleton",
+			"rangedSkeleton"
 		};
 
 		private Vector2 scroll;
@@ -57,6 +58,13 @@ namespace DungeonQuest.DebugConsole
 				GameManager.INSTANCE.playerManager.ArmorPlayer(value);
 
 				outputList.Add("Player armor set");
+			});
+
+			GIVE_COINS = new DebugCommand<int>("givecoins", "Gives coins to the player, negative numbers substract the amount", "givecoins <amount>", (value) =>
+			{
+				GameManager.INSTANCE.playerManager.GiveCoins(value);
+
+				outputList.Add(value.ToString() + " coins given");
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
@@ -172,6 +180,7 @@ namespace DungeonQuest.DebugConsole
 			{
 				HEAL,
 				ARMOR,
+				GIVE_COINS,
 				SET_DAMAGE,
 				SHOW_FPS,
 				GOD_MODE,
@@ -320,11 +329,11 @@ namespace DungeonQuest.DebugConsole
 		{
 			switch (name)
 			{
-				case "melee":
+				case "meleeSkeleton":
 					Instantiate(meleeEnemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
 					outputList.Add(name + " enemy spawned");
 					break;
-				case "ranged":
+				case "rangedSkeleton":
 					Instantiate(rangedEnemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
 					outputList.Add(name + " enemy spawned");
 					break;

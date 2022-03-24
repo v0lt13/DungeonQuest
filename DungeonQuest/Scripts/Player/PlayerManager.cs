@@ -38,6 +38,7 @@ namespace DungeonQuest.Player
 		[Space(10f)]
 		public Slider healthBar;
 		public Slider armorBar;
+		[SerializeField] private Text coinsAmountText;
 		[SerializeField] private AudioClip deathSFX;
 
 		[HideInInspector] public LastMoveDirection lastMoveDir;
@@ -58,9 +59,10 @@ namespace DungeonQuest.Player
 
 		public bool HasMovementInput { get; private set; }
 		public bool IsMoveing { get; private set; }
-		public bool GodMode { private get; set; }
 		public bool IsDead { get; private set; }
+		public bool GodMode { private get; set; }
 		public bool Invisible { get; set; }
+		public int CoinsAmount { get; private set; }
 		public int PlayerHealth { get; private set; }
 		public int PlayerArmor { get; private set; }
 
@@ -83,6 +85,7 @@ namespace DungeonQuest.Player
 
 			healthBar.value = PlayerHealth;
 			armorBar.value = PlayerArmor;
+			coinsAmountText.text = CoinsAmount.ToString();
 
 			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
 			faceingDir = (FaceingDirection)DirectionCheck(faceingDirection);
@@ -117,15 +120,9 @@ namespace DungeonQuest.Player
 		{
 			if (GodMode) return;
 
-			if (PlayerHealth > 0 && PlayerArmor == 0)
-			{
-				PlayerHealth -= damage;
-			}
+			if (PlayerHealth > 0 && PlayerArmor == 0) PlayerHealth -= damage;
 
-			if (PlayerArmor > 0)
-			{
-				PlayerArmor -= damage;
-			}
+			if (PlayerArmor > 0) PlayerArmor -= damage;
 
 			if (PlayerArmor < 0)
 			{
@@ -149,6 +146,13 @@ namespace DungeonQuest.Player
 			if (PlayerArmor > defaultPlayerArmor) PlayerArmor = defaultPlayerArmor;
 		}
 
+		public void GiveCoins(int amount)
+		{
+			CoinsAmount += amount;
+
+			if (CoinsAmount < 0) CoinsAmount = 0;
+		}
+
 		private void MovementInputs()
 		{
 			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
@@ -158,10 +162,7 @@ namespace DungeonQuest.Player
 
 			if (playerAttack.IsAttacking) return;
 
-			if (IsMoveing)
-			{
-				lastMoveDirection = moveDirection;
-			}
+			if (IsMoveing) lastMoveDirection = moveDirection;
 
 			moveDirection = new Vector2(x, y).normalized;
 			unmodifiedMoveDirection = moveDirection;

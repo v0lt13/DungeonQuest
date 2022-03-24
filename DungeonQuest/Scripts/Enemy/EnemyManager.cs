@@ -36,10 +36,14 @@ namespace DungeonQuest.Enemy
 		[SerializeField] private float attackDistance;
 		[SerializeField] private int enemyHealth;
 		[SerializeField] private int healthDropChance;
+		[SerializeField] private int coinDropChance;
+		[SerializeField] private int pileOfCoinsDropChance;
 		[SerializeField] private int minXpDrop;
 		[SerializeField] private int maxXpDrop;
 		[Space(10f)]
-		[SerializeField] private GameObject healthPotionDrop;
+		[SerializeField] private GameObject healthPotionPrefab;
+		[SerializeField] private GameObject pileOfCoinsPrefab;
+		[SerializeField] private GameObject coinsPrefab;
 		[SerializeField] private AudioClip deathSFX;
 
 		[HideInInspector] public LastMoveDirection lastMoveDir;
@@ -113,10 +117,7 @@ namespace DungeonQuest.Enemy
 
 		public void DamageEnemy(int damage)
 		{
-			if (enemyHealth > 0)
-			{
-				enemyHealth -= damage;
-			}
+			if (enemyHealth > 0) enemyHealth -= damage;
 		}
 
 		private void SetAIState()
@@ -164,12 +165,13 @@ namespace DungeonQuest.Enemy
 		{
 			playerManager.playerLeveling.PlayerXP += Random.Range(minXpDrop, maxXpDrop);
 
-			var dropChance = Random.Range(0, 100);
+			var dropChance = Random.Range(1, 100);
 
-			if (dropChance <= healthDropChance)
-			{
-				Instantiate(healthPotionDrop, transform.position, Quaternion.identity);
-			}
+			if (dropChance <= healthDropChance) 
+				Instantiate(healthPotionPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
+
+			if (dropChance <= coinDropChance)
+				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
 		}
 
 		private int DirectionCheck(Vector2 direction)
