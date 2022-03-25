@@ -8,6 +8,7 @@ namespace DungeonQuest.Player
 		[SerializeField] private int nextLevelXP;
 		[SerializeField] private Slider xpBar;
 		[SerializeField] private Text levelText;
+		[SerializeField] private AudioSource levelUpSFX;
 
 		private PlayerManager playerManager;
 
@@ -41,16 +42,13 @@ namespace DungeonQuest.Player
 			levelText.text = "lvl " + PlayerLevel.ToString();
 
 			nextLevelXP += 100;
-			playerManager.defaultPlayerArmor += 10;
-			playerManager.defaultPlayerHealth += 10;
-			playerManager.playerAttack.damage += 10;
+			playerManager.IncreaseMaxHealth(10);
+			playerManager.IncreaseMaxArmor(10);
+			playerManager.playerAttack.IncreaseDamage(10);
 
 			xpBar.maxValue = nextLevelXP;
-			playerManager.armorBar.maxValue = playerManager.defaultPlayerArmor;
-			playerManager.healthBar.maxValue = playerManager.defaultPlayerHealth;
 
-			playerManager.HealPlayer(playerManager.defaultPlayerHealth);
-			playerManager.ArmorPlayer(playerManager.defaultPlayerArmor);
+			levelUpSFX.Play();
 		}
 	}
 }

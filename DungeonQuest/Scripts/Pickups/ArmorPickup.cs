@@ -21,7 +21,7 @@ namespace DungeonQuest.Pickups
 			{
 				var player = collider.GetComponent<PlayerManager>();
 
-				if (player.PlayerArmor == player.defaultPlayerArmor) return;
+				if (player.PlayerArmor == player.GetDefaultPlayerArmor) return;
 					
 				player.ArmorPlayer(amountGiven);
 				GetComponent<AudioSource>().Play();

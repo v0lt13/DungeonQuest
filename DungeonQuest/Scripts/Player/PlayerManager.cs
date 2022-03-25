@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DungeonQuest.Menus;
+using DungeonQuest.Shop;
 using DungeonQuest.DebugConsole;
 
 namespace DungeonQuest.Player
@@ -32,9 +33,9 @@ namespace DungeonQuest.Player
 		}
 
 		[Header("Player Config:")]
-		public float playerSpeed;
-		public int defaultPlayerHealth;
-		public int defaultPlayerArmor;
+		[SerializeField] private float playerSpeed;
+		[SerializeField] private int defaultPlayerHealth;
+		[SerializeField] private int defaultPlayerArmor;
 		[Space(10f)]
 		public Slider healthBar;
 		public Slider armorBar;
@@ -47,6 +48,7 @@ namespace DungeonQuest.Player
 
 		[HideInInspector] public BoxCollider2D boxCollider;
 		[HideInInspector] public PlayerAttack playerAttack;
+		[HideInInspector] public PlayerHealing playerHealing;
 		[HideInInspector] public PlayerLeveling playerLeveling;
 
 		private const float MOVE_LIMITER = 0.7f;
@@ -65,11 +67,14 @@ namespace DungeonQuest.Player
 		public int CoinsAmount { get; private set; }
 		public int PlayerHealth { get; private set; }
 		public int PlayerArmor { get; private set; }
+		public int GetDefaultPlayerHealth { get { return defaultPlayerHealth; } }
+		public int GetDefaultPlayerArmor { get { return defaultPlayerArmor; } }
 
 		void Awake()
 		{
 			playerLeveling = GetComponent<PlayerLeveling>();
 			playerAttack = GetComponent<PlayerAttack>();
+			playerHealing = GetComponent<PlayerHealing>();
 			boxCollider = GetComponent<BoxCollider2D>();
 
 			PlayerHealth = defaultPlayerHealth;
@@ -153,9 +158,25 @@ namespace DungeonQuest.Player
 			if (CoinsAmount < 0) CoinsAmount = 0;
 		}
 
+		public void IncreaseMaxHealth(int amount)
+		{
+			defaultPlayerHealth += amount;
+
+			PlayerHealth = defaultPlayerHealth;
+			healthBar.maxValue = defaultPlayerHealth;
+		}
+
+		public void IncreaseMaxArmor(int amount)
+		{
+			defaultPlayerArmor += amount;
+
+			PlayerArmor = defaultPlayerArmor;
+			armorBar.maxValue = defaultPlayerArmor;
+		}
+
 		private void MovementInputs()
 		{
-			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
+			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
 
 			x = Input.GetAxisRaw("Horizontal");
 			y = Input.GetAxisRaw("Vertical");

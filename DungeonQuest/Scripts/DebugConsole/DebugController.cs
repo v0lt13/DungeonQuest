@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DungeonQuest.Menus;
+using DungeonQuest.Shop;
 using System.Collections.Generic;
 
 namespace DungeonQuest.DebugConsole
@@ -69,7 +70,7 @@ namespace DungeonQuest.DebugConsole
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerAttack.damage = (int)value;
+				GameManager.INSTANCE.playerManager.playerAttack.IncreaseDamage((int)value);
 
 				outputList.Add("Player has damage set to " + value);
 			});
@@ -198,7 +199,7 @@ namespace DungeonQuest.DebugConsole
 
 		void Update()
 		{
-			if (PauseMenu.IS_GAME_PAUSED) return;
+			if (PauseMenu.IS_GAME_PAUSED || ShopMenu.IS_SHOP_OPEN) return;
 
 			if (Input.GetButtonDown("Console"))
 			{

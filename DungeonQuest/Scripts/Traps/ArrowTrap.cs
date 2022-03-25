@@ -22,9 +22,7 @@ namespace DungeonQuest.Traps
 
 		void FixedUpdate()
 		{
-			var playerMask = 1 << 11;
-			var enemyMask = 1 << 10;
-			var mask = playerMask | enemyMask;
+			var mask = 1 << 10;
 
 			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector2.up), rayDistance, mask);
 

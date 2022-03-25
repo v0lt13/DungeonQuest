@@ -17,7 +17,7 @@ namespace DungeonQuest.Pickups
 		{
 			if (playerCollider == collider)
 			{
-				collider.GetComponent<Player.PlayerHealing>().HealingPotions++;
+				collider.GetComponent<Player.PlayerHealing>().AddPotion();
 				GetComponent<AudioSource>().Play();
 
 				if (destroyOnPickup)

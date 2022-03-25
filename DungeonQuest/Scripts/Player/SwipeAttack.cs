@@ -19,7 +19,7 @@ namespace DungeonQuest.Player
 			if (other.CompareTag("Enemy"))
 			{
 				var enemy = other.GetComponent<EnemyManager>();
-				var damage = GameObject.FindObjectOfType<PlayerAttack>().damage;
+				var damage = GameObject.FindObjectOfType<PlayerAttack>().GetDamage;
 				var player = GameObject.Find("Player");
 
 				if (enemy == null) return;

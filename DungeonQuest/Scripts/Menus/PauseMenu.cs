@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Shop;
 using DungeonQuest.DebugConsole;
 
 namespace DungeonQuest.Menus
@@ -11,7 +12,7 @@ namespace DungeonQuest.Menus
 
 		void Update()
 		{
-			if (DebugController.IS_CONSOLE_ON) return;
+			if (DebugController.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
 			
 			if (Input.GetButtonDown("Back"))
 			{

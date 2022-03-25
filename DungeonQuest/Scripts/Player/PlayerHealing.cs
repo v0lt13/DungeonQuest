@@ -14,7 +14,7 @@ namespace DungeonQuest.Player
 
 		private PlayerManager playerManager;
 
-		public int HealingPotions { get; set; }
+		public int HealingPotions { get; private set; }
 		public float Cooldown { get; private set; }
 
 		void Awake()
@@ -41,9 +41,14 @@ namespace DungeonQuest.Player
 				Cooldown = defaultCooldown;
 				HealingPotions--;
 
-				playerManager.HealPlayer(playerManager.defaultPlayerHealth);
+				playerManager.HealPlayer(playerManager.GetDefaultPlayerHealth);
 				healingSFX.Play();
 			}
+		}
+
+		public void AddPotion()
+		{
+			HealingPotions++;
 		}
 	}
 }

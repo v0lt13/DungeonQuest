@@ -10,7 +10,7 @@ namespace DungeonQuest.GameEvents
 		}
 
 		#if UNITY_EDITOR
-		[UnityEditor.MenuItem("GameEvents/VoidEvent")]
+		[UnityEditor.MenuItem("ScriptableObjects/GameEvents/VoidEvent")]
 		private static void CreateVoidEvent()
 		{
 			var @event = ScriptableObject.CreateInstance<VoidEvent>();

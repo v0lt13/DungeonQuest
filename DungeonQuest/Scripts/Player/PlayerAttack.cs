@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Shop;
 using DungeonQuest.Menus;
 using System.Collections;
 using DungeonQuest.DebugConsole;
@@ -12,13 +13,15 @@ namespace DungeonQuest.Player
 		private Quaternion swipeRotation;
 
 		[Header("Attack Config:")]
-		public int damage;
+		[SerializeField] private int damage;
 		[SerializeField] private float timeBetweenAttacks;
 	    [SerializeField] private AudioSource swipeSFX;
 		[SerializeField] private GameObject swipe;
 
-		public float TimeBetweenAttacks { private get; set; }
+		public int GetDamage { get { return damage; } }
 		public bool IsAttacking { get; private set; }
+
+		private float TimeBetweenAttacks { get; set; }
 
 		void Awake() 
 		{
@@ -34,7 +37,7 @@ namespace DungeonQuest.Player
 			{
 				TimeBetweenAttacks = 0;
 
-				if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
+				if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
 
 				if (Input.GetButtonDown("Attack"))
 				{
@@ -46,7 +49,11 @@ namespace DungeonQuest.Player
 			{
 				TimeBetweenAttacks -= Time.deltaTime;
 			}
+		}
 
+		public void IncreaseDamage(int amount)
+		{
+			damage += amount;
 		}
 
 		private void SetSwipeTransform()
