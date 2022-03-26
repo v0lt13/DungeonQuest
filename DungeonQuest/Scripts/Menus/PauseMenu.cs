@@ -28,14 +28,14 @@ namespace DungeonQuest.Menus
 		{
 			IS_GAME_PAUSED = !IS_GAME_PAUSED;
 
-			GameManager.INSTANCE.EnableCursor(IS_GAME_PAUSED);
+			GameManager.EnableCursor(IS_GAME_PAUSED);
 		}
 
 		public void Restart()
 		{
 			IS_GAME_PAUSED = false;
 
-			GameManager.INSTANCE.EnableCursor(IS_GAME_PAUSED);
+			GameManager.EnableCursor(IS_GAME_PAUSED);
 			LoadingScreen.SCENE_NAME = "mainScene";
 			Application.LoadLevel("LoadingScreen");
 		}
@@ -44,7 +44,6 @@ namespace DungeonQuest.Menus
 		{
 			IS_GAME_PAUSED = false;
 
-			GameManager.INSTANCE.EnableCursor(true);
 			LoadingScreen.SCENE_NAME = "MainMenu";
 			Application.LoadLevel("LoadingScreen");
 		}

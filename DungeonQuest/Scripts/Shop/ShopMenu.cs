@@ -30,13 +30,18 @@ namespace DungeonQuest.Shop
 
 			if (Input.GetButtonDown("Interact") && canOpenShop)
 			{
-				IS_SHOP_OPEN = !IS_SHOP_OPEN;
-				Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
-
-				shopMenu.SetActive(IS_SHOP_OPEN);
-				audioSource.PlayOneShot(openShopSFX);
-				GameManager.INSTANCE.EnableCursor(IS_SHOP_OPEN);
+				if (IS_SHOP_OPEN)
+				{
+					CloseShop();
+				}
+				else
+				{
+					OpenShop();
+				}
 			}
+
+			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
+			GameManager.EnableCursor(IS_SHOP_OPEN);
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
@@ -47,6 +52,21 @@ namespace DungeonQuest.Shop
 		void OnTriggerExit2D(Collider2D collider)
 		{
 			if (collider == playerCollider) canOpenShop = false;
+		}
+
+		public void CloseShop()
+		{
+			IS_SHOP_OPEN = !IS_SHOP_OPEN;
+
+			shopMenu.SetActive(IS_SHOP_OPEN);
+		}
+
+		private void OpenShop()
+		{
+			IS_SHOP_OPEN = !IS_SHOP_OPEN;
+
+			shopMenu.SetActive(IS_SHOP_OPEN);
+			audioSource.PlayOneShot(openShopSFX);
 		}
 	}
 }

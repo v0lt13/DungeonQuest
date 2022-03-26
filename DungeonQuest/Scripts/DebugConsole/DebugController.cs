@@ -16,7 +16,6 @@ namespace DungeonQuest.DebugConsole
 		private static DebugCommand<int> ARMOR;
 		private static DebugCommand<int> GIVE_COINS;
 		private static DebugCommand<uint> SET_DAMAGE;
-		private static DebugCommand<bool> SHOW_FPS;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
 		private static DebugCommand<bool> INVISIBILITY;
@@ -73,17 +72,6 @@ namespace DungeonQuest.DebugConsole
 				GameManager.INSTANCE.playerManager.playerAttack.IncreaseDamage((int)value);
 
 				outputList.Add("Player has damage set to " + value);
-			});
-
-			SHOW_FPS = new DebugCommand<bool>("showfps", "Toogles FPS counter", "showfps <true/false>", (toogle) =>
-			{
-				var framerate = GameObject.Find("Framerate").GetComponent<UnityEngine.UI.Text>();
-
-				if (framerate != null) framerate.enabled = toogle;
-
-				var toogleText = toogle ? "On" : "Off";
-
-				outputList.Add("FPS counter is " + toogleText);
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (toogle) =>
@@ -183,7 +171,6 @@ namespace DungeonQuest.DebugConsole
 				ARMOR,
 				GIVE_COINS,
 				SET_DAMAGE,
-				SHOW_FPS,
 				GOD_MODE,
 				NOCLIP,
 				INVISIBILITY,
@@ -208,7 +195,7 @@ namespace DungeonQuest.DebugConsole
 
 				Time.timeScale = IS_CONSOLE_ON ? 0f : 1f;
 				AudioListener.pause = IS_CONSOLE_ON;
-				GameManager.INSTANCE.EnableCursor(IS_CONSOLE_ON);
+				GameManager.EnableCursor(IS_CONSOLE_ON);
 			}
 		}
 

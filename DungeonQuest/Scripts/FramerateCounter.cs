@@ -5,6 +5,8 @@ namespace DungeonQuest
 {
 	public class FramerateCounter : MonoBehaviour
 	{
+		public static bool SHOW_FPS;
+
 		private const float REFRESH_TIME = 0.1f;
 
 		private int frameCounter;
@@ -14,6 +16,8 @@ namespace DungeonQuest
 
 		void Update()
 		{
+			framerateText.enabled = SHOW_FPS;
+
 			if (timeCounter < REFRESH_TIME)
 			{
 				timeCounter += Time.deltaTime;

@@ -8,6 +8,7 @@ namespace DungeonQuest
 
 		void Start()
 		{
+			GameManager.EnableCursor(true);
 			Application.LoadLevel(SCENE_NAME);
 		}
 	}

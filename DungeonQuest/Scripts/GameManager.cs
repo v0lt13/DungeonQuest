@@ -26,7 +26,7 @@ namespace DungeonQuest
 			EnableCursor(false);
 		}
 
-		public void EnableCursor(bool toogle)
+		public static void EnableCursor(bool toogle)
 		{
 			Screen.lockCursor = !toogle;
 			Screen.showCursor = toogle;
