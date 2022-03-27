@@ -37,7 +37,7 @@ namespace DungeonQuest.Shop
 			}
 			else if (playerManager.CoinsAmount < item.itemPrice)
 			{
-				HoustonWeHaveProblem("your to poor");
+				HoustonWeHaveProblem("you're to poor");
 			}
 			else
 			{

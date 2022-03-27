@@ -41,8 +41,8 @@ namespace DungeonQuest.DebugConsole
 
 		void Awake()
 		{
-			meleeEnemyPrefab = Resources.Load("Prefabs/MeleeEnemy", typeof(GameObject));
-			rangedEnemyPrefab = Resources.Load("Prefabs/RangedEnemy", typeof(GameObject));
+			meleeEnemyPrefab = Resources.Load("Prefabs/Entities/MeleeEnemy", typeof(GameObject));
+			rangedEnemyPrefab = Resources.Load("Prefabs/Entities/RangedEnemy", typeof(GameObject));
 
 			outputList.Add("Type help to view the list of available commands");
 
@@ -235,64 +235,36 @@ namespace DungeonQuest.DebugConsole
 
 				if (input.Contains(commandBase.CommandID))
 				{
-					if (commandList[i] as DebugCommand != null)
+					try
 					{
-						(commandList[i] as DebugCommand).Invoke();
-					}
-					else if (commandList[i] as DebugCommand<string> != null)
-					{
-						try
+						if (commandList[i] as DebugCommand != null)
+						{
+							(commandList[i] as DebugCommand).Invoke();
+						}
+						else if (commandList[i] as DebugCommand<string> != null)
 						{
 							(commandList[i] as DebugCommand<string>).Invoke(proprieties[1]);
 						}
-						catch (System.Exception)
-						{
-							outputList.Add("Prameter must be a string");
-						}
-					}
-					else if (commandList[i] as DebugCommand<int> != null)
-					{
-						try
+						else if (commandList[i] as DebugCommand<int> != null)
 						{
 							(commandList[i] as DebugCommand<int>).Invoke(int.Parse(proprieties[1]));
 						}
-						catch (System.Exception)
-						{
-							outputList.Add("Prameter must be an integer");
-						}
-					}
-					else if (commandList[i] as DebugCommand<uint> != null)
-					{
-						try
+						else if (commandList[i] as DebugCommand<uint> != null)
 						{
 							(commandList[i] as DebugCommand<uint>).Invoke(uint.Parse(proprieties[1]));
 						}
-						catch (System.Exception)
-						{
-							outputList.Add("Prameter must be a positive integer");
-						}
-					}
-					else if (commandList[i] as DebugCommand<float> != null)
-					{
-						try
+						else if (commandList[i] as DebugCommand<float> != null)
 						{
 							(commandList[i] as DebugCommand<float>).Invoke(float.Parse(proprieties[1]));
 						}
-						catch (System.Exception)
-						{
-							outputList.Add("Prameter must be a float");
-						}
-					}
-					else if (commandList[i] as DebugCommand<bool> != null)
-					{
-						try
+						else if (commandList[i] as DebugCommand<bool> != null)
 						{
 							(commandList[i] as DebugCommand<bool>).Invoke(bool.Parse(proprieties[1]));
 						}
-						catch (System.Exception)
-						{
-							outputList.Add("Prameter must be true or false");
-						}
+					}
+					catch (System.Exception exception)
+					{
+						outputList.Add("Invalid parameter or something went wrong, exception type: " + exception + exception.Message);
 					}
 				}
 			}

@@ -109,6 +109,8 @@ namespace DungeonQuest.Enemy
 
 		private void Attack()
 		{
+			if (state == AIstate.Idle) return;
+
 			if (TimeBetweenAttacks <= 0f)
 			{
 				enemyManager.IsAttacking = true;
