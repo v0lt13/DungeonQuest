@@ -1,32 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DungeonQuest.GameEvents;
 
 namespace DungeonQuest
 {
 	public class SecretRoom : MonoBehaviour
 	{
-		[SerializeField] private GameObject secretRoom;
 		[SerializeField] private GameObject secretRoomText;
+		[SerializeField] private VoidEvent gameEvent;
 
 		private Collider2D playerCollider;
-		private AudioSource audioSource;
 
 		void Awake()
 		{
-			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
-			audioSource = GetComponent<AudioSource>();			
+			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();		
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
 			if (collider == playerCollider)
 			{
-				audioSource.Play();
-				StartCoroutine(ToogleText());
-				secretRoom.SetActive(true);
+				GameManager.INSTANCE.SecretCount++;
 
-				GetComponent<BoxCollider2D>().enabled = false;
-				GetComponent<SpriteRenderer>().enabled = false;
+				gameEvent.Invoke();
+				StartCoroutine(ToogleText());
 				Destroy(gameObject, 3f);
 			}
 		}

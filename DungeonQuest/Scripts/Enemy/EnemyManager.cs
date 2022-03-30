@@ -124,7 +124,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-			if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.path != null && !playerManager.IsDead && !playerManager.Invisible && enemyAI.StunTime == 0f)
+			if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.path != null && !playerManager.IsDead && enemyAI.StunTime == 0f)
 			{
 				enemyAI.state = EnemyAI.AIstate.Chase;
 				rigidbody2D.velocity = Vector2.zero;
@@ -147,6 +147,8 @@ namespace DungeonQuest.Enemy
 			IsDead = true;
 			rigidbody2D.isKinematic = true;
 			GetComponent<SpriteRenderer>().sortingOrder = 0;
+
+			GameManager.INSTANCE.KillCount++;
 
 			var deathSound = GetComponent<AudioSource>();
 			deathSound.clip = deathSFX;

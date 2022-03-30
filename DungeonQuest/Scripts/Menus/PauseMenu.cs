@@ -12,7 +12,7 @@ namespace DungeonQuest.Menus
 
 		void Update()
 		{
-			if (DebugController.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
+			if (DebugController.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN || GameManager.INSTANCE.LevelEnded) return;
 			
 			if (Input.GetButtonDown("Back"))
 			{
@@ -36,16 +36,14 @@ namespace DungeonQuest.Menus
 			IS_GAME_PAUSED = false;
 
 			GameManager.EnableCursor(IS_GAME_PAUSED);
-			LoadingScreen.SCENE_NAME = "mainScene";
-			Application.LoadLevel("LoadingScreen");
+			GameManager.LoadScene("mainScene");
 		}
 
 		public void QuitGame()
 		{
 			IS_GAME_PAUSED = false;
 
-			LoadingScreen.SCENE_NAME = "MainMenu";
-			Application.LoadLevel("LoadingScreen");
+			GameManager.LoadScene("MainMenu");
 		}
 	}
 }

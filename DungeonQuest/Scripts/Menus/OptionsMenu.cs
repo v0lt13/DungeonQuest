@@ -69,7 +69,7 @@ namespace DungeonQuest.Menus
 			var optionsData = new OptionsData();
 			
 			XmlDocument xmlDocument = new XmlDocument();
-			xmlDocument.Load(Application.dataPath + "/Options.xml");
+			xmlDocument.Load(Application.dataPath + "Data/Options.xml");
 
 			XmlNodeList volume = xmlDocument.GetElementsByTagName("Volume");
 			optionsData.volume = float.Parse(volume[0].InnerText);

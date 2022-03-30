@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DungeonQuest.Shop;
+using DungeonQuest.Menus;
+using DungeonQuest.DebugConsole;
 
 namespace DungeonQuest.Player
 {
@@ -36,7 +39,7 @@ namespace DungeonQuest.Player
 				Cooldown -= Time.deltaTime;
 			}
 
-			if (Input.GetButtonDown("Heal") && Cooldown <= 0f && HealingPotions != 0 && !playerManager.IsDead)
+			if (Input.GetButtonDown("Heal") && Cooldown <= 0f && HealingPotions != 0 && !playerManager.IsDead && !GameManager.INSTANCE.LevelEnded && !PauseMenu.IS_GAME_PAUSED && !DebugController.IS_CONSOLE_ON && !ShopMenu.IS_SHOP_OPEN)
 			{
 				Cooldown = defaultCooldown;
 				HealingPotions--;

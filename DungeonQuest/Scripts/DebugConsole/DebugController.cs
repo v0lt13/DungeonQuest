@@ -186,7 +186,7 @@ namespace DungeonQuest.DebugConsole
 
 		void Update()
 		{
-			if (PauseMenu.IS_GAME_PAUSED || ShopMenu.IS_SHOP_OPEN) return;
+			if (PauseMenu.IS_GAME_PAUSED || ShopMenu.IS_SHOP_OPEN || GameManager.INSTANCE.LevelEnded) return;
 
 			if (Input.GetButtonDown("Console"))
 			{

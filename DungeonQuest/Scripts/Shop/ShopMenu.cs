@@ -10,6 +10,7 @@ namespace DungeonQuest.Shop
 
 		[Header("Shop config:")]
 		[SerializeField] private GameObject shopMenu;
+		[SerializeField] private GameObject prompt;
 		[SerializeField] private AudioClip openShopSFX;
 
 		public static bool IS_SHOP_OPEN;
@@ -38,10 +39,10 @@ namespace DungeonQuest.Shop
 				{
 					OpenShop();
 				}
+
 			}
 
-			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
-			GameManager.EnableCursor(IS_SHOP_OPEN);
+			prompt.SetActive(canOpenShop);
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
@@ -57,16 +58,20 @@ namespace DungeonQuest.Shop
 		public void CloseShop()
 		{
 			IS_SHOP_OPEN = !IS_SHOP_OPEN;
+			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
 
 			shopMenu.SetActive(IS_SHOP_OPEN);
+			GameManager.EnableCursor(IS_SHOP_OPEN);
 		}
 
 		private void OpenShop()
 		{
 			IS_SHOP_OPEN = !IS_SHOP_OPEN;
+			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
 
 			shopMenu.SetActive(IS_SHOP_OPEN);
 			audioSource.PlayOneShot(openShopSFX);
+			GameManager.EnableCursor(IS_SHOP_OPEN);
 		}
 	}
 }
