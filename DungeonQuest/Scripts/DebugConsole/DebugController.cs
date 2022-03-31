@@ -217,7 +217,7 @@ namespace DungeonQuest.DebugConsole
 			GUI.SetNextControlName("InputField");
 			input = GUI.TextField(new Rect(10f, y + 5f, Screen.width - 20f, 20f), input);
 
-			if (Event.current.keyCode == KeyCode.Return)
+			if (Event.current.keyCode == KeyCode.Return || Event.current.keyCode == KeyCode.KeypadEnter)
 			{
 				GUI.FocusControl("InputField");
 				HandleInput();

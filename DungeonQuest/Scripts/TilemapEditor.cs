@@ -148,7 +148,7 @@ namespace DungeonQuest
 		private void Spawn(Vector2 spawnPosition)
 		{
 			var gameObject = (GameObject)Instantiate(selectedPrefab, spawnPosition, selectedPrefab.transform.rotation);
-			var parentObject = GameObject.Find("Tiles").transform;
+			var parentObject = GameObject.Find("Map").transform;
 
 			Selection.activeObject = gameObject;
 

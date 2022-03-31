@@ -10,8 +10,6 @@ namespace DungeonQuest
 
 		public List<GameObject> enemyList;
 
-		public static GameManager INSTANCE { get; private set; }
-
 		public int SecretCount { get; set; }
 		public int KillCount { get; set; }
 		public int TotalKillCount { get; private set; }
@@ -19,13 +17,19 @@ namespace DungeonQuest
 		public float CompletionTime { get; private set; }
 		public bool LevelEnded { get; private set; }
 
+		public static GameManager INSTANCE { get; private set; }
+
 		void Awake()
 		{
 			#region SINGLETON_PATTERN
 			if (INSTANCE != null)
+			{
 				Destroy(gameObject);
+			}
 			else
+			{
 				INSTANCE = this;
+			}
 			#endregion
 
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();

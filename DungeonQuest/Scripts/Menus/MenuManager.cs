@@ -23,7 +23,17 @@ namespace DungeonQuest.Menus
 
 		public void Options()
 		{
-			ToogleMenu(1);
+			ToggleMenu(1);
+		}
+
+		public void TutorialMenu()
+		{
+			ToggleMenu(2);
+		}
+
+		public void Credits()
+		{
+			ToggleMenu(3);
 		}
 
 		public void Exit()
@@ -33,10 +43,15 @@ namespace DungeonQuest.Menus
 
 		public void GoBackToMainMenu()
 		{
-			ToogleMenu(0);
+			ToggleMenu(0);
 		}
 
-		private void ToogleMenu(int menuIndex)
+		public void OpenURL(string url)
+		{
+			Application.OpenURL(url);
+		}
+
+		private void ToggleMenu(int menuIndex)
 		{
 			currentMenu = menuIndex;
 
