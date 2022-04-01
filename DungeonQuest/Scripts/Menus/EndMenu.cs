@@ -20,7 +20,7 @@ namespace DungeonQuest.Menus
 
 		public void Continue()
 		{
-			GameManager.LoadScene("MainMenu");
+			GameManager.LoadScene("Lobby");
 		}
 	}
 }

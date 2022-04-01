@@ -18,7 +18,7 @@ namespace DungeonQuest.Menus
 
 		public void Play()
 		{
-			GameManager.LoadScene("mainScene");
+			GameManager.LoadScene("Level0");
 		}
 
 		public void Options()

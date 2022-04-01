@@ -59,17 +59,17 @@ namespace DungeonQuest.Menus
 
 			xmlDocument.AppendChild(root);
 
-			xmlDocument.Save(Application.dataPath + "/Options.xml");			
+			xmlDocument.Save(Application.dataPath + "/Data/Options.xml");			
 		}
 
 		public void LoadSettings()
 		{
-			if (!File.Exists(Application.dataPath + "/Options.xml")) return;
+			if (!File.Exists(Application.dataPath + "/Data/Options.xml")) return;
 
 			var optionsData = new OptionsData();
 			
 			XmlDocument xmlDocument = new XmlDocument();
-			xmlDocument.Load(Application.dataPath + "Data/Options.xml");
+			xmlDocument.Load(Application.dataPath + "/Data/Options.xml");
 
 			XmlNodeList volume = xmlDocument.GetElementsByTagName("Volume");
 			optionsData.volume = float.Parse(volume[0].InnerText);

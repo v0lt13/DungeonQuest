@@ -15,6 +15,7 @@ namespace DungeonQuest.DebugConsole
 		private static DebugCommand<int> HEAL;
 		private static DebugCommand<int> ARMOR;
 		private static DebugCommand<int> GIVE_COINS;
+		private static DebugCommand<int> LOAD_SCENE;
 		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
@@ -65,6 +66,15 @@ namespace DungeonQuest.DebugConsole
 				GameManager.INSTANCE.playerManager.GiveCoins(value);
 
 				outputList.Add(value.ToString() + " coins given");
+			});
+
+			LOAD_SCENE = new DebugCommand<int>("loadscene", "Loads a specified scene", "loadscene <index>", (index) =>
+			{
+				IS_CONSOLE_ON = false;
+				Time.timeScale = 1f;
+				AudioListener.pause = false;
+
+				GameManager.INSTANCE.LoadScene(index);
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
@@ -175,6 +185,7 @@ namespace DungeonQuest.DebugConsole
 				NOCLIP,
 				INVISIBILITY,
 				SPAWN_ENEMY,
+				LOAD_SCENE,
 				KILL_ENEMIES,
 				ENEMY_LIST,
 				LEVEL_UP,

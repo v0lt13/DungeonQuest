@@ -60,7 +60,7 @@ namespace DungeonQuest.Shop
 			IS_SHOP_OPEN = !IS_SHOP_OPEN;
 			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
 
-			shopMenu.SetActive(IS_SHOP_OPEN);
+			shopMenu.SetActive(false);
 			GameManager.EnableCursor(IS_SHOP_OPEN);
 		}
 
@@ -69,7 +69,7 @@ namespace DungeonQuest.Shop
 			IS_SHOP_OPEN = !IS_SHOP_OPEN;
 			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
 
-			shopMenu.SetActive(IS_SHOP_OPEN);
+			shopMenu.SetActive(true);
 			audioSource.PlayOneShot(openShopSFX);
 			GameManager.EnableCursor(IS_SHOP_OPEN);
 		}

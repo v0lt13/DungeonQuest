@@ -124,7 +124,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
 
-			if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.path != null && !playerManager.IsDead && enemyAI.StunTime == 0f)
+			if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && !playerManager.IsDead && enemyAI.StunTime == 0f && !playerManager.Invisible)
 			{
 				enemyAI.state = EnemyAI.AIstate.Chase;
 				rigidbody2D.velocity = Vector2.zero;

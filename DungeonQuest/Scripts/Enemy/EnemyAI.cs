@@ -84,7 +84,6 @@ namespace DungeonQuest.Enemy
 		private void Idle(Vector2 targetPosition) 
 		{
 			TimeBetweenAttacks = 0.1f;
-			FindPathToPlayer(targetPosition, out path);
 		}
 
 		private void Chase(Vector2 targetPosition)

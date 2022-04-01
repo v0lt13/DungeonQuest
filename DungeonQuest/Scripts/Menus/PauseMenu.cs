@@ -36,7 +36,7 @@ namespace DungeonQuest.Menus
 			IS_GAME_PAUSED = false;
 
 			GameManager.EnableCursor(IS_GAME_PAUSED);
-			GameManager.LoadScene("mainScene");
+			GameManager.LoadScene(Application.loadedLevelName);
 		}
 
 		public void QuitGame()

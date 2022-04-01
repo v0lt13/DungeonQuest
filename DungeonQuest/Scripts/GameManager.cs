@@ -56,12 +56,28 @@ namespace DungeonQuest
 			Application.LoadLevel("LoadingScreen");
 		}
 
+		public void LoadScene(int index)
+		{
+			Application.LoadLevel(index);
+		}
+
 		public void EndLevel()
 		{
 			LevelEnded = true;
 			Time.timeScale = 0f;
 
+			playerManager.renderer.enabled = false;
+			playerManager.playerAttack.enabled = false;
+			playerManager.collider2D.enabled = false;
+			playerManager.enabled = false;
+
 			EnableCursor(true);
+		}
+
+		public void EndLevel0()
+		{
+			LoadingScreen.SCENE_NAME = "Lobby";
+			Application.LoadLevel("LoadingScreen");
 		}
 
 		public void AddEnemies()
