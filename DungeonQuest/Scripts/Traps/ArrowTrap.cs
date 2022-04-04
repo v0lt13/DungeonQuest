@@ -13,6 +13,7 @@ namespace DungeonQuest.Traps
 		[SerializeField] private GameObject arrowPrefab;
 
 		private bool corroutineActivated;
+
 		private Collider2D playerCollider;
 
 		void Awake()
@@ -26,11 +27,11 @@ namespace DungeonQuest.Traps
 
 			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector2.up), rayDistance, mask);
 
+			if (drawRay) Debug.DrawRay(transform.position, transform.TransformDirection(-Vector2.up) * rayDistance, Color.green);
+
 			if (hit.collider != null)
 			{
 				bool itCollided = hit.collider == playerCollider || hit.collider.CompareTag("Enemy");
-
-				if (drawRay) Debug.DrawRay(transform.position, transform.TransformDirection(-Vector2.up) * rayDistance, Color.green);
 
 				if (itCollided && !corroutineActivated) StartCoroutine(TriggerTrap());
 			}
@@ -51,7 +52,7 @@ namespace DungeonQuest.Traps
 		{
 			Instantiate(arrowPrefab, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.Euler(0, 0, -180));
 
-			GetComponent<AudioSource>().Play();
+			audio.Play();
 		}
 	}
 }

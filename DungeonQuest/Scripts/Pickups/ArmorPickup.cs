@@ -5,31 +5,28 @@ namespace DungeonQuest.Pickups
 {
 	public class ArmorPickup : MonoBehaviour
 	{
-		[SerializeField] private int amountGiven;
 		[SerializeField] private bool destroyOnPickup;
 
-		private Collider2D playerCollider;
+		private PlayerManager playerManager;
 
 		void Awake()
 		{
-			playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
+			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (playerCollider == collider)
+			if (playerManager.collider2D == collider)
 			{
-				var player = collider.GetComponent<PlayerManager>();
+				if (playerManager.PlayerArmor == playerManager.GetDefaultPlayerArmor) return;
 
-				if (player.PlayerArmor == player.GetDefaultPlayerArmor) return;
-					
-				player.ArmorPlayer(amountGiven);
-				GetComponent<AudioSource>().Play();
+				playerManager.ArmorPlayer(playerManager.GetDefaultPlayerArmor);
+				audio.Play();
 
 				if (destroyOnPickup)
 				{
-					GetComponent<SpriteRenderer>().enabled = false;
-					GetComponent<BoxCollider2D>().enabled = false;
+					renderer.enabled = false;
+					collider2D.enabled = false;
 					Destroy(gameObject, 1f);
 				}
 			}

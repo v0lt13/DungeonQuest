@@ -6,18 +6,29 @@ namespace DungeonQuest
 {
 	public class GameManager : MonoBehaviour
 	{
+		public enum GameState
+		{
+			Running,
+			Paused
+		}
+
 		[HideInInspector] public PlayerManager playerManager;
 
 		public List<GameObject> enemyList;
 
+		public GameState CurrentGameState { get; private set; }
+		
 		public int SecretCount { get; set; }
 		public int KillCount { get; set; }
 		public int TotalKillCount { get; private set; }
 		public int TotalSecretCount { get; private set; }
 		public float CompletionTime { get; private set; }
 		public bool LevelEnded { get; private set; }
-
+		
 		public static GameManager INSTANCE { get; private set; }
+
+		public delegate void GameStateHandler(GameState gameSate);
+		public event GameStateHandler OnGameStateChanged;
 
 		void Awake()
 		{
@@ -54,6 +65,15 @@ namespace DungeonQuest
 		{
 			LoadingScreen.SCENE_NAME = sceneName;
 			Application.LoadLevel("LoadingScreen");
+		}
+
+		public void SetState(GameState gameState)
+		{
+			if (gameState == CurrentGameState) return;
+
+			CurrentGameState = gameState;
+
+			if (OnGameStateChanged != null) OnGameStateChanged.Invoke(gameState);
 		}
 
 		public void LoadScene(int index)

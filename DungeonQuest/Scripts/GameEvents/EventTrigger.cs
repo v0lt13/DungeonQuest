@@ -15,10 +15,7 @@ namespace DungeonQuest.GameEvents
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (playerCollider == collider)
-			{
-				gameEvent.Invoke();
-			}
+			if (playerCollider == collider) gameEvent.Invoke();
 		}
 	}
 }

@@ -1,0 +1,133 @@
+﻿using UnityEngine;
+using DungeonQuest.Menus;
+using DungeonQuest.Shop;
+using DungeonQuest.Debuging;
+
+namespace DungeonQuest.Player
+{
+	public class PlayerMovement : MonoBehaviour
+	{
+		public enum FaceingDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
+		public enum LastMoveDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
+		public enum MoveDirection
+		{
+			DOWN = 0,
+			UP = 1,
+			LEFT = 2,
+			RIGHT = 3
+		}
+
+		[HideInInspector] public LastMoveDirection lastMoveDir;
+		[HideInInspector] public FaceingDirection faceingDir;
+		[HideInInspector] public MoveDirection moveDir;
+
+		[SerializeField] private float playerSpeed;
+
+		private const float MOVE_LIMITER = 0.7f;
+		private float x, y;
+
+		private PlayerManager playerManager;
+
+		private Vector2 unmodifiedMoveDirection;
+		private Vector2 faceingDirection;
+		private Vector2 lastMoveDirection;
+		private Vector2 moveDirection;
+
+		public bool HasMovementInput { get; private set; }
+		public bool IsMoveing { get; private set; }
+
+		void Awake()
+		{
+			playerManager = GetComponent<PlayerManager>();
+		}
+
+		void Update()
+		{
+			HasMovementInput = x != 0 || y != 0;
+			IsMoveing = moveDirection.x != 0 || moveDirection.y != 0;
+
+			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
+			faceingDir = (FaceingDirection)DirectionCheck(faceingDirection);
+			moveDir = (MoveDirection)DirectionCheck(unmodifiedMoveDirection);
+
+			if (playerManager.playerAttack.IsAttacking) moveDirection = Vector2.zero;
+
+			if (HasMovementInput && IsMoveing)
+			{
+				faceingDirection = unmodifiedMoveDirection;
+			}
+			else
+			{
+				faceingDirection = lastMoveDirection;
+			}
+
+			MovementInputs();
+		}
+
+		void FixedUpdate()
+		{
+			bool hasInput = x != 0 && y != 0;
+
+			if (hasInput)
+			{
+				x *= MOVE_LIMITER;
+				y *= MOVE_LIMITER;
+			}
+
+			rigidbody2D.velocity = new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed);
+		}
+
+		private void MovementInputs()
+		{
+			if (PauseMenu.IS_GAME_PAUSED || DebugConsole.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
+
+			x = Input.GetAxisRaw("Horizontal");
+			y = Input.GetAxisRaw("Vertical");
+
+			if (playerManager.playerAttack.IsAttacking) return;
+
+			if (IsMoveing) lastMoveDirection = moveDirection;
+
+			moveDirection = new Vector2(x, y).normalized;
+			unmodifiedMoveDirection = moveDirection;
+		}
+
+		private int DirectionCheck(Vector2 direction)
+		{
+			if (direction.x >= -1f && direction.y < 0f) // Down
+			{
+				return 0;
+			}
+			else if (direction.x >= -1f && direction.y > 0f) // Up
+			{
+				return 1;
+			}
+			else if (direction == new Vector2(-1f, 0f)) // Left
+			{
+				return 2;
+			}
+			else if (direction == new Vector2(1f, 0f)) // Right
+			{
+				return 3;
+			}
+			else // Defaults to down
+			{
+				return 0;
+			}
+		}
+	}
+}

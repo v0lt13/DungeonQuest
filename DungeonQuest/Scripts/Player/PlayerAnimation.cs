@@ -18,13 +18,13 @@ namespace DungeonQuest.Player
 		private const string PLAYER_MOVEMENT_RIGHT = "PlayerMovementRight";	
 		private const string PLAYER_DEATH = "PlayerDeath";
 
-		private Animator playerAnimation;
 		private PlayerManager playerManager;
+		private Animator playerAnimation;
 
 		void Awake()
 		{
-			playerAnimation = GetComponent<Animator>();
 			playerManager = GetComponent<PlayerManager>();
+			playerAnimation = GetComponent<Animator>();
 		}
 		
 		void Update()
@@ -37,55 +37,64 @@ namespace DungeonQuest.Player
 
 			if (playerManager.playerAttack.IsAttacking)
 			{
-				switch (playerManager.faceingDir)
+				switch (playerManager.playerMovement.faceingDir)
 				{
-					case PlayerManager.FaceingDirection.DOWN:
+					case PlayerMovement.FaceingDirection.DOWN:
 						playerAnimation.Play(PLAYER_ATTACK_DOWN);
 						break;
-					case PlayerManager.FaceingDirection.UP:
+
+					case PlayerMovement.FaceingDirection.UP:
 						playerAnimation.Play(PLAYER_ATTACK_UP);
 						break;
-					case PlayerManager.FaceingDirection.LEFT:
+
+					case PlayerMovement.FaceingDirection.LEFT:
 						playerAnimation.Play(PLAYER_ATTACK_LEFT);
 						break;
-					case PlayerManager.FaceingDirection.RIGHT:
+
+					case PlayerMovement.FaceingDirection.RIGHT:
 						playerAnimation.Play(PLAYER_ATTACK_RIGHT);
 						break;
 				}
 			}
 
-			if (playerManager.HasMovementInput && !playerManager.playerAttack.IsAttacking)
+			if (playerManager.playerMovement.HasMovementInput && !playerManager.playerAttack.IsAttacking)
 			{
-				switch (playerManager.moveDir)
+				switch (playerManager.playerMovement.moveDir)
 				{
-					case PlayerManager.MoveDirection.DOWN:
+					case PlayerMovement.MoveDirection.DOWN:
 						playerAnimation.Play(PLAYER_MOVEMENT_DOWN);
 						break;
-					case PlayerManager.MoveDirection.UP:
+
+					case PlayerMovement.MoveDirection.UP:
 						playerAnimation.Play(PLAYER_MOVEMENT_UP);
 						break;
-					case PlayerManager.MoveDirection.LEFT:
+
+					case PlayerMovement.MoveDirection.LEFT:
 						playerAnimation.Play(PLAYER_MOVEMENT_LEFT);
 						break;
-					case PlayerManager.MoveDirection.RIGHT:
+
+					case PlayerMovement.MoveDirection.RIGHT:
 						playerAnimation.Play(PLAYER_MOVEMENT_RIGHT);
 						break;
 				}
 			}
-			else if (!playerManager.HasMovementInput && !playerManager.playerAttack.IsAttacking)
+			else if (!playerManager.playerMovement.HasMovementInput && !playerManager.playerAttack.IsAttacking)
 			{
-				switch (playerManager.lastMoveDir)
+				switch (playerManager.playerMovement.lastMoveDir)
 				{
-					case PlayerManager.LastMoveDirection.DOWN:
+					case PlayerMovement.LastMoveDirection.DOWN:
 						playerAnimation.Play(PLAYER_IDLE_DOWN);
 						break;
-					case PlayerManager.LastMoveDirection.UP:
+
+					case PlayerMovement.LastMoveDirection.UP:
 						playerAnimation.Play(PLAYER_IDLE_UP);
 						break;
-					case PlayerManager.LastMoveDirection.LEFT:
+
+					case PlayerMovement.LastMoveDirection.LEFT:
 						playerAnimation.Play(PLAYER_IDLE_LEFT);
 						break;
-					case PlayerManager.LastMoveDirection.RIGHT:
+
+					case PlayerMovement.LastMoveDirection.RIGHT:
 						playerAnimation.Play(PLAYER_IDLE_RIGHT);
 						break;
 				}

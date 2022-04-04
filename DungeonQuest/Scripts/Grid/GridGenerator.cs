@@ -26,12 +26,12 @@ namespace DungeonQuest.Grid
 
 		private void MarkObstructions()
 		{
-			var walls = GameObject.FindGameObjectsWithTag("Blockable");
+			var obstacles = GameObject.FindGameObjectsWithTag("Blockable");
 
-			foreach (var wall in walls)
+			foreach (var obstacle in obstacles)
 			{
 				int x, y;
-				pathfinding.GetGrid.GetXY(wall.transform.position, out x, out y);
+				pathfinding.GetGrid.GetXY(obstacle.transform.position, out x, out y);
 				pathfinding.GetNode(x, y).SetIsWalkable(!pathfinding.GetNode(x, y).isWalkable);
 			}
 		}

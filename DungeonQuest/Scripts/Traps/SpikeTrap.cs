@@ -14,20 +14,14 @@ namespace DungeonQuest.Traps
 		private bool isTrapActive;
 		private bool corroutineActivated;
 		
-		private GameObject player;
-		private BoxCollider2D playerCollider;
 		private PlayerManager playerManager;
 		private SpriteRenderer spriteRenderer;
-		private AudioSource audioSource;
 
 		void Awake()
 		{
-			player = GameObject.Find("Player");
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-			playerManager = player.GetComponent<PlayerManager>();
-			playerCollider = player.GetComponent<BoxCollider2D>();
 			spriteRenderer = GetComponent<SpriteRenderer>();
-			audioSource = GetComponent<AudioSource>();
 		}
 
 		void OnTriggerStay2D(Collider2D collider)
@@ -36,12 +30,11 @@ namespace DungeonQuest.Traps
 
 			if (!isTrapActive) return;
 
-			if (collider == playerCollider)
+			if (playerManager.collider2D == collider)
 			{
 				playerManager.DamagePlayer(int.MaxValue);
 			}
-
-			if (collider.CompareTag("Enemy"))
+			else if (collider.CompareTag("Enemy"))
 			{
 				collider.GetComponent<EnemyManager>().DamageEnemy(int.MaxValue);
 			}
@@ -50,7 +43,7 @@ namespace DungeonQuest.Traps
 		private void ActivateTrap()
 		{
 			spriteRenderer.sprite = sprites[1];
-			audioSource.PlayOneShot(audioClips[1]);
+			audio.PlayOneShot(audioClips[1]);
 
 			isTrapActive = true;
 		}
@@ -58,7 +51,7 @@ namespace DungeonQuest.Traps
 		private void DeactivateTrap()
 		{
 			spriteRenderer.sprite = sprites[0];
-			audioSource.PlayOneShot(audioClips[0]);
+			audio.PlayOneShot(audioClips[0]);
 
 			isTrapActive = false;
 		}

@@ -5,24 +5,28 @@ namespace DungeonQuest.Player
 {
 	public class PlayerLeveling : MonoBehaviour
 	{
-		[SerializeField] private int nextLevelXP;
+		[Header("UI Config:")]
 		[SerializeField] private Slider xpBar;
 		[SerializeField] private Text levelText;
-		[SerializeField] private AudioSource levelUpSFX;
+
+		[Header("Audio Config:")]
+		[SerializeField] private AudioSource audioSource;
+		[SerializeField] private AudioClip levelUpSFX;
+
+		private int playerLevel = 1;
+		private int nextLevelXP = 100;
 
 		private PlayerManager playerManager;
 
-		public int PlayerLevel { get; private set; }
 		public int PlayerXP { get; set; }
+		public int GetPlayerLevel { get { return playerLevel; } }
 
 		void Awake() 
 		{
 			playerManager = GetComponent<PlayerManager>();
 
-			if (PlayerLevel == 0) PlayerLevel = 1;
-
 			xpBar.maxValue = nextLevelXP;
-			levelText.text = "lvl " + PlayerLevel.ToString();
+			levelText.text = "lvl " + playerLevel.ToString();
 		}
 		
 		void Update()
@@ -37,9 +41,9 @@ namespace DungeonQuest.Player
 
 		public void LevelUp()
 		{
-			PlayerLevel++;
+			playerLevel++;
 			PlayerXP = PlayerXP - nextLevelXP;
-			levelText.text = "lvl " + PlayerLevel.ToString();
+			levelText.text = "lvl " + playerLevel.ToString();
 
 			nextLevelXP += 100;
 			playerManager.IncreaseMaxHealth(10);
@@ -48,7 +52,8 @@ namespace DungeonQuest.Player
 
 			xpBar.maxValue = nextLevelXP;
 
-			levelUpSFX.Play();
+			audioSource.clip = levelUpSFX;
+			audioSource.Play();
 		}
 	}
 }

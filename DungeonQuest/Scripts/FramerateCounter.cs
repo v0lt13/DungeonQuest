@@ -14,10 +14,13 @@ namespace DungeonQuest
 
 		[SerializeField] private Text framerateText;
 
+		void Awake()
+		{
+			enabled = SHOW_FPS;
+		}
+
 		void Update()
 		{
-			framerateText.enabled = SHOW_FPS;
-
 			if (timeCounter < REFRESH_TIME)
 			{
 				timeCounter += Time.deltaTime;
@@ -26,6 +29,7 @@ namespace DungeonQuest
 			else
 			{
 				var lastFramerate = frameCounter / timeCounter;
+
 				frameCounter = 0;
 				timeCounter = 0.0f;
 				framerateText.text = "FPS: " + lastFramerate.ToString("n1");

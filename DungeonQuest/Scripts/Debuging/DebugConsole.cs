@@ -3,13 +3,13 @@ using DungeonQuest.Menus;
 using DungeonQuest.Shop;
 using System.Collections.Generic;
 
-namespace DungeonQuest.DebugConsole
+namespace DungeonQuest.Debuging
 {
-	public class DebugController : MonoBehaviour
+	public class DebugConsole : MonoBehaviour
 	{
 		public static bool IS_CONSOLE_ON;
 
-		private const float OUTPUT_WINDOW_HEIGHT = 150f;
+		private const float OUTPUT_WINDOW_HEIGHT = 200f;
 		private string input;
 
 		private static DebugCommand<int> HEAL;
@@ -95,7 +95,7 @@ namespace DungeonQuest.DebugConsole
 
 			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (toogle) =>
 			{
-				GameManager.INSTANCE.playerManager.boxCollider.enabled = !toogle;
+				GameManager.INSTANCE.playerManager.collider2D.enabled = !toogle;
 
 				var toogleText = toogle ? "On" : "Off";
 
@@ -197,6 +197,7 @@ namespace DungeonQuest.DebugConsole
 
 		void Update()
 		{
+			// Update to new pause system
 			if (PauseMenu.IS_GAME_PAUSED || ShopMenu.IS_SHOP_OPEN || GameManager.INSTANCE.LevelEnded) return;
 
 			if (Input.GetButtonDown("Console"))

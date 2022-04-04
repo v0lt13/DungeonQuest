@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Player;
 
 namespace DungeonQuest.Pickups
 {
@@ -6,24 +7,24 @@ namespace DungeonQuest.Pickups
 	{
 		[SerializeField] private bool destroyOnPickup;
 
-		private Collider2D playerCollider;
+		private PlayerManager playerManager;
 
 		void Awake()
 		{
-			playerCollider = GameObject.FindGameObjectWithTag("Player").GetComponent<Collider2D>();
+			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (playerCollider == collider)
+			if (playerManager.collider2D == collider)
 			{
-				collider.GetComponent<Player.PlayerHealing>().AddPotion();
-				GetComponent<AudioSource>().Play();
+				playerManager.playerHealing.AddPotions(1);
+				audio.Play();
 
 				if (destroyOnPickup)
 				{
-					GetComponent<SpriteRenderer>().enabled = false;
-					GetComponent<BoxCollider2D>().enabled = false;
+					renderer.enabled = false;
+					collider2D.enabled = false;
 					Destroy(gameObject, 1f);
 				}
 			}

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
 using DungeonQuest.Menus;
-using DungeonQuest.DebugConsole;
+using DungeonQuest.Debuging;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Enemy
@@ -14,7 +14,7 @@ namespace DungeonQuest.Enemy
 			Chase,
 			Attack
 		}
-
+		
 		public enum AIType
 		{
 			Melee,
@@ -91,7 +91,8 @@ namespace DungeonQuest.Enemy
 			TimeBetweenAttacks = 0.1f;
 			FindPathToPlayer(targetPosition, out path);
 
-			if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON) return;
+			// Update to new pause system
+			if (PauseMenu.IS_GAME_PAUSED || DebugConsole.IS_CONSOLE_ON) return;
 
 			if (path != null && StunTime == 0f)
 			{

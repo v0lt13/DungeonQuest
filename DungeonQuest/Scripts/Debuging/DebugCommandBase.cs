@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DungeonQuest.DebugConsole
+namespace DungeonQuest.Debuging
 {
 	public class DebugCommandBase
 	{

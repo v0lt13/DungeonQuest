@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using DungeonQuest.Shop;
 using DungeonQuest.Menus;
-using DungeonQuest.DebugConsole;
+using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Player
 {
@@ -10,10 +10,14 @@ namespace DungeonQuest.Player
 	{
 		[Header ("Healing Config;")]
 		[SerializeField] private float defaultCooldown;
-		[Space(10f)]
+
+		[Header("UI Config:")]
 		[SerializeField] private Slider cooldownSlider;
 		[SerializeField] private Text healingPotionsAmount;
-		[SerializeField] private AudioSource healingSFX;
+
+		[Header("Audio Config:")]
+		[SerializeField] private AudioSource audioSource;
+		[SerializeField] private AudioClip healingSFX;
 
 		private PlayerManager playerManager;
 
@@ -30,7 +34,6 @@ namespace DungeonQuest.Player
 
 		void Update()
 		{
-
 			cooldownSlider.value = Cooldown;
 			healingPotionsAmount.text = HealingPotions.ToString();
 
@@ -39,19 +42,22 @@ namespace DungeonQuest.Player
 				Cooldown -= Time.deltaTime;
 			}
 
-			if (Input.GetButtonDown("Heal") && Cooldown <= 0f && HealingPotions != 0 && !playerManager.IsDead && !GameManager.INSTANCE.LevelEnded && !PauseMenu.IS_GAME_PAUSED && !DebugController.IS_CONSOLE_ON && !ShopMenu.IS_SHOP_OPEN)
+			// Update to new pause system
+			if (GameManager.INSTANCE.LevelEnded && PauseMenu.IS_GAME_PAUSED && DebugConsole.IS_CONSOLE_ON && ShopMenu.IS_SHOP_OPEN) return;
+
+			if (Input.GetButtonDown("Heal") && Cooldown <= 0f && HealingPotions != 0)
 			{
 				Cooldown = defaultCooldown;
 				HealingPotions--;
 
 				playerManager.HealPlayer(playerManager.GetDefaultPlayerHealth);
-				healingSFX.Play();
+				audioSource.PlayOneShot(healingSFX);
 			}
 		}
 
-		public void AddPotion()
+		public void AddPotions(int amount)
 		{
-			HealingPotions++;
+			HealingPotions += amount;
 		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using DungeonQuest.Menus;
 using DungeonQuest.Player;
-using DungeonQuest.DebugConsole;
+using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Shop
 {
@@ -27,7 +27,7 @@ namespace DungeonQuest.Shop
 
 		void Update()
 		{
-			if (DebugController.IS_CONSOLE_ON || PauseMenu.IS_GAME_PAUSED) return;
+			if (DebugConsole.IS_CONSOLE_ON || PauseMenu.IS_GAME_PAUSED) return;
 
 			if (Input.GetButtonDown("Interact") && canOpenShop)
 			{

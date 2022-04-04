@@ -1,24 +1,24 @@
 ﻿using UnityEngine;
+using DungeonQuest.Player;
 
 namespace DungeonQuest.Traps
 {
 	public class Arrow : MonoBehaviour
 	{
-		[SerializeField] private int projectileDamage;
+		[SerializeField] private int damage;
 		[SerializeField] private float speed;
 
 		private bool itHitObject;
 
+		private Vector3 direction = new Vector3(0f, -1f, 0f);
+
 		private Animation fadeOutAnim;
-		private Vector3 direction;
-		private Collider2D playerCollider;
+		private PlayerManager playerManager;
 
 		void Awake()
 		{
 			fadeOutAnim = GetComponent<Animation>();
-			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
-
-			direction = new Vector3(0f, -1f, 0f);
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 		}
 
 		void Update()
@@ -30,14 +30,14 @@ namespace DungeonQuest.Traps
 		{
 			if (itHitObject) return;
 
-			if (collider == playerCollider)
+			if (playerManager.collider2D == collider)
 			{
-				collider.GetComponent<Player.PlayerManager>().DamagePlayer(projectileDamage);
+				playerManager.DamagePlayer(damage);
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Enemy"))
 			{
-				collider.GetComponent<Enemy.EnemyManager>().DamageEnemy(projectileDamage);
+				collider.GetComponent<Enemy.EnemyManager>().DamageEnemy(damage);
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Blockable"))

@@ -2,21 +2,25 @@
 using DungeonQuest.Shop;
 using DungeonQuest.Menus;
 using System.Collections;
-using DungeonQuest.DebugConsole;
+using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Player
 {
 	public class PlayerAttack : MonoBehaviour
 	{
 		private PlayerManager playerManager;
-		private Vector2 swipeDirection;
 		private Quaternion swipeRotation;
+		private Vector2 swipeDirection;
 
 		[Header("Attack Config:")]
 		[SerializeField] private int damage;
 		[SerializeField] private float timeBetweenAttacks;
-	    [SerializeField] private AudioSource swipeSFX;
+		[Space(10f)]
 		[SerializeField] private GameObject swipe;
+
+		[Header("Audio Config:")]
+		[SerializeField] private AudioSource audioSource;
+	    [SerializeField] private AudioClip swipeSFX;
 
 		public int GetDamage { get { return damage; } }
 		public bool IsAttacking { get; private set; }
@@ -25,7 +29,7 @@ namespace DungeonQuest.Player
 
 		void Awake() 
 		{
-			swipeSFX = GetComponent<AudioSource>();
+			audioSource = GetComponent<AudioSource>();
 			playerManager = GetComponent<PlayerManager>();
 
 			TimeBetweenAttacks = timeBetweenAttacks;
@@ -37,7 +41,8 @@ namespace DungeonQuest.Player
 			{
 				TimeBetweenAttacks = 0;
 
-				if (PauseMenu.IS_GAME_PAUSED || DebugController.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
+				// Update to new pause system
+				if (PauseMenu.IS_GAME_PAUSED || DebugConsole.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
 
 				if (Input.GetButtonDown("Attack"))
 				{
@@ -58,25 +63,25 @@ namespace DungeonQuest.Player
 
 		private void SetSwipeTransform()
 		{
-			switch (playerManager.faceingDir)
+			switch (playerManager.playerMovement.faceingDir)
 			{
 				default:
-				case PlayerManager.FaceingDirection.DOWN:
+				case PlayerMovement.FaceingDirection.DOWN:
 					swipeDirection = new Vector2(transform.position.x, transform.position.y - 5);
 					swipeRotation = Quaternion.Euler(0, 0, -90);
 					break;
 
-				case PlayerManager.FaceingDirection.UP:
+				case PlayerMovement.FaceingDirection.UP:
 					swipeDirection = new Vector2(transform.position.x, transform.position.y + 5);
 					swipeRotation = Quaternion.Euler(0, 0, 90);
 					break;
 
-				case PlayerManager.FaceingDirection.LEFT:
+				case PlayerMovement.FaceingDirection.LEFT:
 					swipeDirection = new Vector2(transform.position.x - 5, transform.position.y);
 					swipeRotation = Quaternion.Euler(0, 0, 180);
 					break;
 
-				case PlayerManager.FaceingDirection.RIGHT:
+				case PlayerMovement.FaceingDirection.RIGHT:
 					swipeDirection = new Vector2(transform.position.x + 5, transform.position.y);
 					swipeRotation = Quaternion.Euler(0, 0, 0);
 					break;
@@ -87,7 +92,7 @@ namespace DungeonQuest.Player
 		{
 			IsAttacking = true;
 
-			swipeSFX.PlayOneShot(swipeSFX.clip);
+			audioSource.PlayOneShot(swipeSFX);
 
 			SetSwipeTransform();
 			Instantiate(swipe, swipeDirection, swipeRotation);

@@ -31,7 +31,7 @@ namespace DungeonQuest.Shop
 
 		void Update()
 		{
-			if (playerManager.playerLeveling.PlayerLevel < minRequiredLevel)
+			if (playerManager.playerLeveling.GetPlayerLevel < minRequiredLevel)
 			{
 				HoustonWeHaveProblem("level " + minRequiredLevel.ToString() + " required");
 			}

@@ -4,17 +4,18 @@ namespace DungeonQuest.Player
 {
 	public class PlayerFootsteps : MonoBehaviour
 	{
+		[Header("Audio Config:")]
+		[SerializeField] private AudioSource audioSource;
+		[SerializeField] private AudioClip[] playerFootsteps;
+
 		private const float DEFAULT_TIME_BETWEEN_FOOTSTEPS = 0.3f;
 		private float timeBetwenFootsteps;
 
-		[SerializeField] private AudioClip[] playerFootsteps;
-
 		private PlayerManager playerManager;
-		private AudioSource footstepSFX;
 
 		void Awake()
 		{
-			footstepSFX = GetComponent<AudioSource>();
+			audioSource = GetComponent<AudioSource>();
 			playerManager = GetComponentInParent<PlayerManager>();
 
 			timeBetwenFootsteps = DEFAULT_TIME_BETWEEN_FOOTSTEPS;
@@ -22,14 +23,15 @@ namespace DungeonQuest.Player
 		
 		void Update()
 		{
-			if (playerManager.IsMoveing)
+			if (playerManager.playerMovement.IsMoveing)
 			{
 				timeBetwenFootsteps -= Time.deltaTime;
 			}
 
 			if (timeBetwenFootsteps <= 0)
 			{
-				footstepSFX.PlayOneShot(playerFootsteps[Random.Range(0, playerFootsteps.Length)]); // Playes a random SFX from the array
+				// Plays a random SFX from the array
+				audioSource.PlayOneShot(playerFootsteps[Random.Range(0, playerFootsteps.Length)]);
 
 				timeBetwenFootsteps = DEFAULT_TIME_BETWEEN_FOOTSTEPS;
 			}
