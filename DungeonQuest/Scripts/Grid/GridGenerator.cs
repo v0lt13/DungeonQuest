@@ -13,7 +13,8 @@ namespace DungeonQuest.Grid
 		{
 			pathfinding = new GridPathfinding(gridX, gridY);
 
-			MarkObstructions();
+			MarkObstacles("Blockable");
+			MarkObstacles("Secret");
 		}
 
 		[ExecuteInEditMode]
@@ -24,15 +25,22 @@ namespace DungeonQuest.Grid
 			grid.GetGrid.DrawGrid(drawGrid);
 		}
 
-		private void MarkObstructions()
+		public void MarkObstacle(Vector2 position, bool walkable)
 		{
-			var obstacles = GameObject.FindGameObjectsWithTag("Blockable");
+			int x, y;
+			pathfinding.GetGrid.GetXY(position, out x, out y);
+			pathfinding.GetNode(x, y).SetIsWalkable(walkable);
+		}
+
+		private void MarkObstacles(string obstacleTag)
+		{
+			var obstacles = GameObject.FindGameObjectsWithTag(obstacleTag);
 
 			foreach (var obstacle in obstacles)
 			{
 				int x, y;
 				pathfinding.GetGrid.GetXY(obstacle.transform.position, out x, out y);
-				pathfinding.GetNode(x, y).SetIsWalkable(!pathfinding.GetNode(x, y).isWalkable);
+				pathfinding.GetNode(x, y).SetIsWalkable(false);
 			}
 		}
 	}

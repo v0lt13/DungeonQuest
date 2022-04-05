@@ -16,7 +16,7 @@ namespace DungeonQuest
 
 		void Awake()
 		{
-			enabled = SHOW_FPS;
+			gameObject.SetActive(SHOW_FPS);
 		}
 
 		void Update()

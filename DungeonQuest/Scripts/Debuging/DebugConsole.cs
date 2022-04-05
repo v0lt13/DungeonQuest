@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
-using DungeonQuest.Menus;
-using DungeonQuest.Shop;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Debuging
 {
 	public class DebugConsole : MonoBehaviour
 	{
-		public static bool IS_CONSOLE_ON;
+		private bool isConsoleOn;
 
-		private const float OUTPUT_WINDOW_HEIGHT = 200f;
+		private const float OUTPUT_WINDOW_HEIGHT = 300f;
 		private string input;
 
 		private static DebugCommand<int> HEAL;
@@ -28,25 +26,16 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
 
+		private Vector2 scroll;
+
 		private List<object> commandList;
 		private List<string> outputList = new List<string>();
-		private List<string> enemyList = new List<string>
-		{
-			"meleeSkeleton",
-			"rangedSkeleton"
-		};
 
-		private Vector2 scroll;
-		private Object meleeEnemyPrefab;
-		private Object rangedEnemyPrefab;
+		private EnemyPrefabLoader enemyPrefabs = new EnemyPrefabLoader();
 
 		void Awake()
 		{
-			meleeEnemyPrefab = Resources.Load("Prefabs/Entities/MeleeEnemy", typeof(GameObject));
-			rangedEnemyPrefab = Resources.Load("Prefabs/Entities/RangedEnemy", typeof(GameObject));
-
-			outputList.Add("Type help to view the list of available commands");
-
+			#region COMMANDS			
 			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
 			{
 				GameManager.INSTANCE.playerManager.HealPlayer(value);
@@ -68,13 +57,9 @@ namespace DungeonQuest.Debuging
 				outputList.Add(value.ToString() + " coins given");
 			});
 
-			LOAD_SCENE = new DebugCommand<int>("loadscene", "Loads a specified scene", "loadscene <index>", (index) =>
+			LOAD_SCENE = new DebugCommand<int>("loadscene", "Loads a specified scene", "loadscene <index>", (value) =>
 			{
-				IS_CONSOLE_ON = false;
-				Time.timeScale = 1f;
-				AudioListener.pause = false;
-
-				GameManager.INSTANCE.LoadScene(index);
+				GameManager.INSTANCE.LoadScene(value);
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
@@ -84,36 +69,36 @@ namespace DungeonQuest.Debuging
 				outputList.Add("Player has damage set to " + value);
 			});
 
-			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (toogle) =>
+			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.GodMode = toogle;
+				GameManager.INSTANCE.playerManager.GodMode = value;
 
-				var toogleText = toogle ? "On" : "Off";
+				var toogleText = value ? "On" : "Off";
 
 				outputList.Add("Godmode " + toogleText);
 			});
 
-			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (toogle) =>
+			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.collider2D.enabled = !toogle;
+				GameManager.INSTANCE.playerManager.collider2D.enabled = !value;
 
-				var toogleText = toogle ? "On" : "Off";
+				var toogleText = value ? "On" : "Off";
 
 				outputList.Add("Noclip " + toogleText);
 			});
 
-			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (toogle) =>
+			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.Invisible = toogle;
+				GameManager.INSTANCE.playerManager.Invisible = value;
 
-				var toogleText = toogle ? "On" : "Off";
+				var toogleText = value ? "On" : "Off";
 
 				outputList.Add("Invisiblity " + toogleText);
 			});
 
-			SPAWN_ENEMY = new DebugCommand<string>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name>", (name) =>
+			SPAWN_ENEMY = new DebugCommand<string>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name>", (value) =>
 			{
-				EnemySpawner(name);
+				SpawnEnemy(value);
 
 				GameManager.INSTANCE.AddEnemies();
 			});
@@ -147,9 +132,11 @@ namespace DungeonQuest.Debuging
 
 			ENEMY_LIST = new DebugCommand("enemylist", "Displays a list of all names of enemies", "enemylist", () =>
 			{
-				for (int i = 0; i < enemyList.Count; i++)
+				outputList.Add("Enemy list:");
+
+				for (int i = 0; i < enemyPrefabs.enemyList.Count; i++)
 				{
-					outputList.Add(enemyList[i]);
+					outputList.Add(enemyPrefabs.enemyList[i]);
 				}
 			});
 
@@ -193,27 +180,40 @@ namespace DungeonQuest.Debuging
 				CLEAR,
 				HELP
 			};
+			#endregion
+
+			outputList.Add("Type \"help\" to view the list of available commands");
+
+			enemyPrefabs.LoadPrefabs();
 		}
 
 		void Update()
 		{
-			// Update to new pause system
-			if (PauseMenu.IS_GAME_PAUSED || ShopMenu.IS_SHOP_OPEN || GameManager.INSTANCE.LevelEnded) return;
-
 			if (Input.GetButtonDown("Console"))
 			{
-				IS_CONSOLE_ON = !IS_CONSOLE_ON;
-				input = "";
+				if (!isConsoleOn && GameManager.INSTANCE.CurrentGameState != GameManager.GameState.Paused)
+				{
+					input = "";
+					isConsoleOn = true;
+					AudioListener.pause = true;
 
-				Time.timeScale = IS_CONSOLE_ON ? 0f : 1f;
-				AudioListener.pause = IS_CONSOLE_ON;
-				GameManager.EnableCursor(IS_CONSOLE_ON);
+					GameManager.EnableCursor(true);
+					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
+				}
+				else if (isConsoleOn)
+				{
+					isConsoleOn = false;
+					AudioListener.pause = false;
+
+					GameManager.EnableCursor(false);
+					GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
+				}
 			}
 		}
 
 		void OnGUI()
 		{
-			if (!IS_CONSOLE_ON || PauseMenu.IS_GAME_PAUSED) return;
+			if (!isConsoleOn) return;
 
 			var y = 0f;
 
@@ -297,17 +297,19 @@ namespace DungeonQuest.Debuging
 			}
 		}
 
-		private void EnemySpawner(string name)
+		private void SpawnEnemy(string name)
 		{
+			name = name.ToLower();
+
 			switch (name)
 			{
-				case "meleeSkeleton":
-					Instantiate(meleeEnemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
-					outputList.Add(name + " enemy spawned");
+				case "meleeskeleton":
+					Instantiate(enemyPrefabs.MeleeSkeleton, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					outputList.Add(name + " spawned");
 					break;
-				case "rangedSkeleton":
-					Instantiate(rangedEnemyPrefab, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
-					outputList.Add(name + " enemy spawned");
+				case "rangedskeleton":
+					Instantiate(enemyPrefabs.RangedSkeleton, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					outputList.Add(name + " spawned");
 					break;
 				default:
 					outputList.Add("Enemy not found");

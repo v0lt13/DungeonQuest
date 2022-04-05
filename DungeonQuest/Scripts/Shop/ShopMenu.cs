@@ -1,48 +1,43 @@
 ﻿using UnityEngine;
-using DungeonQuest.Menus;
-using DungeonQuest.Player;
-using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Shop
 {
 	public class ShopMenu : MonoBehaviour
 	{
-
-		[Header("Shop config:")]
+		[Header("Shop Config:")]
 		[SerializeField] private GameObject shopMenu;
 		[SerializeField] private GameObject prompt;
-		[SerializeField] private AudioClip openShopSFX;
 
-		public static bool IS_SHOP_OPEN;
+		private bool isShopOpen;
 		private bool canOpenShop;
 
 		private Collider2D playerCollider;
-		private AudioSource audioSource;
 
 		void Awake()
 		{
 			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
-			audioSource = GetComponent<AudioSource>();
 		}
 
 		void Update()
 		{
-			if (DebugConsole.IS_CONSOLE_ON || PauseMenu.IS_GAME_PAUSED) return;
-
 			if (Input.GetButtonDown("Interact") && canOpenShop)
 			{
-				if (IS_SHOP_OPEN)
+				if (!isShopOpen && GameManager.INSTANCE.CurrentGameState != GameManager.GameState.Paused)
+				{
+					isShopOpen = true;
+
+					audio.Play();
+					GameManager.EnableCursor(true);
+					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
+				}
+				else if (isShopOpen)
 				{
 					CloseShop();
 				}
-				else
-				{
-					OpenShop();
-				}
-
 			}
 
 			prompt.SetActive(canOpenShop);
+			shopMenu.SetActive(isShopOpen);
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
@@ -55,23 +50,12 @@ namespace DungeonQuest.Shop
 			if (collider == playerCollider) canOpenShop = false;
 		}
 
-		public void CloseShop()
+		public void CloseShop() // Button
 		{
-			IS_SHOP_OPEN = !IS_SHOP_OPEN;
-			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
+			isShopOpen = false;
 
-			shopMenu.SetActive(false);
-			GameManager.EnableCursor(IS_SHOP_OPEN);
-		}
-
-		private void OpenShop()
-		{
-			IS_SHOP_OPEN = !IS_SHOP_OPEN;
-			Time.timeScale = IS_SHOP_OPEN ? 0f : 1f;
-
-			shopMenu.SetActive(true);
-			audioSource.PlayOneShot(openShopSFX);
-			GameManager.EnableCursor(IS_SHOP_OPEN);
+			GameManager.EnableCursor(false);
+			GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 		}
 	}
 }

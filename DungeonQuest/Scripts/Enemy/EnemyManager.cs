@@ -35,15 +35,8 @@ namespace DungeonQuest.Enemy
 		[SerializeField] private float followDistance;
 		[SerializeField] private float attackDistance;
 		[SerializeField] private int enemyHealth;
-		[SerializeField] private int healthDropChance;
-		[SerializeField] private int coinDropChance;
-		[SerializeField] private int pileOfCoinsDropChance;
-		[SerializeField] private int minXpDrop;
-		[SerializeField] private int maxXpDrop;
+
 		[Space(10f)]
-		[SerializeField] private GameObject healthPotionPrefab;
-		[SerializeField] private GameObject pileOfCoinsPrefab;
-		[SerializeField] private GameObject coinsPrefab;
 		[SerializeField] private AudioClip deathSFX;
 
 		[HideInInspector] public LastMoveDirection lastMoveDir;
@@ -51,7 +44,7 @@ namespace DungeonQuest.Enemy
 		[HideInInspector] public MoveDirection moveDir;
 
 		[HideInInspector] public PlayerManager playerManager;
-		[HideInInspector] public GameObject player;
+		[HideInInspector] public EnemyDrops enemyDrops;
 		[HideInInspector] public EnemyAI enemyAI;
 
 		private Slider healthBar;
@@ -60,15 +53,16 @@ namespace DungeonQuest.Enemy
 		private Vector2 playerDirection;
 		private Vector2 moveDirection;
 
+		public int GetEnemyHealth {	get { return enemyHealth; } }
+
 		public bool IsDead { get; private set; }
 		public bool IsAttacking { get; set; }
 
 		void Awake()
 		{
-			player = GameObject.Find("Player");
-
 			enemyAI = GetComponent<EnemyAI>();
-			playerManager = player.GetComponent<PlayerManager>();
+			enemyDrops = GetComponent<EnemyDrops>();
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 			healthBar = GetComponentInChildren<Slider>();
 
 			healthBar.maxValue = enemyHealth;
@@ -76,10 +70,16 @@ namespace DungeonQuest.Enemy
 		
 		void Update()
 		{
-			healthBar.value = enemyHealth;
-			playerDirection = transform.InverseTransformPoint(player.transform.position);
+			if (playerManager.IsDead)
+			{
+				enemyAI.state = EnemyAI.AIstate.Idle;
+				return;
+			}
 
-			if (enemyHealth <= 0)
+			healthBar.value = enemyHealth;
+			playerDirection = transform.InverseTransformPoint(playerManager.transform.position);
+
+			if (enemyHealth < 0)
 			{
 				enemyHealth = 0;
 				Die();
@@ -93,7 +93,7 @@ namespace DungeonQuest.Enemy
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
-					moveDirection = transform.InverseTransformPoint(player.transform.position).normalized;
+					moveDirection = transform.InverseTransformPoint(playerManager.transform.position).normalized;
 				}
 			}
 
@@ -103,16 +103,12 @@ namespace DungeonQuest.Enemy
 			{
 				lastMoveDirection = moveDirection;
 			}
-			else
-			{
-				lastMoveDirection = playerDirection.normalized;
-			}
-
-			SetAIState();
-
+			
 			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
 			playerDir = (PlayerDirection)DirectionCheck(playerDirection.normalized);
 			moveDir = (MoveDirection)DirectionCheck(moveDirection);
+
+			SetAIState();
 		}
 
 		public void DamageEnemy(int damage)
@@ -122,23 +118,22 @@ namespace DungeonQuest.Enemy
 
 		private void SetAIState()
 		{
-			float distanceFromPlayer = Vector2.Distance(transform.position, player.transform.position);
+			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
 
-			if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && !playerManager.IsDead && enemyAI.StunTime == 0f && !playerManager.Invisible)
+			if (!playerManager.Invisible)
 			{
-				enemyAI.state = EnemyAI.AIstate.Chase;
-				rigidbody2D.velocity = Vector2.zero;
-				IsAttacking = false;
-			}
-			else if (distanceFromPlayer <= attackDistance && !playerManager.IsDead && !playerManager.Invisible)
-			{
-				enemyAI.state = EnemyAI.AIstate.Attack;
+				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance)
+				{
+					enemyAI.state = EnemyAI.AIstate.Chase;
+				}
+				else if (distanceFromPlayer <= attackDistance)
+				{
+					enemyAI.state = EnemyAI.AIstate.Attack;
+				}
 			}
 			else
 			{
 				enemyAI.state = EnemyAI.AIstate.Idle;
-
-				IsAttacking = false;
 			}
 		}
 
@@ -156,24 +151,11 @@ namespace DungeonQuest.Enemy
 
 			healthBar.gameObject.SetActive(false);
 
-			DropLoot();
+			enemyDrops.DropLoot();
 			Destroy(GetComponent<CircleCollider2D>());
 			Destroy(enemyAI);
 			Destroy(this);
 			Destroy(gameObject, 5f);
-		}
-
-		private void DropLoot()
-		{
-			playerManager.playerLeveling.PlayerXP += Random.Range(minXpDrop, maxXpDrop);
-
-			var dropChance = Random.Range(1, 100);
-
-			if (dropChance <= healthDropChance) 
-				Instantiate(healthPotionPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
-
-			if (dropChance <= coinDropChance)
-				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
 		}
 
 		private int DirectionCheck(Vector2 direction)

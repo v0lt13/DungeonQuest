@@ -1,7 +1,4 @@
 ﻿using UnityEngine;
-using DungeonQuest.Menus;
-using DungeonQuest.Shop;
-using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Player
 {
@@ -93,7 +90,7 @@ namespace DungeonQuest.Player
 
 		private void MovementInputs()
 		{
-			if (PauseMenu.IS_GAME_PAUSED || DebugConsole.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
+			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
 			x = Input.GetAxisRaw("Horizontal");
 			y = Input.GetAxisRaw("Vertical");

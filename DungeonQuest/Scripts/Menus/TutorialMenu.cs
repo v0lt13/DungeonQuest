@@ -15,7 +15,7 @@ namespace DungeonQuest.Menus
 			pageText.text = (currentPage + 1).ToString() + "/" + tutorialPages.Length.ToString();
 		}
 
-		public void NextPage()
+		public void NextPage() // Button
 		{
 			if (currentPage >= tutorialPages.Length - 1)
 			{
@@ -29,7 +29,7 @@ namespace DungeonQuest.Menus
 			TogglePage(currentPage);
 		}
 
-		public void PreviousPage()
+		public void PreviousPage() // Button
 		{
 			if (currentPage <= 0)
 			{

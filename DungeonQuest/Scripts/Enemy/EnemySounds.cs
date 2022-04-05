@@ -13,11 +13,9 @@ namespace DungeonQuest.Enemy
 		private float timeBetwenSounds;
 
 		private EnemyManager enemyManager;
-		private AudioSource audioSource;
 
 		void Awake() 
 		{
-			audioSource = GetComponent<AudioSource>();
 			enemyManager = GetComponent<EnemyManager>();
 			
 			timeBetwenSounds = Random.Range(minTimeBetwenSounds, maxTimeBetwenSounds);
@@ -34,7 +32,7 @@ namespace DungeonQuest.Enemy
 
 			if (timeBetwenSounds <= 0)
 			{
-				audioSource.PlayOneShot(enemySounds[Random.Range(0, enemySounds.Length)]); // Play a random SFX from the array
+				audio.PlayOneShot(enemySounds[Random.Range(0, enemySounds.Length)]); // Play a random SFX from the array
 				
 				timeBetwenSounds = Random.Range(minTimeBetwenSounds, maxTimeBetwenSounds);
 			}

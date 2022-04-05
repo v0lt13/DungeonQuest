@@ -1,48 +1,51 @@
 ﻿using UnityEngine;
-using DungeonQuest.Shop;
-using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Menus
 {
 	public class PauseMenu : MonoBehaviour
 	{
-		public static bool IS_GAME_PAUSED = false;
+		private bool isGamePaused = false;
 
 		[SerializeField] private GameObject pauseMenu;
 
 		void Update()
-		{
-			if (DebugConsole.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN || GameManager.INSTANCE.LevelEnded) return;
-			
+		{			
 			if (Input.GetButtonDown("Back"))
 			{
-				ToogleGamePause();
+				if (!isGamePaused && GameManager.INSTANCE.CurrentGameState != GameManager.GameState.Paused)
+				{
+					isGamePaused = true;
+					AudioListener.pause = true;
+
+					GameManager.EnableCursor(true);
+					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
+				}
+				else if (isGamePaused)
+				{
+					Resume();
+				}
 			}
 
-			Time.timeScale = IS_GAME_PAUSED ? 0f : 1f;
-			AudioListener.pause = IS_GAME_PAUSED;
-			pauseMenu.SetActive(IS_GAME_PAUSED);
+			pauseMenu.SetActive(isGamePaused);
 		}
 
-		public void ToogleGamePause()
+		public void Resume() // Button
 		{
-			IS_GAME_PAUSED = !IS_GAME_PAUSED;
+			isGamePaused = false;
+			AudioListener.pause = false;
 
-			GameManager.EnableCursor(IS_GAME_PAUSED);
+			GameManager.EnableCursor(false);
+			GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 		}
 
-		public void Restart()
+		public void Restart() // Button
 		{
-			IS_GAME_PAUSED = false;
-
-			GameManager.EnableCursor(IS_GAME_PAUSED);
+			GameManager.EnableCursor(isGamePaused);
 			GameManager.LoadScene(Application.loadedLevelName);
 		}
 
-		public void QuitGame()
+		public void QuitGame() // Button
 		{
-			IS_GAME_PAUSED = false;
-
 			GameManager.LoadScene("MainMenu");
 		}
 	}

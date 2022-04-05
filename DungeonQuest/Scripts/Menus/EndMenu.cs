@@ -18,7 +18,7 @@ namespace DungeonQuest.Menus
 			completionTimeText.text = "Time: " + gameManager.CompletionTime.ToString("n2");
 		}
 
-		public void Continue()
+		public void Continue() // Button
 		{
 			GameManager.LoadScene("Lobby");
 		}

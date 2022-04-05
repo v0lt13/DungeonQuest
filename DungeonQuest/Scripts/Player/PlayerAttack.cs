@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using DungeonQuest.Shop;
-using DungeonQuest.Menus;
 using System.Collections;
-using DungeonQuest.Debuging;
 
 namespace DungeonQuest.Player
 {
@@ -41,8 +38,7 @@ namespace DungeonQuest.Player
 			{
 				TimeBetweenAttacks = 0;
 
-				// Update to new pause system
-				if (PauseMenu.IS_GAME_PAUSED || DebugConsole.IS_CONSOLE_ON || ShopMenu.IS_SHOP_OPEN) return;
+				if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
 				if (Input.GetButtonDown("Attack"))
 				{

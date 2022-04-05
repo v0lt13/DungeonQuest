@@ -16,7 +16,7 @@ namespace DungeonQuest.Pickups
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (playerManager.collider2D == collider)
+			if (collider == playerManager.collider2D)
 			{
 				playerManager.playerHealing.AddPotions(1);
 				audio.Play();

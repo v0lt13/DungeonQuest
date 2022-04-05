@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Player;
 
 namespace DungeonQuest.Enemy
 {
@@ -18,22 +19,17 @@ namespace DungeonQuest.Enemy
 
 		private bool itHitObject;
 
-		private GameObject player;
+		private PlayerManager playerManager;
 		private Animation fadeOutAnim;
-		private Transform playerTransform;
-		private Collider2D playerCollider;
 		private Vector3 direction;
 
 		void Awake()
 		{
 			fadeOutAnim = GetComponent<Animation>();
 
-			player = GameObject.Find("Player");
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-			playerTransform = player.GetComponent<Transform>();
-			playerCollider = player.GetComponent<Collider2D>();
-
-			direction = (playerTransform.position - transform.position).normalized;
+			direction = (playerManager.transform.position - transform.position).normalized;
 
 			// Make the projectile face the player
 			float angle = Mathf.Atan2(direction.y, direction.x);
@@ -43,20 +39,15 @@ namespace DungeonQuest.Enemy
 		void Update()
 		{
 			transform.position += direction * speed * Time.deltaTime;
-
-			// Lock the z coordonate to 0
-			var pos = transform.position;
-			pos.z = 0;
-			transform.position = pos;
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
 			if (itHitObject) return;
 
-			if (collider == playerCollider)
+			if (collider == playerManager.collider2D)
 			{
-				collider.GetComponent<Player.PlayerManager>().DamagePlayer(projectileDamage);
+				playerManager.DamagePlayer(projectileDamage);
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Blockable"))

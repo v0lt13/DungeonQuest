@@ -23,12 +23,8 @@ namespace DungeonQuest
 		public int TotalKillCount { get; private set; }
 		public int TotalSecretCount { get; private set; }
 		public float CompletionTime { get; private set; }
-		public bool LevelEnded { get; private set; }
 		
 		public static GameManager INSTANCE { get; private set; }
-
-		public delegate void GameStateHandler(GameState gameSate);
-		public event GameStateHandler OnGameStateChanged;
 
 		void Awake()
 		{
@@ -45,9 +41,12 @@ namespace DungeonQuest
 
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 
+			AudioListener.pause = false;
+
 			AddEnemies();
 			AddSecrets();
 			EnableCursor(false);
+			SetGameState(GameState.Running);
 		}
 
 		void FixedUpdate()
@@ -67,24 +66,22 @@ namespace DungeonQuest
 			Application.LoadLevel("LoadingScreen");
 		}
 
-		public void SetState(GameState gameState)
-		{
-			if (gameState == CurrentGameState) return;
-
-			CurrentGameState = gameState;
-
-			if (OnGameStateChanged != null) OnGameStateChanged.Invoke(gameState);
-		}
-
 		public void LoadScene(int index)
 		{
 			Application.LoadLevel(index);
 		}
 
+		public void SetGameState(GameState gameState)
+		{
+			if (gameState == CurrentGameState) return;
+
+			CurrentGameState = gameState;
+			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
+		}
+
 		public void EndLevel()
 		{
-			LevelEnded = true;
-			Time.timeScale = 0f;
+			SetGameState(GameState.Paused);
 
 			playerManager.renderer.enabled = false;
 			playerManager.playerAttack.enabled = false;
@@ -92,12 +89,6 @@ namespace DungeonQuest
 			playerManager.enabled = false;
 
 			EnableCursor(true);
-		}
-
-		public void EndLevel0()
-		{
-			LoadingScreen.SCENE_NAME = "Lobby";
-			Application.LoadLevel("LoadingScreen");
 		}
 
 		public void AddEnemies()

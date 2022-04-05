@@ -18,16 +18,25 @@ namespace DungeonQuest.Player
 		{
 			if (collider.CompareTag("Enemy"))
 			{
-				var enemy = collider.GetComponent<EnemyManager>();
-				var damage = GameObject.FindObjectOfType<PlayerAttack>().GetDamage;
-				var player = GameObject.Find("Player");
+				var enemyManager = collider.GetComponent<EnemyManager>();
+				var playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-				if (enemy == null) return;
+				var damage = playerManager.playerAttack.GetDamage;
 
-				Vector2 difference = (enemy.transform.position - player.transform.position).normalized * knockbackPower;
+				if (enemyManager == null) return;
 
-				enemy.DamageEnemy(damage);
-				enemy.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
+				var healthDifference = enemyManager.GetEnemyHealth - damage;
+
+				// We check if the enemy is gonna die on the next hit, then we give the player XP if is true
+				if (healthDifference < 0)
+				{
+					playerManager.playerLeveling.PlayerXP += Random.Range(enemyManager.enemyDrops.GetMinXpDrop, enemyManager.enemyDrops.GetMaxXpDrop);					
+				}
+
+				Vector2 difference = (enemyManager.transform.position - playerManager.transform.position).normalized * knockbackPower;
+
+				enemyManager.DamageEnemy(damage);
+				enemyManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
 
 				collider.GetComponent<EnemyAI>().StunEnemy(KNOCKBACK_DURATION);
 			}

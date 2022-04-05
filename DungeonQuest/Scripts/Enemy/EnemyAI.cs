@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
-using DungeonQuest.Menus;
-using DungeonQuest.Debuging;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Enemy
@@ -22,23 +20,24 @@ namespace DungeonQuest.Enemy
 		}
 
 		[Header("AI Config:")]
-		public AIType type;
-		public int damage;
+		[SerializeField] private AIType type;
+		[Space(10f)]
+		[SerializeField] private int damage;
 		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float enemySpeed;
 		[SerializeField] private GameObject projectilePrefab;
 		[Space(10f)]
-		public bool showPath;
+		[SerializeField] private bool showPath;
 
 		[HideInInspector] public AIstate state;
 		[HideInInspector] public List<PathNode> path;
+
+		private float stunTime;
 
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
 
 		public float TimeBetweenAttacks { get; private set; }
-		public float StunTime { get; private set; }
-		public float GetDefaultTimeBetweenAttacks { get { return defaultTimeBetweenAttacks; } }
 
 		void Awake()
 		{
@@ -49,25 +48,25 @@ namespace DungeonQuest.Enemy
 		void Update()
 		{
 			// Wait for the stun to wear off, then stop the knockback
-			if (StunTime <= 0f)
+			if (stunTime <= 0f)
 			{
-				StunTime = 0f;
+				stunTime = 0f;
 				enemyManager.rigidbody2D.velocity = Vector2.zero;
 			}
-			else if (StunTime > 0f)
+			else if (stunTime > 0f)
 			{
-				StunTime -= Time.deltaTime;
+				stunTime -= Time.deltaTime;
 			}
 
 			switch (state)
 			{
 				default:
 				case AIstate.Idle:
-					Idle(enemyManager.player.transform.position);
+					Idle();
 					break;
 
 				case AIstate.Chase:
-					Chase(enemyManager.player.transform.position);
+					Chase(enemyManager.playerManager.transform.position);
 					break;
 
 				case AIstate.Attack:
@@ -78,31 +77,40 @@ namespace DungeonQuest.Enemy
 
 		public void StunEnemy(float duration)
 		{
-			StunTime = duration;
+			stunTime = duration;
 		}
 
-		private void Idle(Vector2 targetPosition) 
+		private void Idle() 
 		{
-			TimeBetweenAttacks = 0.1f;
+			TimeBetweenAttacks = 0.1f; 
+			enemyManager.IsAttacking = false;
 		}
 
 		private void Chase(Vector2 targetPosition)
 		{
-			TimeBetweenAttacks = 0.1f;
-			FindPathToPlayer(targetPosition, out path);
+			enemyManager.IsAttacking = false;
 
-			// Update to new pause system
-			if (PauseMenu.IS_GAME_PAUSED || DebugConsole.IS_CONSOLE_ON) return;
+			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
-			if (path != null && StunTime == 0f)
+			if (stunTime == 0f)
 			{
-				try
+				TimeBetweenAttacks = 0.1f;
+				FindPathToPlayer(targetPosition, out path);
+
+				if (path != null)
 				{
-					transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, enemySpeed * Time.deltaTime);
+					try
+					{
+						transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, enemySpeed * Time.deltaTime);
+					}
+					catch (System.ArgumentOutOfRangeException)
+					{
+						transform.position = Vector2.MoveTowards(transform.position, enemyManager.playerManager.transform.position, enemySpeed * Time.deltaTime);				
+					}
 				}
-				catch (System.ArgumentOutOfRangeException)
+				else
 				{
-					transform.position = Vector2.MoveTowards(transform.position, enemyManager.player.transform.position, enemySpeed * Time.deltaTime);				
+					state = AIstate.Idle;
 				}
 			}
 		}
@@ -111,15 +119,18 @@ namespace DungeonQuest.Enemy
 		{
 			if (state == AIstate.Idle) return;
 
-			if (TimeBetweenAttacks <= 0f)
+			if (stunTime == 0f)
 			{
-				enemyManager.IsAttacking = true;
-				TimeBetweenAttacks = defaultTimeBetweenAttacks;
-			}
-			else
-			{
-				TimeBetweenAttacks -= Time.deltaTime;
-			}
+				if (TimeBetweenAttacks <= 0f)
+				{
+					enemyManager.IsAttacking = true;
+					TimeBetweenAttacks = defaultTimeBetweenAttacks;
+				}
+				else
+				{
+					TimeBetweenAttacks -= Time.deltaTime;
+				}
+			}			
 		}
 
 		private void FindPathToPlayer(Vector2 targetPosition, out List<PathNode> path)
@@ -140,15 +151,13 @@ namespace DungeonQuest.Enemy
 			}
 		}
 
-		private void SlashPlayer()
+		private void HitPlayer() // Animation event
 		{
 			enemyManager.playerManager.DamagePlayer(damage);
 		}
 
-		private void ShootArrow()
+		private void ShootArrow() // Animation event
 		{
-			if (StunTime != 0f) return;
-
 			Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 		}
 	}

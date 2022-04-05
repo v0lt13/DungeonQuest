@@ -11,11 +11,12 @@ namespace DungeonQuest.Shop
 		[Space(10f)]
 		[SerializeField] private Item item;
 		[SerializeField] private Image itemIcon;
+		[SerializeField] private Button buyButton;
+		[Space(10f)]
 		[SerializeField] private Text itemNameText;
 		[SerializeField] private Text itemDescriptionText;
 		[SerializeField] private Text itemPriceText;
 		[SerializeField] private Text problemText;
-		[SerializeField] private Button buyButton;
 
 		private PlayerManager playerManager;
 
@@ -48,7 +49,7 @@ namespace DungeonQuest.Shop
 
 		public void Buy()
 		{
-			playerManager.GiveCoins(-item.itemPrice);
+			playerManager.GiveCoins(-item.itemPrice); // We substract the coins
 		}
 
 		public void IncreaseMinRequiredLevel(int amount)
