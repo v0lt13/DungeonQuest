@@ -28,7 +28,7 @@ namespace DungeonQuest.Traps
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (itHitObject) return;
+			if (itHitObject || playerManager == null) return;
 
 			if (playerManager.collider2D == collider)
 			{
