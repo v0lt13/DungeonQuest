@@ -68,18 +68,17 @@ namespace DungeonQuest
 
 		public void LoadScene(int index)
 		{
-			Application.LoadLevel(index);
+			LoadingScreen.SCENE_INDEX = index;
+			Application.LoadLevel("LoadingScreen");
 		}
 
 		public void SetGameState(GameState gameState)
 		{
-			if (gameState == CurrentGameState) return;
-
 			CurrentGameState = gameState;
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 
-		public void EndLevel()
+		public void EndLevel() // Event
 		{
 			SetGameState(GameState.Paused);
 

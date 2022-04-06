@@ -79,7 +79,7 @@ namespace DungeonQuest.Enemy
 			healthBar.value = enemyHealth;
 			playerDirection = transform.InverseTransformPoint(playerManager.transform.position);
 
-			if (enemyHealth < 0)
+			if (enemyHealth <= 0)
 			{
 				enemyHealth = 0;
 				Die();
@@ -129,6 +129,10 @@ namespace DungeonQuest.Enemy
 				else if (distanceFromPlayer <= attackDistance)
 				{
 					enemyAI.state = EnemyAI.AIstate.Attack;
+				}
+				else
+				{
+					enemyAI.state = EnemyAI.AIstate.Idle;
 				}
 			}
 			else

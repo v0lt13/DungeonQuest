@@ -8,6 +8,16 @@ namespace DungeonQuest.Menus
 
 		private int currentMenu;
 
+		void Awake()
+		{
+			var audioSources = GetComponents<AudioSource>();
+
+			foreach (var audioSource in audioSources)
+			{
+				audioSource.ignoreListenerPause = true;
+			}
+		}
+
 		void Update()
 		{
 			if (Input.GetButtonDown("Back") && currentMenu != 0)

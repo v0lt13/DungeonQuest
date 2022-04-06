@@ -17,8 +17,6 @@ namespace DungeonQuest.Player
 		{
 			audioSource = GetComponent<AudioSource>();
 			playerManager = GetComponentInParent<PlayerManager>();
-
-			timeBetwenFootsteps = DEFAULT_TIME_BETWEEN_FOOTSTEPS;
 		}
 		
 		void Update()
@@ -28,7 +26,7 @@ namespace DungeonQuest.Player
 				timeBetwenFootsteps -= Time.deltaTime;
 			}
 
-			if (timeBetwenFootsteps <= 0)
+			if (timeBetwenFootsteps < 0)
 			{
 				// Plays a random SFX from the array
 				audioSource.PlayOneShot(playerFootsteps[Random.Range(0, playerFootsteps.Length)]);

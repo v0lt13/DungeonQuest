@@ -4,14 +4,33 @@ namespace DungeonQuest
 {
 	public class LoadingScreen : MonoBehaviour
 	{
-		public static string SCENE_NAME;
+		public static int SCENE_INDEX = -1;
+		public static string SCENE_NAME = "";
 
 		void Start()
 		{
-			if (SCENE_NAME == null) return;
-
 			GameManager.EnableCursor(true);
-			Application.LoadLevel(SCENE_NAME);
+
+			if (SCENE_NAME != string.Empty)
+			{
+				Application.LoadLevel(SCENE_NAME);
+				SCENE_NAME = string.Empty;
+			} 
+			else if (SCENE_INDEX != -1)
+			{
+				Application.LoadLevel(SCENE_INDEX);
+				SCENE_INDEX = -1;
+			}
+			else
+			{
+				GetComponentInChildren<UnityEngine.UI.Text>().text = "Couldn't load scene";
+				Invoke("LoadMenu", 3f);
+			}
+		}
+
+		private void LoadMenu()
+		{
+			Application.LoadLevel("MainMenu");
 		}
 	}
 }

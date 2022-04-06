@@ -15,6 +15,8 @@ namespace DungeonQuest
 		private List<GameObject> spawnedGameObjects = new List<GameObject>();
 		private GUIContent handleContent = new GUIContent();
 
+		private Vector2 scrollPosition;
+
 		[MenuItem("Window/TilemapEditor")]
 		static void Init()
 		{
@@ -35,17 +37,17 @@ namespace DungeonQuest
 			prefabs = new GameObject[objects.Length];
 
 			for (int i = 0; i < objects.Length; i++) prefabs[i] = (GameObject)objects[i];
+			
+			// Drawing the window
+
+			scrollPosition = GUILayout.BeginScrollView(scrollPosition);
 
 			GUILayout.BeginHorizontal();
 
 			if (prefabs != null)
 			{
-				var elementsInThisRow = 0;
-
 				for (int i = 0; i < prefabs.Length; i++)
 				{
-					elementsInThisRow++;
-
 					var prefabTexture = AssetPreview.GetAssetPreview(prefabs[i]);
 
 					if (GUILayout.Button(prefabTexture, GUILayout.MaxWidth(50), GUILayout.MaxHeight(50)))
@@ -58,17 +60,11 @@ namespace DungeonQuest
 
 						EditorWindow.FocusWindowIfItsOpen<SceneView>();
 					}
-
-					if (elementsInThisRow > Screen.width / 70)
-					{
-						elementsInThisRow = 0;
-						GUILayout.EndHorizontal();
-						GUILayout.BeginHorizontal();
-					}
 				}
 			}
 
 			GUILayout.EndHorizontal();
+			GUILayout.EndScrollView();
 		}
 
 		void OnSceneGUI(SceneView sceneView)
@@ -85,8 +81,8 @@ namespace DungeonQuest
 
 			Handles.EndGUI();
 
-			var spawnPosition = new Vector2(5, 5);
-
+			var spawnPosition = new Vector2(205f, 205f);
+			
 			if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.A) Spawn(spawnPosition);
 
 			if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.D)
@@ -147,12 +143,13 @@ namespace DungeonQuest
 
 		private void Spawn(Vector2 spawnPosition)
 		{
-			var gameObject = (GameObject)Instantiate(selectedPrefab, spawnPosition, selectedPrefab.transform.rotation);
+			var gameObject = PrefabUtility.InstantiatePrefab(selectedPrefab) as GameObject;
 			var parentObject = GameObject.Find("Map").transform;
 
 			Selection.activeObject = gameObject;
 
 			gameObject.name = selectedPrefab.name;
+			gameObject.transform.position = spawnPosition;
 
 			if (parentObject != null) gameObject.transform.SetParent(parentObject); 
 

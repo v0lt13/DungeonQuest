@@ -8,6 +8,11 @@ namespace DungeonQuest.Menus
 
 		[SerializeField] private GameObject pauseMenu;
 
+		void Awake()
+		{
+			audio.ignoreListenerPause = true;
+		}
+
 		void Update()
 		{			
 			if (Input.GetButtonDown("Back"))

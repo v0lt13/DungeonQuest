@@ -16,7 +16,9 @@ namespace DungeonQuest.Menus
 
 		void Awake()
 		{
+			#if !UNITY_EDITOR
 			LoadSettings();
+			#endif
 		}
 
 		public void Volume(float volume)
@@ -37,8 +39,10 @@ namespace DungeonQuest.Menus
 			SaveSettings();
 		}
 
+
 		private void SaveSettings()
 		{
+			#if !UNITY_EDITOR
 			var optionsSave = OptionsData();
 			var xmlDocument = new XmlDocument();
 
@@ -60,6 +64,7 @@ namespace DungeonQuest.Menus
 			xmlDocument.AppendChild(root);
 
 			xmlDocument.Save(Application.dataPath + "Options.xml");			
+			#endif
 		}
 
 		public void LoadSettings()

@@ -21,7 +21,7 @@ namespace DungeonQuest.Grid
 		public int GetWidth { get { return width; } }
 		public int GetHeight { get { return height; } }
 
-		public Grid(int width, int height, float cellSize, Vector2 originPosition, Func<Grid<TGridObject>, int, int, TGridObject> createGridObject)
+		public Grid(int width, int height, float cellSize, Vector2 originPosition, Func<Grid<TGridObject>, int, int, TGridObject > createGridObject)
 		{
 			this.width = width;
 			this.height = height;
@@ -56,9 +56,9 @@ namespace DungeonQuest.Grid
 			GetXY(worldPosition, out x, out y);
 
 			SetGridObject(x, y, value);
-		}*/
+		}
 
-		/*public void SetGridObject(int x, int y, TGridObject value)
+		public void SetGridObject(int x, int y, TGridObject value)
 		{
 			if (x >= 0 && y >= 0 && x < width && y < height)
 			{
