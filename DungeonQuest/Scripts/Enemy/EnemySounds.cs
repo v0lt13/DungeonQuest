@@ -32,7 +32,8 @@ namespace DungeonQuest.Enemy
 
 			if (timeBetwenSounds <= 0)
 			{
-				audio.PlayOneShot(enemySounds[Random.Range(0, enemySounds.Length)]); // Play a random SFX from the array
+				// Play a random SFX from the array
+				audio.PlayOneShot(enemySounds[Random.Range(0, enemySounds.Length)]);
 				
 				timeBetwenSounds = Random.Range(minTimeBetwenSounds, maxTimeBetwenSounds);
 			}

@@ -14,6 +14,7 @@ namespace DungeonQuest.Grid
 			pathfinding = new GridPathfinding(gridX, gridY);
 
 			MarkObstacles("Blockable");
+			MarkObstacles("Breakeble");
 			MarkObstacles("Secret");
 		}
 

@@ -23,6 +23,7 @@ namespace DungeonQuest.Traps
 
 		void Update()
 		{
+			// Move downwards
 			transform.position += direction * speed * Time.deltaTime;
 		}
 

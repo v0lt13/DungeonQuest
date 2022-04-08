@@ -19,7 +19,7 @@ namespace DungeonQuest.Player
 		private PlayerManager playerManager;
 
 		public int HealingPotions { get; private set; }
-		public float Cooldown { get; private set; }
+		private float Cooldown { get; set; }
 
 		void Awake()
 		{

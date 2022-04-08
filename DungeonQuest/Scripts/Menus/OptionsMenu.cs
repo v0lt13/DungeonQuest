@@ -16,9 +16,7 @@ namespace DungeonQuest.Menus
 
 		void Awake()
 		{
-			#if !UNITY_EDITOR
 			LoadSettings();
-			#endif
 		}
 
 		public void Volume(float volume)
@@ -42,6 +40,7 @@ namespace DungeonQuest.Menus
 
 		private void SaveSettings()
 		{
+			// I dont want the options to be saved while in Unity
 			#if !UNITY_EDITOR
 			var optionsSave = OptionsData();
 			var xmlDocument = new XmlDocument();

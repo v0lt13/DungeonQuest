@@ -58,6 +58,8 @@ namespace DungeonQuest.Enemy
 				stunTime -= Time.deltaTime;
 			}
 
+			if (enemyManager.playerManager.IsDead) return;
+
 			switch (state)
 			{
 				default:

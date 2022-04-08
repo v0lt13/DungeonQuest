@@ -34,6 +34,12 @@ namespace DungeonQuest.Shop
 		{
 			if (playerManager.playerLeveling.GetPlayerLevel < minRequiredLevel)
 			{
+				if (playerManager.playerLeveling.GetPlayerLevel == 100)
+				{
+					HoustonWeHaveProblem("Maxed out");
+					return;
+				}
+
 				HoustonWeHaveProblem("level " + minRequiredLevel.ToString() + " required");
 			}
 			else if (playerManager.CoinsAmount < item.itemPrice)

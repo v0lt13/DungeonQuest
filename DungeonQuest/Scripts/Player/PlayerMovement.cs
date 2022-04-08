@@ -57,10 +57,6 @@ namespace DungeonQuest.Player
 			HasMovementInput = x != 0 || y != 0;
 			IsMoveing = moveDirection.x != 0 || moveDirection.y != 0;
 
-			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
-			faceingDir = (FaceingDirection)DirectionCheck(faceingDirection);
-			moveDir = (MoveDirection)DirectionCheck(unmodifiedMoveDirection);
-
 			if (playerManager.playerAttack.IsAttacking) moveDirection = Vector2.zero;
 
 			if (HasMovementInput && IsMoveing)
@@ -71,6 +67,10 @@ namespace DungeonQuest.Player
 			{
 				faceingDirection = lastMoveDirection;
 			}
+
+			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
+			faceingDir = (FaceingDirection)DirectionCheck(faceingDirection);
+			moveDir = (MoveDirection)DirectionCheck(unmodifiedMoveDirection);
 
 			MovementInputs();
 		}

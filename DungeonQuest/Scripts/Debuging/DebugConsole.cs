@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Enemy;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Debuging
@@ -22,6 +23,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand KILL_ENEMIES;
 		private static DebugCommand ENEMY_LIST;
 		private static DebugCommand LEVEL_UP;
+		private static DebugCommand MAX_PLAYER;
 		private static DebugCommand DIE;
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
@@ -105,9 +107,29 @@ namespace DungeonQuest.Debuging
 
 			LEVEL_UP = new DebugCommand("levelup", "Levels up the player", "levelup", () =>
 			{
-				GameManager.INSTANCE.playerManager.playerLeveling.LevelUp();
+				var playerLeveling = GameManager.INSTANCE.playerManager.playerLeveling;
 
-				outputList.Add("Player has leveled up");
+				if (playerLeveling.IsPlayerMaxLevel)
+				{
+					outputList.Add("Player is max level");
+				}
+				else
+				{
+					playerLeveling.LevelUp();
+					outputList.Add("Player has leveled up");
+				}
+			});
+
+			MAX_PLAYER = new DebugCommand("maxplayer", "Levels up the player to the maximum level", "maxplayer", () =>
+			{
+				var playerLeveling = GameManager.INSTANCE.playerManager.playerLeveling;
+
+				while (playerLeveling.GetPlayerLevel != 100)
+				{
+					playerLeveling.LevelUp();
+				}
+
+				outputList.Add("Player is now maxed");
 			});
 
 			KILL_ENEMIES = new DebugCommand("killenemies", "Kills all enemies in the level", "killenemies", () =>
@@ -120,7 +142,7 @@ namespace DungeonQuest.Debuging
 					{
 						enemyList[i].GetComponent<Enemy.EnemyManager>().DamageEnemy(int.MaxValue);
 					}
-
+				
 					outputList.Add(enemyList.Count + " enemies killed");
 					enemyList.Clear();
 				}
@@ -176,6 +198,7 @@ namespace DungeonQuest.Debuging
 				KILL_ENEMIES,
 				ENEMY_LIST,
 				LEVEL_UP,
+				MAX_PLAYER,
 				DIE,
 				CLEAR,
 				HELP
@@ -299,18 +322,23 @@ namespace DungeonQuest.Debuging
 
 		private void SpawnEnemy(string name)
 		{
+			var playerPosition = GameManager.INSTANCE.playerManager.transform.position;
+			var spawnPositionOffset = new Vector2(playerPosition.x + Random.Range(-5, 5), playerPosition.y + Random.Range(-5, 5));
+
 			name = name.ToLower();
 
 			switch (name)
 			{
 				case "meleeskeleton":
-					Instantiate(enemyPrefabs.MeleeSkeleton, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					Instantiate(enemyPrefabs.MeleeSkeleton, spawnPositionOffset, Quaternion.identity);
 					outputList.Add(name + " spawned");
 					break;
+
 				case "rangedskeleton":
-					Instantiate(enemyPrefabs.RangedSkeleton, GameManager.INSTANCE.playerManager.transform.position, Quaternion.identity);
+					Instantiate(enemyPrefabs.RangedSkeleton, spawnPositionOffset, Quaternion.identity);
 					outputList.Add(name + " spawned");
 					break;
+
 				default:
 					outputList.Add("Enemy not found");
 					break;

@@ -26,37 +26,37 @@ namespace DungeonQuest.Menus
 			}
 		}
 
-		public void Play() // Button
+		public void Play() // Called by Button
 		{
 			GameManager.LoadScene("Level0");
 		}
 
-		public void Options() // Button
+		public void Options() // Called by Button
 		{
 			ToggleMenu(1);
 		}
 
-		public void TutorialMenu() // Button
+		public void TutorialMenu() // Called by Button
 		{
 			ToggleMenu(2);
 		}
 
-		public void Credits() // Button
+		public void Credits() // Called by Button
 		{
 			ToggleMenu(3);
 		}
 
-		public void Exit() // Button
+		public void Exit() // Called by Button
 		{
 			Application.Quit();
 		}
 
-		public void GoBackToMainMenu() // Button
+		public void GoBackToMainMenu() // Called by Button
 		{
 			ToggleMenu(0);
 		}
 
-		public void OpenURL(string url) // Button
+		public void OpenURL(string url) // Called by Button
 		{
 			Application.OpenURL(url);
 		}

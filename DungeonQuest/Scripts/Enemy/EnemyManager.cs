@@ -60,9 +60,10 @@ namespace DungeonQuest.Enemy
 
 		void Awake()
 		{
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+
 			enemyAI = GetComponent<EnemyAI>();
 			enemyDrops = GetComponent<EnemyDrops>();
-			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 			healthBar = GetComponentInChildren<Slider>();
 
 			healthBar.maxValue = enemyHealth;
@@ -75,7 +76,7 @@ namespace DungeonQuest.Enemy
 				enemyAI.state = EnemyAI.AIstate.Idle;
 				return;
 			}
-
+			
 			healthBar.value = enemyHealth;
 			playerDirection = transform.InverseTransformPoint(playerManager.transform.position);
 
@@ -116,6 +117,28 @@ namespace DungeonQuest.Enemy
 			if (enemyHealth > 0) enemyHealth -= damage;
 		}
 
+		private void Die()
+		{
+			IsDead = true;
+			rigidbody2D.isKinematic = true;
+			GetComponent<SpriteRenderer>().sortingOrder = 0;
+
+			GameManager.INSTANCE.KillCount++;
+			GameManager.INSTANCE.enemyList.Remove(gameObject);
+
+			var deathSound = GetComponent<AudioSource>();
+			deathSound.clip = deathSFX;
+			deathSound.Play();
+
+			healthBar.gameObject.SetActive(false);
+
+			enemyDrops.DropLoot();
+			Destroy(GetComponent<CircleCollider2D>());
+			Destroy(enemyAI);
+			Destroy(this);
+			Destroy(gameObject, 5f);
+		}
+
 		private void SetAIState()
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
@@ -141,26 +164,6 @@ namespace DungeonQuest.Enemy
 			}
 		}
 
-		private void Die()
-		{
-			IsDead = true;
-			rigidbody2D.isKinematic = true;
-			GetComponent<SpriteRenderer>().sortingOrder = 0;
-
-			GameManager.INSTANCE.KillCount++;
-
-			var deathSound = GetComponent<AudioSource>();
-			deathSound.clip = deathSFX;
-			deathSound.Play();
-
-			healthBar.gameObject.SetActive(false);
-
-			enemyDrops.DropLoot();
-			Destroy(GetComponent<CircleCollider2D>());
-			Destroy(enemyAI);
-			Destroy(this);
-			Destroy(gameObject, 5f);
-		}
 
 		private int DirectionCheck(Vector2 direction)
 		{

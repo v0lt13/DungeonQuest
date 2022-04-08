@@ -13,8 +13,7 @@ namespace DungeonQuest
 		}
 
 		[HideInInspector] public PlayerManager playerManager;
-
-		public List<GameObject> enemyList;
+		[HideInInspector] public List<GameObject> enemyList;
 
 		public GameState CurrentGameState { get; private set; }
 		
@@ -66,7 +65,7 @@ namespace DungeonQuest
 			Application.LoadLevel("LoadingScreen");
 		}
 
-		public void LoadScene(int index)
+		public void LoadScene(int index) // For buttons and debug console
 		{
 			LoadingScreen.SCENE_INDEX = index;
 			Application.LoadLevel("LoadingScreen");
@@ -78,7 +77,7 @@ namespace DungeonQuest
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 
-		public void EndLevel() // Event
+		public void EndLevel() // Called by Event
 		{
 			SetGameState(GameState.Paused);
 

@@ -25,9 +25,9 @@ namespace DungeonQuest.Enemy
 
 		void Awake()
 		{
-			fadeOutAnim = GetComponent<Animation>();
-
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+
+			fadeOutAnim = GetComponent<Animation>();
 
 			direction = (playerManager.transform.position - transform.position).normalized;
 
@@ -38,6 +38,7 @@ namespace DungeonQuest.Enemy
 
 		void Update()
 		{
+			// Move towards the player
 			transform.position += direction * speed * Time.deltaTime;
 		}
 
@@ -48,6 +49,11 @@ namespace DungeonQuest.Enemy
 			if (collider == playerManager.collider2D)
 			{
 				playerManager.DamagePlayer(projectileDamage);
+				Destroy(gameObject);
+			}
+			else if (collider.CompareTag("Breakeble"))
+			{
+				collider.GetComponent<BreakableObject>().BreakObject();
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Blockable"))

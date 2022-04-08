@@ -28,6 +28,9 @@ namespace DungeonQuest.Enemy
 
 			if (dropChance <= coinDropChance)
 				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
+
+			if (dropChance <= pileOfCoinsDropChance)
+				Instantiate(pileOfCoinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
 		}
 	}
 }
