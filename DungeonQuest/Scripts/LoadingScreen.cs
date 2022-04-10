@@ -15,7 +15,7 @@ namespace DungeonQuest
 			{
 				Application.LoadLevel(SCENE_NAME);
 				SCENE_NAME = string.Empty;
-			} 
+			}
 			else if (SCENE_INDEX != -1)
 			{
 				Application.LoadLevel(SCENE_INDEX);
@@ -24,7 +24,7 @@ namespace DungeonQuest
 			else
 			{
 				GetComponentInChildren<UnityEngine.UI.Text>().text = "Couldn't load scene";
-				Invoke("LoadMenu", 3f);
+				Invoke("LoadMenu", 2f);
 			}
 		}
 

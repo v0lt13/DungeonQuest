@@ -13,8 +13,6 @@ namespace DungeonQuest.Enemy
 
 		[Header("Projectile Config:")]
 		public ProjectileType projectileType;
-		[Space(10f)]
-		[SerializeField] private int projectileDamage;
 		[SerializeField] private float speed;
 
 		private bool itHitObject;
@@ -22,6 +20,8 @@ namespace DungeonQuest.Enemy
 		private PlayerManager playerManager;
 		private Animation fadeOutAnim;
 		private Vector3 direction;
+
+		public int ProjectileDamage { get; set; }
 
 		void Awake()
 		{
@@ -48,7 +48,7 @@ namespace DungeonQuest.Enemy
 
 			if (collider == playerManager.collider2D)
 			{
-				playerManager.DamagePlayer(projectileDamage);
+				playerManager.DamagePlayer(ProjectileDamage);
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Breakeble"))

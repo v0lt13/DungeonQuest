@@ -16,8 +16,21 @@ namespace DungeonQuest.Enemy
 		[SerializeField] private GameObject pileOfCoinsPrefab;
 		[SerializeField] private GameObject coinsPrefab;
 
+		private EnemyManager enemyManager;
+
 		public int GetMinXpDrop { get { return minXpDrop; } }
 		public int GetMaxXpDrop { get { return maxXpDrop; } }
+
+		void Awake()
+		{
+			enemyManager = GetComponent<EnemyManager>();
+		}
+
+		void Start()
+		{
+			minXpDrop += enemyManager.enemyLevel * 2;
+			maxXpDrop += enemyManager.enemyLevel * 2;
+		}
 
 		public void DropLoot()
 		{

@@ -32,6 +32,7 @@ namespace DungeonQuest.Enemy
 		}
 
 		[Header("Enemy Config:")]
+		public int enemyLevel = 1;
 		[SerializeField] private float followDistance;
 		[SerializeField] private float attackDistance;
 		[SerializeField] private int enemyHealth;
@@ -48,6 +49,7 @@ namespace DungeonQuest.Enemy
 		[HideInInspector] public EnemyAI enemyAI;
 
 		private Slider healthBar;
+		private Text levelText;
 
 		private Vector2 lastMoveDirection;
 		private Vector2 playerDirection;
@@ -65,8 +67,16 @@ namespace DungeonQuest.Enemy
 			enemyAI = GetComponent<EnemyAI>();
 			enemyDrops = GetComponent<EnemyDrops>();
 			healthBar = GetComponentInChildren<Slider>();
+			levelText = GetComponentInChildren<Text>();
+		}
+
+		void Start()
+		{
+			enemyHealth += enemyLevel * 10;
+			enemyAI.damage += enemyLevel * 5;
 
 			healthBar.maxValue = enemyHealth;
+			levelText.text = "Lvl " + enemyLevel;
 		}
 		
 		void Update()
@@ -131,6 +141,7 @@ namespace DungeonQuest.Enemy
 			deathSound.Play();
 
 			healthBar.gameObject.SetActive(false);
+			levelText.gameObject.SetActive(false);
 
 			enemyDrops.DropLoot();
 			Destroy(GetComponent<CircleCollider2D>());

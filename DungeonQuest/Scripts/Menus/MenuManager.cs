@@ -22,7 +22,7 @@ namespace DungeonQuest.Menus
 		{
 			if (Input.GetButtonDown("Back") && currentMenu != 0)
 			{
-				GoBackToMainMenu();
+				ToggleMenu(0);
 			}
 		}
 
@@ -31,37 +31,7 @@ namespace DungeonQuest.Menus
 			GameManager.LoadScene("Level0");
 		}
 
-		public void Options() // Called by Button
-		{
-			ToggleMenu(1);
-		}
-
-		public void TutorialMenu() // Called by Button
-		{
-			ToggleMenu(2);
-		}
-
-		public void Credits() // Called by Button
-		{
-			ToggleMenu(3);
-		}
-
-		public void Exit() // Called by Button
-		{
-			Application.Quit();
-		}
-
-		public void GoBackToMainMenu() // Called by Button
-		{
-			ToggleMenu(0);
-		}
-
-		public void OpenURL(string url) // Called by Button
-		{
-			Application.OpenURL(url);
-		}
-
-		private void ToggleMenu(int menuIndex)
+		public void ToggleMenu(int menuIndex) // Called by Button
 		{
 			currentMenu = menuIndex;
 
@@ -71,6 +41,16 @@ namespace DungeonQuest.Menus
 			}
 
 			menus[menuIndex].SetActive(true);
+		}
+
+		public void Exit() // Called by Button
+		{
+			Application.Quit();
+		}
+
+		public void OpenURL(string url) // Called by Button
+		{
+			Application.OpenURL(url);
 		}
 	}
 }

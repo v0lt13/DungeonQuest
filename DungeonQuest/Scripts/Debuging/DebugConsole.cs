@@ -16,10 +16,10 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<int> GIVE_COINS;
 		private static DebugCommand<int> LOAD_SCENE;
 		private static DebugCommand<uint> SET_DAMAGE;
+		private static DebugCommand<string, uint> SPAWN_ENEMY;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
 		private static DebugCommand<bool> INVISIBILITY;
-		private static DebugCommand<string> SPAWN_ENEMY;
 		private static DebugCommand KILL_ENEMIES;
 		private static DebugCommand ENEMY_LIST;
 		private static DebugCommand LEVEL_UP;
@@ -33,7 +33,8 @@ namespace DungeonQuest.Debuging
 		private List<object> commandList;
 		private List<string> outputList = new List<string>();
 
-		private EnemyPrefabLoader enemyPrefabs = new EnemyPrefabLoader();
+		private EnemyPrefabManager enemyPrefabs = new EnemyPrefabManager();
+		private GUIStyle outputTextStyle = new GUIStyle();
 
 		void Awake()
 		{
@@ -61,6 +62,7 @@ namespace DungeonQuest.Debuging
 
 			LOAD_SCENE = new DebugCommand<int>("loadscene", "Loads a specified scene", "loadscene <index>", (value) =>
 			{
+				GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 				GameManager.INSTANCE.LoadScene(value);
 			});
 
@@ -98,9 +100,9 @@ namespace DungeonQuest.Debuging
 				outputList.Add("Invisiblity " + toogleText);
 			});
 
-			SPAWN_ENEMY = new DebugCommand<string>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name>", (value) =>
+			SPAWN_ENEMY = new DebugCommand<string, uint>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name> <level>", (primaryValue, secondaryValue) =>
 			{
-				SpawnEnemy(value);
+				SpawnEnemy(primaryValue, secondaryValue);
 
 				GameManager.INSTANCE.AddEnemies();
 			});
@@ -142,7 +144,7 @@ namespace DungeonQuest.Debuging
 					{
 						enemyList[i].GetComponent<Enemy.EnemyManager>().DamageEnemy(int.MaxValue);
 					}
-				
+
 					outputList.Add(enemyList.Count + " enemies killed");
 					enemyList.Clear();
 				}
@@ -158,7 +160,7 @@ namespace DungeonQuest.Debuging
 
 				for (int i = 0; i < enemyPrefabs.enemyList.Count; i++)
 				{
-					outputList.Add(enemyPrefabs.enemyList[i]);
+					outputList.Add(enemyPrefabs.enemyList[i].ToString());
 				}
 			});
 
@@ -256,6 +258,8 @@ namespace DungeonQuest.Debuging
 			{
 				GUI.FocusControl("InputField");
 				HandleInput();
+
+				scroll.y += 9999;
 				input = "";
 			}
 		}
@@ -279,6 +283,10 @@ namespace DungeonQuest.Debuging
 						else if (commandList[i] as DebugCommand<string> != null)
 						{
 							(commandList[i] as DebugCommand<string>).Invoke(proprieties[1]);
+						}
+						else if (commandList[i] as DebugCommand<string, uint> != null)
+						{
+							(commandList[i] as DebugCommand<string, uint>).Invoke(proprieties[1], uint.Parse(proprieties[2]));
 						}
 						else if (commandList[i] as DebugCommand<int> != null)
 						{
@@ -307,35 +315,40 @@ namespace DungeonQuest.Debuging
 		
 		private void OutputConsoleMessage()
 		{
+			const int maxOutputMessages = 100;
+
+			if (outputList.Count > maxOutputMessages)
+			{
+				outputList.RemoveAt(0);
+			}
+
 			for (int i = 0; i < outputList.Count; i++)
 			{
 				string label = outputList[i];
 				var viewport = new Rect(0f, 0f, Screen.width - 30f, 20f * outputList.Count);
 				var labelRect = new Rect(5f, 20f * i, viewport.width - 100f, 20f);
+				outputTextStyle.normal.textColor = Color.white;
 
 				scroll = GUI.BeginScrollView(new Rect(0f, 0f, Screen.width, OUTPUT_WINDOW_HEIGHT), scroll, viewport);
-
+				
 				GUI.Label(labelRect, label);
 				GUI.EndScrollView();
 			}
 		}
 
-		private void SpawnEnemy(string name)
+		private void SpawnEnemy(string name, uint level)
 		{
-			var playerPosition = GameManager.INSTANCE.playerManager.transform.position;
-			var spawnPositionOffset = new Vector2(playerPosition.x + Random.Range(-5, 5), playerPosition.y + Random.Range(-5, 5));
-
 			name = name.ToLower();
 
 			switch (name)
 			{
 				case "meleeskeleton":
-					Instantiate(enemyPrefabs.MeleeSkeleton, spawnPositionOffset, Quaternion.identity);
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.MeleeSkeleton as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 
 				case "rangedskeleton":
-					Instantiate(enemyPrefabs.RangedSkeleton, spawnPositionOffset, Quaternion.identity);
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.RangedSkeleton as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 

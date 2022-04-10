@@ -5,7 +5,9 @@ namespace DungeonQuest.Menus
 {
 	public class PauseMenu : MonoBehaviour
 	{
-		[SerializeField] private GameObject pauseMenu;
+		[Header("Menu Config:")]
+		[SerializeField] private GameObject pauseMenuHolder;
+		[SerializeField] private GameObject[] menus;
 
 		[Header("Stats config:")]
 		[SerializeField] private Text playerHealthText;
@@ -13,7 +15,8 @@ namespace DungeonQuest.Menus
 		[SerializeField] private Text playerXPText;
 		[SerializeField] private Text killCountText;
 		[SerializeField] private Text secretCountText;
-		
+
+		private int currentMenu;
 		private bool isGamePaused = false;
 
 		private GameManager gameManager;
@@ -32,21 +35,28 @@ namespace DungeonQuest.Menus
 		{
 			if (Input.GetButtonDown("Back"))
 			{
-				if (!isGamePaused && gameManager.CurrentGameState != GameManager.GameState.Paused)
-				{
-					isGamePaused = true;
-					AudioListener.pause = true;
+				if (currentMenu == 0)
+				{					
+					if (!isGamePaused && gameManager.CurrentGameState != GameManager.GameState.Paused)
+					{
+						isGamePaused = true;
+						AudioListener.pause = true;
 
-					GameManager.EnableCursor(true);
-					gameManager.SetGameState(GameManager.GameState.Paused);
+						GameManager.EnableCursor(true);
+						gameManager.SetGameState(GameManager.GameState.Paused);
+					}
+					else if (isGamePaused)
+					{
+						Resume();
+					}
 				}
-				else if (isGamePaused)
+				else
 				{
-					Resume();
+					ToggleMenu(0);
 				}
 			}
 
-			pauseMenu.SetActive(isGamePaused);
+			pauseMenuHolder.SetActive(isGamePaused);
 			SetPlayerStats();
 		}
 
@@ -68,6 +78,18 @@ namespace DungeonQuest.Menus
 		public void QuitGame() // Called by Button
 		{
 			GameManager.LoadScene("MainMenu");
+		}
+
+		public void ToggleMenu(int menuIndex) // Called by Button
+		{
+			currentMenu = menuIndex;
+
+			foreach (var menu in menus)
+			{
+				menu.SetActive(false);
+			}
+
+			menus[menuIndex].SetActive(true);
 		}
 
 		private void SetPlayerStats()

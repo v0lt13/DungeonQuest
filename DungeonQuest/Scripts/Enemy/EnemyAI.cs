@@ -22,7 +22,7 @@ namespace DungeonQuest.Enemy
 		[Header("AI Config:")]
 		[SerializeField] private AIType type;
 		[Space(10f)]
-		[SerializeField] private int damage;
+		public int damage;
 		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float enemySpeed;
 		[SerializeField] private GameObject projectilePrefab;
@@ -160,7 +160,9 @@ namespace DungeonQuest.Enemy
 
 		private void ShootArrow() // Animation event
 		{
-			Instantiate(projectilePrefab, transform.position, Quaternion.identity);
+			var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity) as GameObject;
+
+			projectile.GetComponent<EnemyProjectile>().ProjectileDamage = damage;
 		}
 	}
 }

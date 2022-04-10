@@ -46,6 +46,8 @@ namespace DungeonQuest
 			AddSecrets();
 			EnableCursor(false);
 			SetGameState(GameState.Running);
+
+			TotalKillCount = enemyList.Count;
 		}
 
 		void FixedUpdate()
@@ -106,7 +108,7 @@ namespace DungeonQuest
 				enemyList.Add(enemyObject);
 			}
 
-			TotalKillCount = enemyList.Count;
+			TotalKillCount++;
 		}
 
 		private void AddSecrets()

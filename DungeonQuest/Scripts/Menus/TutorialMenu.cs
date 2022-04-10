@@ -6,13 +6,13 @@ namespace DungeonQuest.Menus
 	public class TutorialMenu : MonoBehaviour
 	{
 		[SerializeField] private GameObject[] tutorialPages;
-		[SerializeField] private Text pageText;
+		[SerializeField] private Text pageNumberText;
 
 		private int currentPage;
 
 		void Update()
 		{
-			pageText.text = (currentPage + 1).ToString() + "/" + tutorialPages.Length.ToString();
+			pageNumberText.text = (currentPage + 1).ToString() + "/" + tutorialPages.Length.ToString();
 		}
 
 		public void NextPage() // Button
