@@ -30,10 +30,6 @@ namespace DungeonQuest.Shop
 					GameManager.EnableCursor(true);
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
 				}
-				else if (isShopOpen)
-				{
-					CloseShop();
-				}
 			}
 
 			prompt.SetActive(canOpenShop);

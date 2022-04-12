@@ -9,11 +9,6 @@ namespace DungeonQuest.Player
 		[SerializeField] private int defaultPlayerHealth;
 		[SerializeField] private int defaultPlayerArmor;
 
-		[Header("UI Config:")]
-		public Slider healthBar;
-		public Slider armorBar;
-		[SerializeField] private Text coinsAmountText;
-
 		[Header("Audio Config:")]
 		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip deathSFX;
@@ -23,9 +18,14 @@ namespace DungeonQuest.Player
 		[HideInInspector] public PlayerHealing playerHealing;
 		[HideInInspector] public PlayerAttack playerAttack;
 
+		[HideInInspector] public Slider healthBar;
+		[HideInInspector] public Slider armorBar;
+
 		private PlayerFootsteps playerFootsteps;
+		private Text coinsAmountText;
 
 		public bool Invisible { get; set; }
+		public bool NoClip { get; set; }
 		public bool IsDead { get; private set; }
 		public bool GodMode { private get; set; }
 
@@ -38,6 +38,10 @@ namespace DungeonQuest.Player
 
 		void Awake()
 		{
+			healthBar = GameObject.Find("PlayerHealthBar").GetComponent<Slider>();
+			armorBar = GameObject.Find("PlayerArmorBar").GetComponent<Slider>();
+			coinsAmountText = GameObject.Find("CoinsAmountText").GetComponent<Text>();
+
 			playerFootsteps = GetComponent<PlayerFootsteps>();
 			playerMovement = GetComponent<PlayerMovement>();
 			playerLeveling = GetComponent<PlayerLeveling>();
@@ -55,12 +59,13 @@ namespace DungeonQuest.Player
 			healthBar.value = PlayerHealth;
 			armorBar.value = PlayerArmor;
 			coinsAmountText.text = CoinsAmount.ToString();
+			collider2D.enabled = !NoClip;
 
 			if (PlayerHealth < 0)
 			{
 				PlayerHealth = 0;
 				Die();
-			}
+			}	
 		}
 
 		public void DamagePlayer(int damage)

@@ -15,6 +15,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<int> ARMOR;
 		private static DebugCommand<int> GIVE_COINS;
 		private static DebugCommand<int> LOAD_SCENE;
+		private static DebugCommand<uint> ADD_POTIONS;
 		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<string, uint> SPAWN_ENEMY;
 		private static DebugCommand<bool> GOD_MODE;
@@ -66,6 +67,11 @@ namespace DungeonQuest.Debuging
 				GameManager.INSTANCE.LoadScene(value);
 			});
 
+			ADD_POTIONS = new DebugCommand<uint>("addpotions", "Gives healing potions to the player", "addpotions <amount>", (value) =>
+			{
+				GameManager.INSTANCE.playerManager.playerHealing.AddPotions((int)value);
+			});
+
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
 			{
 				GameManager.INSTANCE.playerManager.playerAttack.IncreaseDamage((int)value);
@@ -84,7 +90,7 @@ namespace DungeonQuest.Debuging
 
 			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.collider2D.enabled = !value;
+				GameManager.INSTANCE.playerManager.NoClip = value;
 
 				var toogleText = value ? "On" : "Off";
 
@@ -190,6 +196,7 @@ namespace DungeonQuest.Debuging
 			{
 				HEAL,
 				ARMOR,
+				ADD_POTIONS,
 				GIVE_COINS,
 				SET_DAMAGE,
 				GOD_MODE,

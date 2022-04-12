@@ -13,7 +13,7 @@ namespace DungeonQuest.Player
 		[SerializeField] private int damage;
 		[SerializeField] private float timeBetweenAttacks;
 		[Space(10f)]
-		[SerializeField] private GameObject swipe;
+		[SerializeField] private GameObject swipePrefab;
 
 		[Header("Audio Config:")]
 		[SerializeField] private AudioSource audioSource;
@@ -91,7 +91,7 @@ namespace DungeonQuest.Player
 			audioSource.PlayOneShot(swipeSFX);
 
 			SetSwipeTransform();
-			Instantiate(swipe, swipeDirection, swipeRotation);
+			Instantiate(swipePrefab, swipeDirection, swipeRotation);
 
 			yield return new WaitForSeconds(TimeBetweenAttacks);
 

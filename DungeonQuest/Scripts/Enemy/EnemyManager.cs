@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 using DungeonQuest.Player;
 
 namespace DungeonQuest.Enemy
@@ -154,7 +153,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
 
-			if (!playerManager.Invisible)
+			if (!playerManager.Invisible && !playerManager.NoClip)
 			{
 				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance)
 				{

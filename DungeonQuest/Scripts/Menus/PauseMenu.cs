@@ -75,11 +75,6 @@ namespace DungeonQuest.Menus
 			GameManager.LoadScene(Application.loadedLevelName);
 		}
 
-		public void QuitGame() // Called by Button
-		{
-			GameManager.LoadScene("MainMenu");
-		}
-
 		public void ToggleMenu(int menuIndex) // Called by Button
 		{
 			currentMenu = menuIndex;

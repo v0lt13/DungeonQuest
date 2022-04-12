@@ -67,7 +67,7 @@ namespace DungeonQuest
 			Application.LoadLevel("LoadingScreen");
 		}
 
-		public void LoadScene(int index) // For buttons and debug console
+		public void LoadScene(int index) // For buttons, events and debug console
 		{
 			LoadingScreen.SCENE_INDEX = index;
 			Application.LoadLevel("LoadingScreen");

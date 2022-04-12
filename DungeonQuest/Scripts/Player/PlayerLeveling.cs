@@ -5,10 +5,6 @@ namespace DungeonQuest.Player
 {
 	public class PlayerLeveling : MonoBehaviour
 	{
-		[Header("UI Config:")]
-		[SerializeField] private Slider xpBar;
-		[SerializeField] private Text levelText;
-
 		[Header("Audio Config:")]
 		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip levelUpSFX;
@@ -17,6 +13,8 @@ namespace DungeonQuest.Player
 		private int nextLevelXP = 100;
 
 		private PlayerManager playerManager;
+		private Text levelText;
+		private Slider xpBar;
 
 		public int PlayerXP { get; set; }
 		public int GetPlayerLevel { get { return playerLevel; } }
@@ -25,6 +23,9 @@ namespace DungeonQuest.Player
 
 		void Awake() 
 		{
+			xpBar = GameObject.Find("PlayerXPBar").GetComponent<Slider>();
+			levelText = GameObject.Find("PlayerLevelText").GetComponent<Text>();
+
 			playerManager = GetComponent<PlayerManager>();
 
 			xpBar.maxValue = nextLevelXP;

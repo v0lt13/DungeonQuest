@@ -5,24 +5,24 @@ namespace DungeonQuest.Player
 {
 	public class PlayerHealing : MonoBehaviour
 	{
-		[Header ("Healing Config;")]
 		[SerializeField] private float defaultCooldown;
-
-		[Header("UI Config:")]
-		[SerializeField] private Slider cooldownSlider;
-		[SerializeField] private Text healingPotionsAmount;
 
 		[Header("Audio Config:")]
 		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip healingSFX;
 
 		private PlayerManager playerManager;
+		private Text healingPotionsAmount;
+		private Slider cooldownSlider;
 
 		public int HealingPotions { get; private set; }
 		private float Cooldown { get; set; }
 
 		void Awake()
 		{
+			cooldownSlider = GameObject.Find("CooldownSlider").GetComponent<Slider>();
+			healingPotionsAmount = GameObject.Find("PotionAmountText").GetComponent<Text>();
+
 			playerManager = GetComponent<PlayerManager>();
 
 			Cooldown = defaultCooldown;

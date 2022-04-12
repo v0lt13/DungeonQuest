@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Enemy
@@ -68,7 +69,7 @@ namespace DungeonQuest.Enemy
 					break;
 
 				case AIstate.Chase:
-					Chase(enemyManager.playerManager.transform.position);
+					Chase();
 					break;
 
 				case AIstate.Attack:
@@ -88,7 +89,7 @@ namespace DungeonQuest.Enemy
 			enemyManager.IsAttacking = false;
 		}
 
-		private void Chase(Vector2 targetPosition)
+		private void Chase()
 		{
 			enemyManager.IsAttacking = false;
 
@@ -97,7 +98,7 @@ namespace DungeonQuest.Enemy
 			if (stunTime == 0f)
 			{
 				TimeBetweenAttacks = 0.1f;
-				FindPathToPlayer(targetPosition, out path);
+				FindPathToPlayer(enemyManager.playerManager.transform.position, out path);
 
 				if (path != null)
 				{
@@ -109,10 +110,6 @@ namespace DungeonQuest.Enemy
 					{
 						transform.position = Vector2.MoveTowards(transform.position, enemyManager.playerManager.transform.position, enemySpeed * Time.deltaTime);				
 					}
-				}
-				else
-				{
-					state = AIstate.Idle;
 				}
 			}
 		}
