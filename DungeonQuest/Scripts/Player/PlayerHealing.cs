@@ -11,12 +11,12 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip healingSFX;
 
+		[HideInInspector] public int healingPotions;
+		private float cooldown;
+		
 		private PlayerManager playerManager;
 		private Text healingPotionsAmount;
 		private Slider cooldownSlider;
-
-		public int HealingPotions { get; private set; }
-		private float Cooldown { get; set; }
 
 		void Awake()
 		{
@@ -25,35 +25,35 @@ namespace DungeonQuest.Player
 
 			playerManager = GetComponent<PlayerManager>();
 
-			Cooldown = defaultCooldown;
+			cooldown = defaultCooldown;
 			cooldownSlider.maxValue = defaultCooldown;
 		}
 
 		void Update()
 		{
-			cooldownSlider.value = Cooldown;
-			healingPotionsAmount.text = HealingPotions.ToString();
+			cooldownSlider.value = cooldown;
+			healingPotionsAmount.text = healingPotions.ToString();
 
-			if (Cooldown > 0f)
+			if (cooldown > 0f)
 			{
-				Cooldown -= Time.deltaTime;
+				cooldown -= Time.deltaTime;
 			}
 
 			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
-			if (Input.GetButtonDown("Heal") && Cooldown <= 0f && HealingPotions != 0)
+			if (Input.GetButtonDown("Heal") && cooldown <= 0f && healingPotions != 0)
 			{
-				Cooldown = defaultCooldown;
-				HealingPotions--;
+				cooldown = defaultCooldown;
+				healingPotions--;
 
-				playerManager.HealPlayer(playerManager.GetDefaultPlayerHealth);
+				playerManager.HealPlayer(playerManager.defaultPlayerHealth);
 				audioSource.PlayOneShot(healingSFX);
 			}
 		}
 
 		public void AddPotions(int amount)
 		{
-			HealingPotions += amount;
+			healingPotions += amount;
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using UnityEngine;
 
 namespace DungeonQuest.Menus
 {
@@ -7,9 +8,12 @@ namespace DungeonQuest.Menus
 		[SerializeField] private GameObject[] menus;
 
 		private int currentMenu;
+		private bool isNewGame;
 
 		void Awake()
 		{
+			isNewGame = !File.Exists(Application.dataPath + "/GameData.dat");
+
 			var audioSources = GetComponents<AudioSource>();
 
 			foreach (var audioSource in audioSources)
@@ -28,7 +32,14 @@ namespace DungeonQuest.Menus
 
 		public void Play() // Called by Button
 		{
-			GameManager.LoadScene("Level0");
+			if (isNewGame)
+			{
+				GameManager.LoadScene("Level0");
+			}
+			else
+			{
+				GameManager.LoadScene("Lobby");
+			}
 		}
 
 		public void ToggleMenu(int menuIndex) // Called by Button

@@ -18,9 +18,9 @@ namespace DungeonQuest.Pickups
 		{
 			if (collider == playerManager.collider2D)
 			{
-				if (playerManager.PlayerArmor == playerManager.GetDefaultPlayerArmor) return;
+				if (playerManager.playerArmor == playerManager.defaultPlayerArmor) return;
 
-				playerManager.ArmorPlayer(playerManager.GetDefaultPlayerArmor);
+				playerManager.ArmorPlayer(playerManager.defaultPlayerArmor);
 				audio.Play();
 
 				if (destroyOnPickup)

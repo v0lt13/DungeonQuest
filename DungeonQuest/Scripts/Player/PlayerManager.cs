@@ -1,17 +1,24 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DungeonQuest.Data;
 
 namespace DungeonQuest.Player
 {
 	public class PlayerManager : MonoBehaviour
 	{
 		[Header("Player Config:")]
-		[SerializeField] private int defaultPlayerHealth;
-		[SerializeField] private int defaultPlayerArmor;
+		public int defaultPlayerHealth;
+		public int defaultPlayerArmor;
 
 		[Header("Audio Config:")]
 		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip deathSFX;
+
+		[HideInInspector] public int playerHealth = 100;
+		[HideInInspector] public int playerArmor = 100;
+		[HideInInspector] public int coinsAmount;
+		[HideInInspector] public bool invisible;
+		[HideInInspector] public bool noClip;
 
 		[HideInInspector] public PlayerMovement playerMovement;
 		[HideInInspector] public PlayerLeveling playerLeveling;
@@ -22,19 +29,11 @@ namespace DungeonQuest.Player
 		[HideInInspector] public Slider armorBar;
 
 		private PlayerFootsteps playerFootsteps;
+		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;
 
-		public bool Invisible { get; set; }
-		public bool NoClip { get; set; }
 		public bool IsDead { get; private set; }
 		public bool GodMode { private get; set; }
-
-		public int CoinsAmount { get; private set; }
-		public int PlayerHealth { get; private set; }
-		public int PlayerArmor { get; private set; }
-
-		public int GetDefaultPlayerHealth { get { return defaultPlayerHealth; } }
-		public int GetDefaultPlayerArmor { get { return defaultPlayerArmor; } }
 
 		void Awake()
 		{
@@ -43,27 +42,40 @@ namespace DungeonQuest.Player
 			coinsAmountText = GameObject.Find("CoinsAmountText").GetComponent<Text>();
 
 			playerFootsteps = GetComponent<PlayerFootsteps>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
 			playerMovement = GetComponent<PlayerMovement>();
 			playerLeveling = GetComponent<PlayerLeveling>();
 			playerHealing = GetComponent<PlayerHealing>();
 			playerAttack = GetComponent<PlayerAttack>();
+		}
 
-			PlayerHealth = defaultPlayerHealth;
-			PlayerArmor = defaultPlayerArmor;
+		void Start()
+		{
+			GameManager.INSTANCE.gameData.LoadPlayerData();
+
 			healthBar.maxValue = defaultPlayerHealth;
 			armorBar.maxValue = defaultPlayerArmor;
 		}
 
 		void Update()
 		{
-			healthBar.value = PlayerHealth;
-			armorBar.value = PlayerArmor;
-			coinsAmountText.text = CoinsAmount.ToString();
-			collider2D.enabled = !NoClip;
+			healthBar.value = playerHealth;
+			armorBar.value = playerArmor;
+			coinsAmountText.text = coinsAmount.ToString();
+			collider2D.enabled = !noClip;
 
-			if (PlayerHealth < 0)
+			if (invisible || noClip)
 			{
-				PlayerHealth = 0;
+				spriteRenderer.color = new Color(255f, 255f, 255f, 0.5f);
+			}
+			else
+			{
+				spriteRenderer.color = new Color(255f, 255f, 255f, 1f);
+			}
+
+			if (playerHealth < 0)
+			{
+				playerHealth = 0;
 				Die();
 			}	
 		}
@@ -72,55 +84,55 @@ namespace DungeonQuest.Player
 		{
 			if (GodMode) return;
 
-			if (PlayerArmor > 0)
+			if (playerArmor > 0)
 			{
 				var absorbedDamage = damage / 4;
 
-				if (PlayerArmor > absorbedDamage)
+				if (playerArmor > absorbedDamage)
 				{
-					PlayerArmor -= absorbedDamage; // Absorbs 25% of the damage
-					PlayerHealth -= absorbedDamage * 3; // Only 75% of the damage is decreased from the health
+					playerArmor -= absorbedDamage; // Absorbs 25% of the damage
+					playerHealth -= absorbedDamage * 3; // Only 75% of the damage is decreased from the health
 				}
 				else
 				{
-					var remainingDamage = absorbedDamage - PlayerArmor;
+					var remainingDamage = absorbedDamage - playerArmor;
 
-					PlayerArmor = 0;
-					PlayerHealth -= remainingDamage;
+					playerArmor = 0;
+					playerHealth -= remainingDamage;
 				}
 			}
-			else if (PlayerHealth > 0)
+			else if (playerHealth > 0)
 			{
-				PlayerHealth -= damage;
+				playerHealth -= damage;
 			}
 		}
 
 		public void HealPlayer(int amount)
 		{
-			PlayerHealth += amount;
+			playerHealth += amount;
 
-			if (PlayerHealth > defaultPlayerHealth) PlayerHealth = defaultPlayerHealth;
+			if (playerHealth > defaultPlayerHealth) playerHealth = defaultPlayerHealth;
 		}
 
 		public void ArmorPlayer(int amount)
 		{
-			PlayerArmor += amount;
+			playerArmor += amount;
 
-			if (PlayerArmor > defaultPlayerArmor) PlayerArmor = defaultPlayerArmor;
+			if (playerArmor > defaultPlayerArmor) playerArmor = defaultPlayerArmor;
 		}
 
 		public void GiveCoins(int amount)
 		{
-			CoinsAmount += amount;
+			coinsAmount += amount;
 
-			if (CoinsAmount < 0) CoinsAmount = 0;
+			if (coinsAmount < 0) coinsAmount = 0;
 		}
 
 		public void IncreaseMaxHealth(int amount)
 		{
 			defaultPlayerHealth += amount;
 
-			PlayerHealth = defaultPlayerHealth;
+			playerHealth = defaultPlayerHealth;
 			healthBar.maxValue = defaultPlayerHealth;
 		}
 
@@ -128,7 +140,7 @@ namespace DungeonQuest.Player
 		{
 			defaultPlayerArmor += amount;
 
-			PlayerArmor = defaultPlayerArmor;
+			playerArmor = defaultPlayerArmor;
 			armorBar.maxValue = defaultPlayerArmor;
 		}
 

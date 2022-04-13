@@ -19,7 +19,7 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioSource audioSource;
 	    [SerializeField] private AudioClip swipeSFX;
 
-		public int GetDamage { get { return damage; } }
+		public int GetDamage { get { return damage; } set { damage = value; } }
 		public bool IsAttacking { get; private set; }
 
 		private float TimeBetweenAttacks { get; set; }

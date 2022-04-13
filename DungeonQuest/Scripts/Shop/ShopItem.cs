@@ -7,7 +7,7 @@ namespace DungeonQuest.Shop
 	public class ShopItem : MonoBehaviour
 	{
 		[Header("ItemConfig:")]
-		[SerializeField] private int minRequiredLevel;
+		public int minRequiredLevel;
 		[Space(10f)]
 		[SerializeField] private Item item;
 		[SerializeField] private Image itemIcon;
@@ -32,9 +32,9 @@ namespace DungeonQuest.Shop
 
 		void Update()
 		{
-			if (playerManager.playerLeveling.GetPlayerLevel < minRequiredLevel)
+			if (playerManager.playerLeveling.playerLevel < minRequiredLevel)
 			{
-				if (playerManager.playerLeveling.GetPlayerLevel == 100)
+				if (playerManager.playerLeveling.playerLevel == 100)
 				{
 					HoustonWeHaveProblem("Maxed out");
 					return;
@@ -42,7 +42,7 @@ namespace DungeonQuest.Shop
 
 				HoustonWeHaveProblem("level " + minRequiredLevel.ToString() + " required");
 			}
-			else if (playerManager.CoinsAmount < item.itemPrice)
+			else if (playerManager.coinsAmount < item.itemPrice)
 			{
 				HoustonWeHaveProblem("you're to poor");
 			}
@@ -56,6 +56,7 @@ namespace DungeonQuest.Shop
 		public void Buy()
 		{
 			playerManager.GiveCoins(-item.itemPrice); // We substract the coins
+			GameManager.INSTANCE.gameData.SaveData();
 		}
 
 		public void IncreaseMinRequiredLevel(int amount)

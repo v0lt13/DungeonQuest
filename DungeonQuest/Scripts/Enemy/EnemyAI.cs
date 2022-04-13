@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Enemy
@@ -14,7 +13,7 @@ namespace DungeonQuest.Enemy
 			Attack
 		}
 		
-		public enum AIType
+		private enum AIType
 		{
 			Melee,
 			Ranged

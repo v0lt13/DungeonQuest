@@ -90,7 +90,7 @@ namespace DungeonQuest.Debuging
 
 			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.NoClip = value;
+				GameManager.INSTANCE.playerManager.noClip = value;
 
 				var toogleText = value ? "On" : "Off";
 
@@ -99,7 +99,7 @@ namespace DungeonQuest.Debuging
 
 			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.Invisible = value;
+				GameManager.INSTANCE.playerManager.invisible = value;
 
 				var toogleText = value ? "On" : "Off";
 
@@ -132,7 +132,7 @@ namespace DungeonQuest.Debuging
 			{
 				var playerLeveling = GameManager.INSTANCE.playerManager.playerLeveling;
 
-				while (playerLeveling.GetPlayerLevel != 100)
+				while (playerLeveling.playerLevel != 100)
 				{
 					playerLeveling.LevelUp();
 				}
@@ -266,8 +266,8 @@ namespace DungeonQuest.Debuging
 				GUI.FocusControl("InputField");
 				HandleInput();
 
-				scroll.y += 9999;
 				input = "";
+				scroll.y += 9999; // Scroll to the bottom of the output
 			}
 		}
 
@@ -322,9 +322,9 @@ namespace DungeonQuest.Debuging
 		
 		private void OutputConsoleMessage()
 		{
-			const int maxOutputMessages = 100;
+			const int MAX_OUTPUT_MESSAGES = 50;
 
-			if (outputList.Count > maxOutputMessages)
+			if (outputList.Count > MAX_OUTPUT_MESSAGES)
 			{
 				outputList.RemoveAt(0);
 			}

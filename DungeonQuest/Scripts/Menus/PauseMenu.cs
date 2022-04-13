@@ -92,9 +92,9 @@ namespace DungeonQuest.Menus
 			var playerManager = gameManager.playerManager;
 			var playerLeveling = gameManager.playerManager.playerLeveling;
 
-			playerHealthText.text = "HP: " + playerManager.PlayerHealth.ToString() + "/" + playerManager.GetDefaultPlayerHealth.ToString();
-			playerArmorText.text = "AP: " + playerManager.PlayerArmor.ToString() + "/" + playerManager.GetDefaultPlayerArmor.ToString();
-			playerXPText.text = playerLeveling.IsPlayerMaxLevel ? "" : playerLeveling.PlayerXP.ToString() + "\n━━━━━\n" + playerLeveling.GetPlayerNextLevelXP.ToString();
+			playerHealthText.text = "HP: " + playerManager.playerHealth.ToString() + "/" + playerManager.defaultPlayerHealth.ToString();
+			playerArmorText.text = "AP: " + playerManager.playerArmor.ToString() + "/" + playerManager.defaultPlayerArmor.ToString();
+			playerXPText.text = playerLeveling.IsPlayerMaxLevel ? "" : playerLeveling.PlayerXP.ToString() + "\n━━━━━\n" + playerLeveling.nextLevelXP.ToString();
 
 			killCountText.text = "Kills: " + gameManager.KillCount.ToString() + "/" + gameManager.TotalKillCount.ToString();
 			secretCountText.text = "Secrets: " + gameManager.SecretCount.ToString() + "/" + gameManager.TotalSecretCount.ToString();

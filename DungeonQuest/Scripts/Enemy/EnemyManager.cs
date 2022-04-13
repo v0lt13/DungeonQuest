@@ -153,7 +153,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
 
-			if (!playerManager.Invisible && !playerManager.NoClip)
+			if (!playerManager.invisible && !playerManager.noClip)
 			{
 				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance)
 				{

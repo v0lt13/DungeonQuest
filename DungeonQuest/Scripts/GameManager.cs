@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using DungeonQuest.Data;
+using DungeonQuest.Shop;
 using DungeonQuest.Player;
 using System.Collections.Generic;
 
@@ -11,6 +14,11 @@ namespace DungeonQuest
 			Running,
 			Paused
 		}
+
+		public GameDataHandler gameData = new GameDataHandler();
+		public List<ShopItem> shopItems;
+		public List<Text> killCountTexts;
+		public List<Text> secretCountTexts;
 
 		[HideInInspector] public PlayerManager playerManager;
 		[HideInInspector] public List<GameObject> enemyList;
@@ -39,13 +47,18 @@ namespace DungeonQuest
 			#endregion
 
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-
+			
 			AudioListener.pause = false;
 
 			AddEnemies();
 			AddSecrets();
 			EnableCursor(false);
 			SetGameState(GameState.Running);
+
+			if (Application.loadedLevelName == "Lobby")
+			{
+				gameData.LoadGameData();
+			}
 
 			TotalKillCount = enemyList.Count;
 		}
@@ -88,10 +101,16 @@ namespace DungeonQuest
 			playerManager.collider2D.enabled = false;
 			playerManager.enabled = false;
 
+			gameData.SaveData();
 			EnableCursor(true);
 		}
 
-		public void AddEnemies()
+		public void SaveData() // Called by Event
+		{
+			gameData.SaveData();
+		}
+
+		public void AddEnemies() // For debug console
 		{
 			var enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
 			var enemyHolder = GameObject.Find("EnemyHolder");
