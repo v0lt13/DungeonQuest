@@ -56,7 +56,9 @@ namespace DungeonQuest.Shop
 		public void Buy()
 		{
 			playerManager.GiveCoins(-item.itemPrice); // We substract the coins
-			GameManager.INSTANCE.gameData.SaveData();
+
+			GameManager.INSTANCE.gameData.SavePlayerData();
+			GameManager.INSTANCE.gameData.SaveGameData();
 		}
 
 		public void IncreaseMinRequiredLevel(int amount)

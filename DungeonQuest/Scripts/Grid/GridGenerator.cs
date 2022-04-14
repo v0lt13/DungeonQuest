@@ -15,6 +15,7 @@ namespace DungeonQuest.Grid
 
 			MarkObstacles("Blockable");
 			MarkObstacles("Breakeble");
+			MarkObstacles("Secret");
 		}
 
 		[ExecuteInEditMode]

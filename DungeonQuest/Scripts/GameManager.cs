@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using DungeonQuest.Data;
 using DungeonQuest.Shop;
 using DungeonQuest.Player;
@@ -17,8 +16,6 @@ namespace DungeonQuest
 
 		public GameDataHandler gameData = new GameDataHandler();
 		public List<ShopItem> shopItems;
-		public List<Text> killCountTexts;
-		public List<Text> secretCountTexts;
 
 		[HideInInspector] public PlayerManager playerManager;
 		[HideInInspector] public List<GameObject> enemyList;
@@ -101,13 +98,13 @@ namespace DungeonQuest
 			playerManager.collider2D.enabled = false;
 			playerManager.enabled = false;
 
-			gameData.SaveData();
+			gameData.SavePlayerData();
 			EnableCursor(true);
 		}
 
 		public void SaveData() // Called by Event
 		{
-			gameData.SaveData();
+			gameData.SavePlayerData();
 		}
 
 		public void AddEnemies() // For debug console

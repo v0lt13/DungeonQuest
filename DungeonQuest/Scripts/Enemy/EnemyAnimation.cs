@@ -35,6 +35,25 @@ namespace DungeonQuest.Enemy
 				return;
 			}
 
+			if (enemyManager.enemyAI.path == null)
+			{
+				switch (enemyManager.lastMoveDir)
+				{
+					case EnemyManager.LastMoveDirection.DOWN:
+						enemyAnimator.Play(ENEMY_IDLE_DOWN);
+						break;
+					case EnemyManager.LastMoveDirection.UP:
+						enemyAnimator.Play(ENEMY_IDLE_UP);
+						break;
+					case EnemyManager.LastMoveDirection.LEFT:
+						enemyAnimator.Play(ENEMY_IDLE_LEFT);
+						break;
+					case EnemyManager.LastMoveDirection.RIGHT:
+						enemyAnimator.Play(ENEMY_IDLE_RIGHT);
+						break;
+				}
+			}
+
 			switch (enemyManager.enemyAI.state)
 			{
 				case EnemyAI.AIstate.Idle:
@@ -56,7 +75,7 @@ namespace DungeonQuest.Enemy
 					break;
 
 				case EnemyAI.AIstate.Chase:
-					if (enemyManager.IsAttacking) return;
+					if (enemyManager.IsAttacking || enemyManager.enemyAI.path == null) return;
 
 					switch (enemyManager.moveDir)
 					{

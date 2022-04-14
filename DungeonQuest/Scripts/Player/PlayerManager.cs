@@ -9,6 +9,9 @@ namespace DungeonQuest.Player
 		[Header("Player Config:")]
 		public int defaultPlayerHealth;
 		public int defaultPlayerArmor;
+		public int lifeCount;
+		[Space(10f)]
+		[SerializeField] private Text lifeCountText;
 
 		[Header("Audio Config:")]
 		[SerializeField] private AudioSource audioSource;
@@ -19,6 +22,7 @@ namespace DungeonQuest.Player
 		[HideInInspector] public int coinsAmount;
 		[HideInInspector] public bool invisible;
 		[HideInInspector] public bool noClip;
+		[HideInInspector] public bool isDead;
 
 		[HideInInspector] public PlayerMovement playerMovement;
 		[HideInInspector] public PlayerLeveling playerLeveling;
@@ -28,11 +32,9 @@ namespace DungeonQuest.Player
 		[HideInInspector] public Slider healthBar;
 		[HideInInspector] public Slider armorBar;
 
-		private PlayerFootsteps playerFootsteps;
 		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;
 
-		public bool IsDead { get; private set; }
 		public bool GodMode { private get; set; }
 
 		void Awake()
@@ -41,7 +43,6 @@ namespace DungeonQuest.Player
 			armorBar = GameObject.Find("PlayerArmorBar").GetComponent<Slider>();
 			coinsAmountText = GameObject.Find("CoinsAmountText").GetComponent<Text>();
 
-			playerFootsteps = GetComponent<PlayerFootsteps>();
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			playerMovement = GetComponent<PlayerMovement>();
 			playerLeveling = GetComponent<PlayerLeveling>();
@@ -73,7 +74,7 @@ namespace DungeonQuest.Player
 				spriteRenderer.color = new Color(255f, 255f, 255f, 1f);
 			}
 
-			if (playerHealth < 0)
+			if (playerHealth <= 0)
 			{
 				playerHealth = 0;
 				Die();
@@ -146,18 +147,23 @@ namespace DungeonQuest.Player
 
 		private void Die()
 		{
-			IsDead = true;
+			isDead = true;
 			rigidbody2D.isKinematic = true;
+
+			if (lifeCount > 0)
+			{
+				lifeCount--;
+				lifeCountText.text = lifeCount.ToString();
+			}
 
 			audioSource.clip = deathSFX;
 			audioSource.Play();
 
-			Destroy(collider2D);
-			Destroy(playerAttack);
-			Destroy(playerHealing);
-			Destroy(playerMovement);
-			Destroy(playerFootsteps);
-			Destroy(this);
+			collider2D.enabled = false;
+			playerAttack.enabled = false;
+			playerHealing.enabled = false;
+			playerMovement.enabled = false;
+			enabled = false;
 		}
 	}
 }

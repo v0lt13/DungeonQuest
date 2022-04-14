@@ -29,7 +29,7 @@ namespace DungeonQuest.Player
 		
 		void Update()
 		{
-			if (playerManager.IsDead)
+			if (playerManager.isDead)
 			{
 				playerAnimation.Play(PLAYER_DEATH);
 				return;

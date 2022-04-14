@@ -58,7 +58,7 @@ namespace DungeonQuest.Enemy
 				stunTime -= Time.deltaTime;
 			}
 
-			if (enemyManager.playerManager.IsDead) return;
+			if (enemyManager.playerManager.isDead) return;
 
 			switch (state)
 			{
@@ -109,6 +109,10 @@ namespace DungeonQuest.Enemy
 					{
 						transform.position = Vector2.MoveTowards(transform.position, enemyManager.playerManager.transform.position, enemySpeed * Time.deltaTime);				
 					}
+				}
+				else
+				{
+					state = AIstate.Idle;
 				}
 			}
 		}

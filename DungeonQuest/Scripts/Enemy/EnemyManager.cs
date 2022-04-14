@@ -80,20 +80,21 @@ namespace DungeonQuest.Enemy
 		
 		void Update()
 		{
-			if (playerManager.IsDead)
-			{
-				enemyAI.state = EnemyAI.AIstate.Idle;
-				return;
-			}
-			
 			healthBar.value = enemyHealth;
-			playerDirection = transform.InverseTransformPoint(playerManager.transform.position);
 
 			if (enemyHealth <= 0)
 			{
 				enemyHealth = 0;
 				Die();
 			}
+
+			if (playerManager.isDead)
+			{
+				enemyAI.state = EnemyAI.AIstate.Idle;
+				return;
+			}
+			
+			playerDirection = transform.InverseTransformPoint(playerManager.transform.position);
 
 			if (enemyAI.path != null)
 			{
