@@ -10,8 +10,6 @@ namespace DungeonQuest.Data
 
 		public void SavePlayerData() 
 		{
-			// I dont want the data to be saved while in Unity
-			#if !UNITY_EDITOR
 			var data = PlayerData();
 			var binaryFormatter = new BinaryFormatter();
 
@@ -19,13 +17,10 @@ namespace DungeonQuest.Data
 
 			binaryFormatter.Serialize(fileStream, data);
 			fileStream.Close();
-			#endif
 		}
 
 		public void SaveGameData()
 		{
-			// I dont want the data to be saved while in Unity
-			#if !UNITY_EDITOR
 			var data = GameData();
 			var binaryFormatter = new BinaryFormatter();
 
@@ -35,7 +30,6 @@ namespace DungeonQuest.Data
 
 			binaryFormatter.Serialize(fileStream, data);
 			fileStream.Close();
-			#endif
 		}
 
 		public void LoadPlayerData()

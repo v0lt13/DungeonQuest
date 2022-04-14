@@ -40,8 +40,6 @@ namespace DungeonQuest.Menus
 
 		private void SaveSettings()
 		{
-			// I dont want the options to be saved while in Unity
-			#if !UNITY_EDITOR
 			var optionsSave = OptionsData();
 			var xmlDocument = new XmlDocument();
 
@@ -63,7 +61,6 @@ namespace DungeonQuest.Menus
 			xmlDocument.AppendChild(root);
 
 			xmlDocument.Save(Application.dataPath + "/Data/Options.xml");			
-			#endif
 		}
 
 		public void LoadSettings()

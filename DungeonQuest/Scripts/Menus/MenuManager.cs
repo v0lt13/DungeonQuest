@@ -12,13 +12,10 @@ namespace DungeonQuest.Menus
 
 		void Awake()
 		{
-			// I dont want the folder to be created in the editor
-			#if !UNITY_EDITOR
 			if (!Directory.Exists(Application.dataPath + "/Data"))
 			{
-				Directory.CreateDirectory(Application.dataPath);
+				Directory.CreateDirectory(Application.dataPath + "/Data");
 			}
-			#endif
 
 			isNewGame = !File.Exists(Application.dataPath + "/Data/GameData.dat");
 
