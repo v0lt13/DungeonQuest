@@ -107,7 +107,7 @@ namespace DungeonQuest
 			gameData.SavePlayerData();
 		}
 
-		public void AddEnemies() // For debug console
+		public void AddEnemies() // For spawning enemies from the debug console
 		{
 			var enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
 			var enemyHolder = GameObject.Find("EnemyHolder");

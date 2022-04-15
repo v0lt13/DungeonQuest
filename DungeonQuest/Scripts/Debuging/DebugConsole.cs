@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
-using DungeonQuest.Enemy;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Debuging
 {
 	public class DebugConsole : MonoBehaviour
 	{
+		[SerializeField] private bool enableConsole;
 		private bool isConsoleOn;
 
 		private const float OUTPUT_WINDOW_HEIGHT = 300f;
@@ -221,7 +221,7 @@ namespace DungeonQuest.Debuging
 
 		void Update()
 		{
-			if (Input.GetButtonDown("Console"))
+			if (Input.GetButtonDown("Console") && enableConsole)
 			{
 				if (!isConsoleOn && GameManager.INSTANCE.CurrentGameState != GameManager.GameState.Paused)
 				{

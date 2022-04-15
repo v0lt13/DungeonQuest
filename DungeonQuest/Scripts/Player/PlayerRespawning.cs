@@ -7,8 +7,9 @@ namespace DungeonQuest.Player
 	public class PlayerRespawning : MonoBehaviour
 	{
 		[SerializeField] private GameObject gameOverScreen;
+		[SerializeField] private Text respawnText;
 
-		private float respawnCooldown = 3f;
+		private float respawnCooldown = 5f;
 		private bool canRespawn;
 
 		private PlayerManager playerManager;
@@ -30,9 +31,12 @@ namespace DungeonQuest.Player
 			if (playerManager.isDead && respawnCooldown > 0f && playerManager.lifeCount != 0)
 			{
 				respawnCooldown -= Time.deltaTime;
+
+				respawnText.gameObject.SetActive(true);
+				respawnText.text = "Respawning in: " + respawnCooldown.ToString("n0");
 			}
 
-			if (Input.GetButtonDown("Respawn") && playerManager.isDead && canRespawn)
+			if (canRespawn)
 			{
 				playerManager.isDead = false;
 				rigidbody2D.isKinematic = false;
@@ -44,8 +48,9 @@ namespace DungeonQuest.Player
 				playerManager.enabled = true;
 
 				canRespawn = false;
-				respawnCooldown = 3f;
+				respawnCooldown = 5f;
 
+				respawnText.gameObject.SetActive(false);
 				playerManager.HealPlayer(int.MaxValue);
 				StartCoroutine(RespawnInvicibility());
 			}

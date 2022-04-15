@@ -28,8 +28,8 @@ namespace DungeonQuest.Enemy
 
 		void Start()
 		{
-			minXpDrop += enemyManager.enemyLevel * 2;
-			maxXpDrop += enemyManager.enemyLevel * 2;
+			minXpDrop *= enemyManager.enemyLevel;
+			maxXpDrop *= enemyManager.enemyLevel;
 		}
 
 		public void DropLoot()

@@ -55,7 +55,6 @@ namespace DungeonQuest.Grid
 			startNode.hCost = CalculateDistanceCost(startNode, endNode);
 			startNode.CalculateFCost();
 
-
 			while (openList.Count > 0)
 			{
 				PathNode currentNode = GetLowestFCostNode(openList);
