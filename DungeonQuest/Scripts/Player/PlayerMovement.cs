@@ -32,7 +32,7 @@ namespace DungeonQuest.Player
 		[HideInInspector] public FaceingDirection faceingDir;
 		[HideInInspector] public MoveDirection moveDir;
 
-		[SerializeField] private float playerSpeed;
+		public float playerSpeed;
 
 		private const float MOVE_LIMITER = 0.7f;
 		private float x, y;

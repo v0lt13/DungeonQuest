@@ -14,17 +14,18 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<int> HEAL;
 		private static DebugCommand<int> ARMOR;
 		private static DebugCommand<int> GIVE_COINS;
-		private static DebugCommand<int> LOAD_SCENE;
+		private static DebugCommand<uint> LOAD_SCENE;
 		private static DebugCommand<uint> ADD_POTIONS;
 		private static DebugCommand<uint> SET_DAMAGE;
+		private static DebugCommand<uint> SET_SPEED;
 		private static DebugCommand<string, uint> SPAWN_ENEMY;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
 		private static DebugCommand<bool> INVISIBILITY;
 		private static DebugCommand KILL_ENEMIES;
 		private static DebugCommand ENEMY_LIST;
+		private static DebugCommand SCENE_LIST;
 		private static DebugCommand LEVEL_UP;
-		private static DebugCommand MAX_PLAYER;
 		private static DebugCommand DIE;
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
@@ -61,10 +62,17 @@ namespace DungeonQuest.Debuging
 				outputList.Add(value.ToString() + " coins given");
 			});
 
-			LOAD_SCENE = new DebugCommand<int>("loadscene", "Loads a specified scene", "loadscene <index>", (value) =>
+			LOAD_SCENE = new DebugCommand<uint>("loadscene", "Loads a specified scene", "loadscene <index>", (value) =>
 			{
-				GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
-				GameManager.INSTANCE.LoadScene(value);
+				if (value < Application.levelCount)
+				{
+					GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
+					GameManager.INSTANCE.LoadScene((int)value);
+				}
+				else
+				{
+					outputList.Add("Scene does not exist");
+				}
 			});
 
 			ADD_POTIONS = new DebugCommand<uint>("addpotions", "Gives healing potions to the player", "addpotions <amount>", (value) =>
@@ -76,7 +84,14 @@ namespace DungeonQuest.Debuging
 			{
 				GameManager.INSTANCE.playerManager.playerAttack.IncreaseDamage((int)value);
 
-				outputList.Add("Player has damage set to " + value);
+				outputList.Add("Player damage has been set to " + value);
+			});
+
+			SET_SPEED = new DebugCommand<uint>("setspeed", "Sets the player speed. Default = 35", "setspeed <amount>", (value) =>
+			{
+				GameManager.INSTANCE.playerManager.playerMovement.playerSpeed = value;
+
+				outputList.Add("Player speed has been set to " + value);
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (value) =>
@@ -128,18 +143,6 @@ namespace DungeonQuest.Debuging
 				}
 			});
 
-			MAX_PLAYER = new DebugCommand("maxplayer", "Levels up the player to the maximum level", "maxplayer", () =>
-			{
-				var playerLeveling = GameManager.INSTANCE.playerManager.playerLeveling;
-
-				while (playerLeveling.playerLevel != 100)
-				{
-					playerLeveling.LevelUp();
-				}
-
-				outputList.Add("Player is now maxed");
-			});
-
 			KILL_ENEMIES = new DebugCommand("killenemies", "Kills all enemies in the level", "killenemies", () =>
 			{
 				var enemyList = GameManager.INSTANCE.enemyList;
@@ -167,6 +170,26 @@ namespace DungeonQuest.Debuging
 				for (int i = 0; i < enemyPrefabs.enemyList.Count; i++)
 				{
 					outputList.Add(enemyPrefabs.enemyList[i].ToString());
+				}
+			});
+
+			SCENE_LIST = new DebugCommand("scenelist", "Displays a list of all scenes", "scenelist", () =>
+			{
+				var sceneList = new List<string>
+				{
+					"0 - MainMenu",
+					"1 - LoadingScene",
+					"2 - Level0",
+					"3 - Lobby",
+					"4 - C1L1",
+					"5 - Testing Scene"
+				};
+
+				outputList.Add("Scene list:");
+
+				for (int i = 0; i < sceneList.Count; i++)
+				{
+					outputList.Add(sceneList[i]);
 				}
 			});
 
@@ -199,6 +222,7 @@ namespace DungeonQuest.Debuging
 				ADD_POTIONS,
 				GIVE_COINS,
 				SET_DAMAGE,
+				SET_SPEED,
 				GOD_MODE,
 				NOCLIP,
 				INVISIBILITY,
@@ -206,8 +230,8 @@ namespace DungeonQuest.Debuging
 				LOAD_SCENE,
 				KILL_ENEMIES,
 				ENEMY_LIST,
+				SCENE_LIST,
 				LEVEL_UP,
-				MAX_PLAYER,
 				DIE,
 				CLEAR,
 				HELP
@@ -267,7 +291,7 @@ namespace DungeonQuest.Debuging
 				HandleInput();
 
 				input = "";
-				scroll.y += 9999; // Scroll to the bottom of the output
+				scroll.y += 9999; // Scroll to the bottom of the output window
 			}
 		}
 

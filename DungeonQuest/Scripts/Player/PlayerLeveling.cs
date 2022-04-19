@@ -9,9 +9,10 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip levelUpSFX;
 
+		public readonly int maxLevel = 20;
 		[HideInInspector] public int playerLevel = 1;
 		[HideInInspector] public int nextLevelXP = 100;
-
+		
 		private PlayerManager playerManager;
 		private Text levelText;
 		private Slider xpBar;
@@ -29,20 +30,20 @@ namespace DungeonQuest.Player
 
 		void Update()
 		{
-			xpBar.value = PlayerXP;
-			xpBar.maxValue = nextLevelXP;
 			levelText.text = "lvl " + playerLevel.ToString();
+			xpBar.maxValue = nextLevelXP;
+			xpBar.value = PlayerXP;
+
+			if (playerLevel == maxLevel)
+			{
+				IsPlayerMaxLevel = true;
+				nextLevelXP = 1;
+				PlayerXP = 1;
+			}
 
 			if (PlayerXP >= nextLevelXP && !IsPlayerMaxLevel)
 			{
 				LevelUp();
-			}
-
-			if (playerLevel == 100)
-			{
-				IsPlayerMaxLevel = true;
-				nextLevelXP = 0;
-				xpBar.value = xpBar.maxValue;
 			}
 		}
 
@@ -52,8 +53,8 @@ namespace DungeonQuest.Player
 
 			playerLevel++;
 			PlayerXP = 0;
+			nextLevelXP *= 2;
 
-			nextLevelXP += 100;
 			playerManager.IncreaseMaxHealth(10);
 			playerManager.IncreaseMaxArmor(10);
 			playerManager.playerAttack.IncreaseDamage(5);

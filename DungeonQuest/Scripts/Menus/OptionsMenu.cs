@@ -43,6 +43,11 @@ namespace DungeonQuest.Menus
 			var optionsSave = OptionsData();
 			var xmlDocument = new XmlDocument();
 
+			if (!Directory.Exists(Application.dataPath + "/Data"))
+			{
+				Directory.CreateDirectory(Application.dataPath + "/Data");
+			}
+
 			XmlElement root = xmlDocument.CreateElement("Options");
 			root.SetAttribute("FileName", "Options.xml");
 

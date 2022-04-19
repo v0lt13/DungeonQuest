@@ -14,7 +14,7 @@ namespace DungeonQuest.Enemy
 		[Header("Projectile Config:")]
 		public ProjectileType projectileType;
 		[SerializeField] private float speed;
-
+		
 		private bool itHitObject;
 
 		private PlayerManager playerManager;

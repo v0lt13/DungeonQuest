@@ -12,16 +12,8 @@ namespace DungeonQuest.Enemy
 			Chase,
 			Attack
 		}
-		
-		private enum AIType
-		{
-			Melee,
-			Ranged
-		}
 
 		[Header("AI Config:")]
-		[SerializeField] private AIType type;
-		[Space(10f)]
 		public int damage;
 		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float enemySpeed;
@@ -130,6 +122,7 @@ namespace DungeonQuest.Enemy
 				}
 				else
 				{
+					enemyManager.IsAttacking = false;
 					TimeBetweenAttacks -= Time.deltaTime;
 				}
 			}			

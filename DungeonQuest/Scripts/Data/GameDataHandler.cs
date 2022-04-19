@@ -13,6 +13,11 @@ namespace DungeonQuest.Data
 			var data = PlayerData();
 			var binaryFormatter = new BinaryFormatter();
 
+			if (!Directory.Exists(Application.dataPath + "/Data"))
+			{
+				Directory.CreateDirectory(Application.dataPath + "/Data");
+			}
+
 			FileStream fileStream = File.Create(Application.dataPath + "/Data/PlayerData.dat");
 
 			binaryFormatter.Serialize(fileStream, data);
@@ -23,6 +28,11 @@ namespace DungeonQuest.Data
 		{
 			var data = GameData();
 			var binaryFormatter = new BinaryFormatter();
+
+			if (!Directory.Exists(Application.dataPath + "/Data"))
+			{
+				Directory.CreateDirectory(Application.dataPath + "/Data");
+			}
 
 			// We save the game data separate from the player data because we want to save the game data only when the player is in the lobby
 			// Saveing the game data on other scenes will overwrite it with the wrong values
