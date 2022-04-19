@@ -9,8 +9,6 @@ namespace DungeonQuest.Player
 
 		private const float KNOCKBACK_DURATION = 0.1f;
 
-		private bool itHit;
-
 		void Start()
 		{
 			Destroy(gameObject, 0.1f);
@@ -18,8 +16,6 @@ namespace DungeonQuest.Player
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (itHit) return; // Sometime this gets called more then once in a singular frame, so we make sure it happenes only once
-
 			if (collider.CompareTag("Enemy"))
 			{
 				var enemyManager = collider.GetComponent<EnemyManager>();
@@ -43,8 +39,6 @@ namespace DungeonQuest.Player
 				enemyManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
 
 				collider.GetComponent<EnemyAI>().StunEnemy(KNOCKBACK_DURATION);
-
-				itHit = true;
 			}
 			else if (collider.CompareTag("Breakeble"))
 			{

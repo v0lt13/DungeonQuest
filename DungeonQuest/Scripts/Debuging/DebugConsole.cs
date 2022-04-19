@@ -179,7 +179,7 @@ namespace DungeonQuest.Debuging
 				{
 					"0 - MainMenu",
 					"1 - LoadingScene",
-					"2 - Level0",
+					"2 - Entrance",
 					"3 - Lobby",
 					"4 - C1L1",
 					"5 - Testing Scene"

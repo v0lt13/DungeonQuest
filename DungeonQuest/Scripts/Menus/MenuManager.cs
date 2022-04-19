@@ -39,7 +39,7 @@ namespace DungeonQuest.Menus
 		{
 			if (isNewGame)
 			{
-				GameManager.LoadScene("Level0");
+				GameManager.LoadScene("Entrance");
 			}
 			else
 			{
