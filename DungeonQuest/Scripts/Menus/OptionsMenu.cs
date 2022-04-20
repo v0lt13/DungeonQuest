@@ -13,30 +13,36 @@ namespace DungeonQuest.Menus
 		[Space(10f)]
 		[SerializeField] private Toggle vSyncToggle;
 		[SerializeField] private Toggle showFPSToggle;
+		[SerializeField] private Toggle enableConsoleToggle;
 
 		void Awake()
 		{
 			LoadSettings();
 		}
 
-		public void Volume(float volume)
+		public void Volume(float volume) // Called by Slider
 		{
 			AudioListener.volume = volume;
 			SaveSettings();
 		}
 
-		public void ToggleVSync(bool toggle)
+		public void ToggleVSync(bool toggle) // Called by Toggle
 		{
 			QualitySettings.vSyncCount = System.Convert.ToInt32(toggle);
 			SaveSettings();
 		}
 
-		public void ToggleShowFPS(bool toggle)
+		public void ToggleShowFPS(bool toggle) // Called by Toggle
 		{
 			FramerateCounter.SHOW_FPS = toggle;
 			SaveSettings();
 		}
 
+		public void ToggleConsole(bool toggle) // Called by Toggle
+		{
+			Debuging.DebugConsole.ENABLE_CONSOLE = toggle;
+			SaveSettings();
+		}
 
 		private void SaveSettings()
 		{
@@ -59,9 +65,13 @@ namespace DungeonQuest.Menus
 			vSyncElement.InnerText = optionsSave.vSync.ToString();
 			root.AppendChild(vSyncElement);
 
-			XmlElement ShowFpsElement = xmlDocument.CreateElement("ShowFPS");
-			ShowFpsElement.InnerText = optionsSave.showFPS.ToString();
-			root.AppendChild(ShowFpsElement);
+			XmlElement showFpsElement = xmlDocument.CreateElement("ShowFPS");
+			showFpsElement.InnerText = optionsSave.showFPS.ToString();
+			root.AppendChild(showFpsElement);
+
+			XmlElement enableConsoleElement = xmlDocument.CreateElement("EnableConsole");
+			enableConsoleElement.InnerText = optionsSave.enableConsole.ToString();
+			root.AppendChild(enableConsoleElement);
 
 			xmlDocument.AppendChild(root);
 
@@ -86,9 +96,13 @@ namespace DungeonQuest.Menus
 			XmlNodeList showFPS = xmlDocument.GetElementsByTagName("ShowFPS");
 			optionsData.showFPS = bool.Parse(showFPS[0].InnerText);
 
+			XmlNodeList enableConsole = xmlDocument.GetElementsByTagName("EnableConsole");
+			optionsData.enableConsole = bool.Parse(enableConsole[0].InnerText);
+
 			volumeSlider.value = optionsData.volume;
 			vSyncToggle.isOn = optionsData.vSync;
 			showFPSToggle.isOn = optionsData.showFPS;
+			enableConsoleToggle.isOn = optionsData.enableConsole;
 		}
 
 		private OptionsData OptionsData()
@@ -97,7 +111,8 @@ namespace DungeonQuest.Menus
 			{
 				volume = volumeSlider.value,
 				vSync = vSyncToggle.isOn,
-				showFPS = showFPSToggle.isOn
+				showFPS = showFPSToggle.isOn,
+				enableConsole = enableConsoleToggle.isOn
 			};
 
 			return optionsSave;

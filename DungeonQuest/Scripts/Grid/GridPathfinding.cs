@@ -12,12 +12,10 @@ namespace DungeonQuest.Grid
 		private List<PathNode> openList;
 		private List<PathNode> closedList;
 
-		public static GridPathfinding INSTANCE { get; private set; }
 		public Grid<PathNode> GetGrid { get { return grid; } }
 
 		public GridPathfinding(int width, int height)
 		{
-			INSTANCE = this;
 			grid = new Grid<PathNode>(width, height, 10f, Vector3.zero, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
 		}
 

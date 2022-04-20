@@ -40,6 +40,21 @@ namespace DungeonQuest.Traps
 			}
 		}
 
+		public IEnumerator TriggerTrap()
+		{
+			corroutineActivated = true;
+
+			yield return new WaitForSeconds(0.5f);
+
+			ActivateTrap();
+
+			yield return new WaitForSeconds(1f);
+
+			DeactivateTrap();
+
+			corroutineActivated = false;
+		}
+
 		private void ActivateTrap()
 		{
 			spriteRenderer.sprite = sprites[1];
@@ -54,21 +69,6 @@ namespace DungeonQuest.Traps
 			audio.PlayOneShot(audioClips[0]);
 
 			isTrapActive = false;
-		}
-
-		public IEnumerator TriggerTrap()
-		{
-			corroutineActivated = true;
-
-			yield return new WaitForSeconds(0.5f);
-
-			ActivateTrap();
-
-			yield return new WaitForSeconds(1f);
-
-			DeactivateTrap();
-
-			corroutineActivated = false;
 		}
 	}
 }

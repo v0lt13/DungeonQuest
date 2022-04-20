@@ -18,6 +18,7 @@ namespace DungeonQuest.Pickups
 		{
 			if (collider == playerManager.collider2D)
 			{
+				// We return if the player armor is full
 				if (playerManager.playerArmor == playerManager.defaultPlayerArmor) return;
 
 				playerManager.ArmorPlayer(playerManager.defaultPlayerArmor);

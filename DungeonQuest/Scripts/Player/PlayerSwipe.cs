@@ -6,8 +6,7 @@ namespace DungeonQuest.Player
 	public class PlayerSwipe : MonoBehaviour
 	{
 		[SerializeField] private float knockbackPower;
-
-		private const float KNOCKBACK_DURATION = 0.1f;
+		[SerializeField] private float stunTime;
 
 		void Start()
 		{
@@ -21,7 +20,7 @@ namespace DungeonQuest.Player
 				var enemyManager = collider.GetComponent<EnemyManager>();
 				var playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-				var damage = playerManager.playerAttack.GetDamage;
+				var damage = playerManager.playerAttack.damage;
 
 				if (enemyManager == null) return;
 
@@ -38,7 +37,7 @@ namespace DungeonQuest.Player
 				enemyManager.DamageEnemy(damage);
 				enemyManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
 
-				collider.GetComponent<EnemyAI>().StunEnemy(KNOCKBACK_DURATION);
+				collider.GetComponent<EnemyAI>().StunEnemy(stunTime);
 			}
 			else if (collider.CompareTag("Breakeble"))
 			{

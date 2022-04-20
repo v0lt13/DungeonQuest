@@ -17,6 +17,7 @@ namespace DungeonQuest.Menus
 				Directory.CreateDirectory(Application.dataPath + "/Data");
 			}
 
+			// If there is no player data saved start a new game
 			isNewGame = !File.Exists(Application.dataPath + "/Data/PlayerData.dat");
 
 			var audioSources = GetComponents<AudioSource>();

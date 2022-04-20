@@ -21,12 +21,11 @@ namespace DungeonQuest.Enemy
 		private Animation fadeOutAnim;
 		private Vector3 direction;
 
-		public int ProjectileDamage { get; set; }
+		public int ProjectileDamage { private get; set; }
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
-
 			fadeOutAnim = GetComponent<Animation>();
 
 			direction = (playerManager.transform.position - transform.position).normalized;

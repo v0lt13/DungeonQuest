@@ -6,5 +6,6 @@
 
 		public bool vSync = false;
 		public bool showFPS = false;
+		public bool enableConsole = false;
 	}
 }

@@ -20,6 +20,7 @@ namespace DungeonQuest.Menus
 
 			completionTimeSeconds = (int)gameManager.CompletionTime;
 
+			// Convert seconds to minutes and hours
 			while (completionTimeSeconds >= 60)
 			{
 				completionTimeMinutes++;

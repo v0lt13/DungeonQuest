@@ -25,7 +25,7 @@ namespace DungeonQuest.Player
 			
 			if (playerManager.lifeCount == 0)
 			{
-				Invoke("EnableGameOverScreen", 3f);
+				Invoke("EnableGameOverScreen", 2f);
 			}
 
 			if (playerManager.isDead && respawnCooldown > 0f && playerManager.lifeCount != 0)

@@ -17,5 +17,7 @@
 
 		public int coinsAmount;
 		public int healingPotionsAmount;
+
+		public int levelReached;
 	}
 }

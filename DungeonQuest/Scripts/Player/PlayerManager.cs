@@ -64,7 +64,8 @@ namespace DungeonQuest.Player
 			coinsAmountText.text = coinsAmount.ToString();
 			collider2D.enabled = !noClip;
 
-			if (invisible || noClip)
+			// Make the player transparent if he is invisible
+			if (invisible)
 			{
 				spriteRenderer.color = new Color(255f, 255f, 255f, 0.5f);
 			}

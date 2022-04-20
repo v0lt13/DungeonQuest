@@ -46,7 +46,7 @@ namespace DungeonQuest.Shop
 			if (collider == playerCollider) canOpenShop = false;
 		}
 
-		public void CloseShop() // Button
+		public void CloseShop() // Called by Button
 		{
 			isShopOpen = false;
 

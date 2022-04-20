@@ -10,8 +10,8 @@ namespace DungeonQuest.Player
 		private Vector2 swipeDirection;
 
 		[Header("Attack Config:")]
-		[SerializeField] private int damage;
-		[SerializeField] private float timeBetweenAttacks;
+		public int damage;
+		[SerializeField] private float defaultTimeBetweenAttacks;
 		[Space(10f)]
 		[SerializeField] private GameObject swipePrefab;
 
@@ -19,17 +19,15 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioSource audioSource;
 	    [SerializeField] private AudioClip swipeSFX;
 
-		public int GetDamage { get { return damage; } set { damage = value; } }
 		public bool IsAttacking { get; private set; }
-
 		private float TimeBetweenAttacks { get; set; }
 
-		void Awake() 
+		void Awake()
 		{
 			audioSource = GetComponent<AudioSource>();
 			playerManager = GetComponent<PlayerManager>();
 
-			TimeBetweenAttacks = timeBetweenAttacks;
+			TimeBetweenAttacks = defaultTimeBetweenAttacks;
 		}
 		
 		void Update()
@@ -42,7 +40,7 @@ namespace DungeonQuest.Player
 
 				if (Input.GetButtonDown("Attack") && !playerManager.invisible)
 				{
-					TimeBetweenAttacks = timeBetweenAttacks;
+					TimeBetweenAttacks = defaultTimeBetweenAttacks;
 					StartCoroutine(Attack());
 				}
 			}

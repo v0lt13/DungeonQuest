@@ -1,19 +1,27 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace DungeonQuest.Menus
 {
 	public class LevelSelectMenu : MonoBehaviour
 	{
 		[SerializeField] private GameObject[] pages;
+		[SerializeField] private Button[] levelSelectButtons;
 
 		private int currentPage;
 
+		void Awake()
+		{
+			// Enable all buttons for the unlocked levels
+			for (int i = 1; i < levelSelectButtons.Length; i++)
+			{
+				if (i < GameManager.INSTANCE.LevelReached) levelSelectButtons[i].interactable = true;
+			}
+		}
+
 		void Update()
 		{
-			if (Input.GetButtonDown("Back"))
-			{
-				CloseMenu();
-			}
+			if (Input.GetButtonDown("Back")) CloseMenu();
 		}
 
 		void OnEnable()

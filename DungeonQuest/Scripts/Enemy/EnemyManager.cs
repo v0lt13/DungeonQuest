@@ -71,6 +71,7 @@ namespace DungeonQuest.Enemy
 
 		void Start()
 		{
+			// Increase the enemy health and damage depending on it's level
 			enemyHealth += enemyLevel * 10;
 			enemyAI.damage += enemyLevel * 5;
 
@@ -115,6 +116,7 @@ namespace DungeonQuest.Enemy
 				lastMoveDirection = moveDirection;
 			}
 			
+			// Cast the return value of DirectionCheck() to enums
 			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
 			playerDir = (PlayerDirection)DirectionCheck(playerDirection.normalized);
 			moveDir = (MoveDirection)DirectionCheck(moveDirection);
@@ -154,7 +156,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
 
-			if (!playerManager.invisible && !playerManager.noClip)
+			if (!playerManager.invisible)
 			{
 				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance)
 				{

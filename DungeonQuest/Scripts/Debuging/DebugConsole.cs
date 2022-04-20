@@ -5,10 +5,10 @@ namespace DungeonQuest.Debuging
 {
 	public class DebugConsole : MonoBehaviour
 	{
-		[SerializeField] private bool enableConsole;
-		private bool isConsoleOn;
-
 		private const float OUTPUT_WINDOW_HEIGHT = 300f;
+		public static bool ENABLE_CONSOLE;
+
+		private bool isConsoleOn;
 		private string input;
 
 		private static DebugCommand<int> HEAL;
@@ -103,9 +103,10 @@ namespace DungeonQuest.Debuging
 				outputList.Add("Godmode " + toogleText);
 			});
 
-			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects", "noclip <true/false>", (value) =>
+			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects and invisible", "noclip <true/false>", (value) =>
 			{
 				GameManager.INSTANCE.playerManager.noClip = value;
+				GameManager.INSTANCE.playerManager.invisible = value;
 
 				var toogleText = value ? "On" : "Off";
 
@@ -182,7 +183,8 @@ namespace DungeonQuest.Debuging
 					"2 - Entrance",
 					"3 - Lobby",
 					"4 - C1L1",
-					"5 - Testing Scene"
+					"5 - C1L2",
+					"6 - Testing Scene"
 				};
 
 				outputList.Add("Scene list:");
@@ -245,7 +247,7 @@ namespace DungeonQuest.Debuging
 
 		void Update()
 		{
-			if (Input.GetButtonDown("Console") && enableConsole)
+			if (Input.GetButtonDown("Console") && ENABLE_CONSOLE)
 			{
 				if (!isConsoleOn && GameManager.INSTANCE.CurrentGameState != GameManager.GameState.Paused)
 				{

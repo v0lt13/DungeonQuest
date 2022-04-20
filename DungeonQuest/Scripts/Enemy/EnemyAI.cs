@@ -76,7 +76,7 @@ namespace DungeonQuest.Enemy
 
 		private void Idle() 
 		{
-			TimeBetweenAttacks = 0.1f; 
+			TimeBetweenAttacks = defaultTimeBetweenAttacks; 
 			enemyManager.IsAttacking = false;
 		}
 
@@ -88,7 +88,7 @@ namespace DungeonQuest.Enemy
 
 			if (stunTime == 0f)
 			{
-				TimeBetweenAttacks = 0.1f;
+				TimeBetweenAttacks = defaultTimeBetweenAttacks;
 				FindPathToPlayer(enemyManager.playerManager.transform.position, out path);
 
 				if (path != null)
@@ -125,7 +125,7 @@ namespace DungeonQuest.Enemy
 					enemyManager.IsAttacking = false;
 					TimeBetweenAttacks -= Time.deltaTime;
 				}
-			}			
+			}
 		}
 
 		private void FindPathToPlayer(Vector2 targetPosition, out List<PathNode> path)
@@ -146,12 +146,12 @@ namespace DungeonQuest.Enemy
 			}
 		}
 
-		private void HitPlayer() // Animation event
+		private void HitPlayer() // Called by Animation event
 		{
 			enemyManager.playerManager.DamagePlayer(damage);
 		}
 
-		private void ShootArrow() // Animation event
+		private void ShootArrow() // Called by Animation event
 		{
 			var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity) as GameObject;
 

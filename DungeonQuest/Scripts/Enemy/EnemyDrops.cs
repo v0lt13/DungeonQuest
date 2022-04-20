@@ -28,6 +28,7 @@ namespace DungeonQuest.Enemy
 
 		void Start()
 		{
+			// Increase the XP drops depending on the enemy level
 			minXpDrop *= enemyManager.enemyLevel;
 			maxXpDrop *= enemyManager.enemyLevel;
 		}

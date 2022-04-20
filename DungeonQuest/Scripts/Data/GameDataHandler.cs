@@ -34,7 +34,7 @@ namespace DungeonQuest.Data
 				Directory.CreateDirectory(Application.dataPath + "/Data");
 			}
 
-			// We save the game data separate from the player data because we want to save the game data only when the player is in the lobby
+			// We save the game data separate from the player data because we want to save the game data only when the player is in the lobby or the testing scene
 			// Saveing the game data on other scenes will overwrite it with the wrong values
 			FileStream fileStream = File.Create(Application.dataPath + "/Data/GameData.dat");
 
@@ -59,7 +59,7 @@ namespace DungeonQuest.Data
 			gameManager.playerManager.playerArmor = data.playerArmor;
 			gameManager.playerManager.defaultPlayerArmor = data.maxPlayerArmor;
 
-			gameManager.playerManager.playerAttack.GetDamage = data.playerAttackPower;
+			gameManager.playerManager.playerAttack.damage = data.playerAttackPower;
 
 			gameManager.playerManager.playerLeveling.playerLevel = data.playerLevel;
 			gameManager.playerManager.playerLeveling.PlayerXP = data.playerXP;
@@ -67,6 +67,8 @@ namespace DungeonQuest.Data
 
 			gameManager.playerManager.coinsAmount = data.coinsAmount;
 			gameManager.playerManager.playerHealing.healingPotions = data.healingPotionsAmount;
+
+			gameManager.LevelReached = data.levelReached;
 		}
 		
 		public void LoadGameData()
@@ -98,7 +100,7 @@ namespace DungeonQuest.Data
 				playerArmor = gameManager.playerManager.playerArmor,
 				maxPlayerArmor = gameManager.playerManager.defaultPlayerArmor,
 
-				playerAttackPower = gameManager.playerManager.playerAttack.GetDamage,
+				playerAttackPower = gameManager.playerManager.playerAttack.damage,
 
 				playerLevel = gameManager.playerManager.playerLeveling.playerLevel,
 				playerXP = gameManager.playerManager.playerLeveling.PlayerXP,
@@ -106,6 +108,8 @@ namespace DungeonQuest.Data
 
 				coinsAmount = gameManager.playerManager.coinsAmount,
 				healingPotionsAmount = gameManager.playerManager.playerHealing.healingPotions,
+
+				levelReached = gameManager.LevelReached
 			};
 
 			return playerData;
@@ -116,6 +120,7 @@ namespace DungeonQuest.Data
 			var gameManager = GameManager.INSTANCE;
 			var gameData = new GameData();
 
+			// Currently the game data only holds the shop upgrades required levels
 			foreach (var item in gameManager.shopItems)
 			{
 				if (item != null)

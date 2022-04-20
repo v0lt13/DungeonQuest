@@ -6,7 +6,5 @@ namespace DungeonQuest.Data
 	public class GameData
 	{
 		public List<int> shopItemRequiredLevels = new List<int>();
-
-		public List<bool> completedLevels = new List<bool>();
 	}
 }

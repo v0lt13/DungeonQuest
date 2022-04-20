@@ -68,6 +68,7 @@ namespace DungeonQuest.Player
 				faceingDirection = lastMoveDirection;
 			}
 
+			// Cast the return value of DirectionCheck() to enums
 			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
 			faceingDir = (FaceingDirection)DirectionCheck(faceingDirection);
 			moveDir = (MoveDirection)DirectionCheck(unmodifiedMoveDirection);

@@ -32,9 +32,11 @@ namespace DungeonQuest.Shop
 
 		void Update()
 		{
-			if (playerManager.playerLeveling.playerLevel < minRequiredLevel)
+			var playerLeveling = playerManager.playerLeveling;
+
+			if (playerLeveling.playerLevel < minRequiredLevel)
 			{
-				if (playerManager.playerLeveling.playerLevel == 100)
+				if (playerLeveling.playerLevel == playerLeveling.maxLevel)
 				{
 					HoustonWeHaveProblem("Maxed out");
 					return;
@@ -66,10 +68,10 @@ namespace DungeonQuest.Shop
 			minRequiredLevel += amount;
 		}
 
-		private void HoustonWeHaveProblem(string whatsTheProblem)
+		private void HoustonWeHaveProblem(string problem)
 		{
 			buyButton.interactable = false;
-			problemText.text = whatsTheProblem;
+			problemText.text = problem;
 		}
 	}
 }

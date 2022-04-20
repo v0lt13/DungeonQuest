@@ -19,11 +19,12 @@ namespace DungeonQuest
 
 		[HideInInspector] public PlayerManager playerManager;
 		[HideInInspector] public List<GameObject> enemyList;
-
+		
 		public GameState CurrentGameState { get; private set; }
 		
 		public int SecretCount { get; set; }
 		public int KillCount { get; set; }
+		public int LevelReached { get; set; }
 		public int TotalKillCount { get; private set; }
 		public int TotalSecretCount { get; private set; }
 		public float CompletionTime { get; private set; }
@@ -52,12 +53,12 @@ namespace DungeonQuest
 			EnableCursor(false);
 			SetGameState(GameState.Running);
 
-			if (Application.loadedLevelName == "Lobby")
+			TotalKillCount = enemyList.Count;
+
+			if (Application.loadedLevelName == "Lobby" || Application.loadedLevelName == "Testing Scene")
 			{
 				gameData.LoadGameData();
 			}
-
-			TotalKillCount = enemyList.Count;
 		}
 
 		void FixedUpdate()
@@ -89,9 +90,12 @@ namespace DungeonQuest
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 
-		public void EndLevel() // Called by Event
+		public void EndLevel(int nextLevelToUnlock) // Called by Event
 		{
 			SetGameState(GameState.Paused);
+
+			// We only want to set the reached level if we complete the last unlocked level
+			if (LevelReached < nextLevelToUnlock) LevelReached = nextLevelToUnlock;
 
 			playerManager.renderer.enabled = false;
 			playerManager.playerAttack.enabled = false;
