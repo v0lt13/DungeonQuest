@@ -82,7 +82,7 @@ namespace DungeonQuest.Debuging
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerAttack.IncreaseDamage((int)value);
+				GameManager.INSTANCE.playerManager.playerAttack.damage = (int)value;
 
 				outputList.Add("Player damage has been set to " + value);
 			});
@@ -382,6 +382,16 @@ namespace DungeonQuest.Debuging
 
 				case "rangedskeleton":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.RangedSkeleton as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "armoredmeleeskeleton":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.ArmoredMeleeSkeleton as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "armoredrangedskeleton":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.ArmoredRangedSkeleton as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 

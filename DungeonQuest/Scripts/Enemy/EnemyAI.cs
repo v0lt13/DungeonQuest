@@ -24,11 +24,12 @@ namespace DungeonQuest.Enemy
 		[HideInInspector] public AIstate state;
 		[HideInInspector] public List<PathNode> path;
 
-		private float stunTime;
 		private float timeBetweenAttacks;
 
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
+
+		public float StunTime { get; private set; }
 
 		void Awake()
 		{
@@ -39,14 +40,14 @@ namespace DungeonQuest.Enemy
 		void Update()
 		{
 			// Wait for the stun to wear off, then stop the knockback
-			if (stunTime <= 0f)
+			if (StunTime <= 0f)
 			{
-				stunTime = 0f;
+				StunTime = 0f;
 				enemyManager.rigidbody2D.velocity = Vector2.zero;
 			}
-			else if (stunTime > 0f)
+			else if (StunTime > 0f)
 			{
-				stunTime -= Time.deltaTime;
+				StunTime -= Time.deltaTime;
 			}
 
 			if (enemyManager.playerManager.isDead) return;
@@ -70,7 +71,7 @@ namespace DungeonQuest.Enemy
 
 		public void StunEnemy(float duration)
 		{
-			stunTime = duration;
+			StunTime = duration;
 		}
 
 		private void Idle() 
@@ -82,7 +83,7 @@ namespace DungeonQuest.Enemy
 		{
 			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
-			if (stunTime == 0f)
+			if (StunTime == 0f)
 			{
 				timeBetweenAttacks = defaultTimeBetweenAttacks;
 				FindPathToPlayer(enemyManager.playerManager.transform.position, out path);
@@ -107,7 +108,7 @@ namespace DungeonQuest.Enemy
 
 		private void Attack()
 		{
-			if (stunTime == 0f)
+			if (StunTime == 0f)
 			{
 				if (timeBetweenAttacks <= 0f)
 				{

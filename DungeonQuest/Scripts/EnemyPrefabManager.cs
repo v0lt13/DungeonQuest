@@ -7,17 +7,23 @@ namespace DungeonQuest
 	{
 		public Object MeleeSkeleton { get; private set; }
 		public Object RangedSkeleton { get; private set; }
+		public Object ArmoredMeleeSkeleton { get; private set; }
+		public Object ArmoredRangedSkeleton { get; private set; }
 
 		public List<string> enemyList = new List<string>
 		{
 			"MeleeSkeleton",
-			"RangedSkeleton"
+			"RangedSkeleton",
+			"ArmoredMeleeSkeleton",
+			"ArmoredRangedSkeleton"
 		};
 
 		public void LoadPrefabs()
 		{
 			MeleeSkeleton = Resources.Load("Prefabs/Entities/MeleeSkeleton", typeof(GameObject));
 			RangedSkeleton = Resources.Load("Prefabs/Entities/RangedSkeleton", typeof(GameObject));
+			ArmoredMeleeSkeleton = Resources.Load("Prefabs/Entities/ArmoredMeleeSkeleton", typeof(GameObject));
+			ArmoredRangedSkeleton = Resources.Load("Prefabs/Entities/ArmoredRangedSkeleton", typeof(GameObject));
 		}
 
 		public void InstatiateEnemy(GameObject enemy, uint level)

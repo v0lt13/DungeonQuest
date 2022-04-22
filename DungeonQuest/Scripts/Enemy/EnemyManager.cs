@@ -71,7 +71,7 @@ namespace DungeonQuest.Enemy
 
 		void Start()
 		{
-			// Increase the enemy health and damage depending on it's level
+			// Set the enemy health and damage depending on it's level
 			enemyHealth += enemyLevel * 10;
 			enemyAI.damage += enemyLevel * 5;
 
@@ -165,11 +165,11 @@ namespace DungeonQuest.Enemy
 
 			if (!playerManager.invisible)
 			{
-				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance)
+				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.StunTime == 0f)
 				{
 					enemyAI.state = EnemyAI.AIstate.Chase;
 				}
-				else if (distanceFromPlayer <= attackDistance)
+				else if (distanceFromPlayer <= attackDistance && enemyAI.StunTime == 0f)
 				{
 					enemyAI.state = EnemyAI.AIstate.Attack;
 				}

@@ -55,9 +55,9 @@ namespace DungeonQuest.Player
 			PlayerXP = 0;
 			nextLevelXP *= 2;
 
-			playerManager.IncreaseMaxHealth(10);
-			playerManager.IncreaseMaxArmor(10);
-			playerManager.playerAttack.IncreaseDamage(5);
+			playerManager.IncreaseMaxHealth(20);
+			playerManager.IncreaseMaxArmor(20);
+			playerManager.playerAttack.IncreaseDamage(10);
 
 			audioSource.clip = levelUpSFX;
 			audioSource.Play();
