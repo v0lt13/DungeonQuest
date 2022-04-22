@@ -57,7 +57,7 @@ namespace DungeonQuest.Enemy
 					break;
 
 				case EnemyAI.AIstate.Chase:
-					if (enemyManager.IsAttacking || enemyManager.enemyAI.path == null) return;
+					if (enemyManager.enemyAI.path == null) return;
 
 					switch (enemyManager.moveDir)
 					{
@@ -77,8 +77,8 @@ namespace DungeonQuest.Enemy
 					break;
 
 				case EnemyAI.AIstate.Attack:
-
-					if (!enemyManager.IsAttacking) return;
+					// Check if an animation is already playing
+					if (enemyAnimator.GetCurrentAnimationClipState(0).Length > enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
 
 					switch (enemyManager.playerDir)
 					{

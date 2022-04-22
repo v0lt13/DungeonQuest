@@ -25,11 +25,10 @@ namespace DungeonQuest.Enemy
 		[HideInInspector] public List<PathNode> path;
 
 		private float stunTime;
+		private float timeBetweenAttacks;
 
 		private EnemyManager enemyManager;
 		private GridGenerator grid;
-
-		public float TimeBetweenAttacks { get; private set; }
 
 		void Awake()
 		{
@@ -76,19 +75,16 @@ namespace DungeonQuest.Enemy
 
 		private void Idle() 
 		{
-			TimeBetweenAttacks = defaultTimeBetweenAttacks; 
-			enemyManager.IsAttacking = false;
+			timeBetweenAttacks = defaultTimeBetweenAttacks; 
 		}
 
 		private void Chase()
 		{
-			enemyManager.IsAttacking = false;
-
 			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
 			if (stunTime == 0f)
 			{
-				TimeBetweenAttacks = defaultTimeBetweenAttacks;
+				timeBetweenAttacks = defaultTimeBetweenAttacks;
 				FindPathToPlayer(enemyManager.playerManager.transform.position, out path);
 
 				if (path != null)
@@ -111,19 +107,15 @@ namespace DungeonQuest.Enemy
 
 		private void Attack()
 		{
-			if (state == AIstate.Idle) return;
-
 			if (stunTime == 0f)
 			{
-				if (TimeBetweenAttacks <= 0f)
+				if (timeBetweenAttacks <= 0f)
 				{
-					enemyManager.IsAttacking = true;
-					TimeBetweenAttacks = defaultTimeBetweenAttacks;
+					timeBetweenAttacks = defaultTimeBetweenAttacks;
 				}
 				else
 				{
-					enemyManager.IsAttacking = false;
-					TimeBetweenAttacks -= Time.deltaTime;
+					timeBetweenAttacks -= Time.deltaTime;
 				}
 			}
 		}

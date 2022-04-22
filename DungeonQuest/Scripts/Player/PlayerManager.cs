@@ -33,6 +33,7 @@ namespace DungeonQuest.Player
 
 		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;
+		private Image vignette;
 
 		public bool GodMode { private get; set; }
 
@@ -41,6 +42,7 @@ namespace DungeonQuest.Player
 			healthBar = GameObject.Find("PlayerHealthBar").GetComponent<Slider>();
 			armorBar = GameObject.Find("PlayerArmorBar").GetComponent<Slider>();
 			coinsAmountText = GameObject.Find("CoinsAmountText").GetComponent<Text>();
+			vignette = GameObject.Find("Vignette").GetComponent<Image>();
 
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			playerMovement = GetComponent<PlayerMovement>();
@@ -72,6 +74,18 @@ namespace DungeonQuest.Player
 			else
 			{
 				spriteRenderer.color = new Color(255f, 255f, 255f, 1f);
+			}
+			
+			var healthFraction = defaultPlayerHealth / 4;
+
+			// We check if the player's health is less then 25%
+			if (playerHealth < healthFraction)
+			{
+				vignette.color = new Color(0.35f, 0f, 0f, 0.7f); // Set the color to a dark red
+			}
+			else
+			{
+				vignette.color = new Color(0f, 0f, 0f, 0.7f); // Sethe color to black
 			}
 
 			if (playerHealth <= 0)

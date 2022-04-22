@@ -36,8 +36,9 @@ namespace DungeonQuest.Enemy
 		[SerializeField] private float attackDistance;
 		[SerializeField] private int enemyHealth;
 
-		[Space(10f)]
+		[Header("Audio Config:")]
 		[SerializeField] private AudioClip deathSFX;
+		[SerializeField] private AudioClip damagedSFX;
 
 		[HideInInspector] public LastMoveDirection lastMoveDir;
 		[HideInInspector] public PlayerDirection playerDir;
@@ -57,7 +58,6 @@ namespace DungeonQuest.Enemy
 		public int GetEnemyHealth {	get { return enemyHealth; } }
 
 		public bool IsDead { get; private set; }
-		public bool IsAttacking { get; set; }
 
 		void Awake()
 		{
@@ -126,7 +126,14 @@ namespace DungeonQuest.Enemy
 
 		public void DamageEnemy(int damage)
 		{
-			if (enemyHealth > 0) enemyHealth -= damage;
+			if (enemyHealth > 0)
+			{
+				enemyHealth -= damage;
+
+				audio.clip = damagedSFX;
+				audio.pitch = Random.Range(0.7f, 1.5f);
+				audio.Play();
+			}
 		}
 
 		private void Die()
@@ -138,9 +145,9 @@ namespace DungeonQuest.Enemy
 			GameManager.INSTANCE.KillCount++;
 			GameManager.INSTANCE.enemyList.Remove(gameObject);
 
-			var deathSound = GetComponent<AudioSource>();
-			deathSound.clip = deathSFX;
-			deathSound.Play();
+			audio.clip = deathSFX;
+			audio.pitch = 1f;
+			audio.Play();
 
 			healthBar.gameObject.SetActive(false);
 			levelText.gameObject.SetActive(false);
