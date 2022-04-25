@@ -19,5 +19,6 @@
 		public int healingPotionsAmount;
 
 		public int levelReached;
+		public int secretLevelReached;
 	}
 }

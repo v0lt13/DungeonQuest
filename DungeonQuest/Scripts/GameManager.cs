@@ -25,6 +25,7 @@ namespace DungeonQuest
 		public int SecretCount { get; set; }
 		public int KillCount { get; set; }
 		public int LevelReached { get; set; }
+		public int SecretLevelsUnlocked { get; set; }
 		public int TotalKillCount { get; private set; }
 		public int TotalSecretCount { get; private set; }
 		public float CompletionTime { get; private set; }
@@ -90,12 +91,9 @@ namespace DungeonQuest
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 
-		public void EndLevel(int nextLevelToUnlock) // Called by Event
+		public void EndLevel() // Called by Event
 		{
 			SetGameState(GameState.Paused);
-
-			// We only want to set the reached level if we complete the last unlocked level
-			if (LevelReached < nextLevelToUnlock) LevelReached = nextLevelToUnlock;
 
 			playerManager.renderer.enabled = false;
 			playerManager.playerAttack.enabled = false;
@@ -104,6 +102,17 @@ namespace DungeonQuest
 
 			gameData.SavePlayerData();
 			EnableCursor(true);
+		}
+
+		public void UnlockLevel(int level)
+		{
+			// We only want to set the reached level if we complete the last unlocked level
+			if (LevelReached < level) LevelReached = level;
+		}
+
+		public void UnlockSecretlevel(int level)
+		{
+			if (SecretLevelsUnlocked < level) SecretLevelsUnlocked = level;
 		}
 
 		public void SaveData() // Called by Event

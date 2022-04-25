@@ -6,6 +6,7 @@ namespace DungeonQuest.Menus
 	public class LevelSelectMenu : MonoBehaviour
 	{
 		[SerializeField] private GameObject[] pages;
+		[SerializeField] private GameObject[] secretLevelButtons;
 		[SerializeField] private Button[] levelSelectButtons;
 
 		private int currentPage;
@@ -16,6 +17,11 @@ namespace DungeonQuest.Menus
 			for (int i = 1; i < levelSelectButtons.Length; i++)
 			{
 				if (i < GameManager.INSTANCE.LevelReached) levelSelectButtons[i].interactable = true;
+			}
+
+			for (int i = 0; i < secretLevelButtons.Length; i++)
+			{
+				if (i < GameManager.INSTANCE.SecretLevelsUnlocked) secretLevelButtons[i].SetActive(true);
 			}
 		}
 
