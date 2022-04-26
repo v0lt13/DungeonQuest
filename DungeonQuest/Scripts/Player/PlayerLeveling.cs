@@ -5,8 +5,6 @@ namespace DungeonQuest.Player
 {
 	public class PlayerLeveling : MonoBehaviour
 	{
-		[Header("Audio Config:")]
-		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip levelUpSFX;
 
 		public readonly int maxLevel = 20;
@@ -59,8 +57,9 @@ namespace DungeonQuest.Player
 			playerManager.IncreaseMaxArmor(20);
 			playerManager.playerAttack.IncreaseDamage(10);
 
-			audioSource.clip = levelUpSFX;
-			audioSource.Play();
+			audio.clip = levelUpSFX;
+			audio.pitch = 1f;
+			audio.Play();
 		}
 	}
 }

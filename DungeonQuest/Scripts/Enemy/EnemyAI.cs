@@ -149,6 +149,10 @@ namespace DungeonQuest.Enemy
 			var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity) as GameObject;
 
 			projectile.GetComponent<EnemyProjectile>().ProjectileDamage = damage;
+
+			audio.clip = enemyManager.shootSFX;
+			audio.pitch = Random.Range(1f, 1.5f);
+			audio.Play();
 		}
 	}
 }

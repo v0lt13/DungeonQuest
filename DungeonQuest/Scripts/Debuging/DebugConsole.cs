@@ -78,6 +78,8 @@ namespace DungeonQuest.Debuging
 			ADD_POTIONS = new DebugCommand<uint>("addpotions", "Gives healing potions to the player", "addpotions <amount>", (value) =>
 			{
 				GameManager.INSTANCE.playerManager.playerHealing.AddPotions((int)value);
+
+				outputList.Add(value + " potions added");
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
@@ -174,7 +176,7 @@ namespace DungeonQuest.Debuging
 				}
 			});
 
-			SCENE_LIST = new DebugCommand("scenelist", "Displays a list of all scenes", "scenelist", () =>
+			SCENE_LIST = new DebugCommand("scenelist", "Displays a list of all scenes and their index", "scenelist", () =>
 			{
 				var sceneList = new List<string>
 				{
@@ -184,7 +186,9 @@ namespace DungeonQuest.Debuging
 					"3 - Lobby",
 					"4 - C1L1",
 					"5 - C1L2",
-					"6 - Testing Scene"
+					"6 - C1L3",
+					"7 - S1",
+					"8 - Testing Scene"
 				};
 
 				outputList.Add("Scene list:");

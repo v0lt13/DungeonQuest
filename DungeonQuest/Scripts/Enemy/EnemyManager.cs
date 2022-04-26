@@ -39,6 +39,7 @@ namespace DungeonQuest.Enemy
 		[Header("Audio Config:")]
 		[SerializeField] private AudioClip deathSFX;
 		[SerializeField] private AudioClip damagedSFX;
+		public AudioClip shootSFX;
 
 		[HideInInspector] public LastMoveDirection lastMoveDir;
 		[HideInInspector] public PlayerDirection playerDir;

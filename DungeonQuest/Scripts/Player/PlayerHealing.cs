@@ -7,8 +7,6 @@ namespace DungeonQuest.Player
 	{
 		[SerializeField] private float defaultCooldown;
 
-		[Header("Audio Config:")]
-		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip healingSFX;
 
 		[HideInInspector] public int healingPotions;
@@ -47,7 +45,7 @@ namespace DungeonQuest.Player
 				healingPotions--;
 
 				playerManager.HealPlayer(playerManager.defaultPlayerHealth);
-				audioSource.PlayOneShot(healingSFX);
+				audio.PlayOneShot(healingSFX);
 			}
 		}
 

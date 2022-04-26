@@ -7,6 +7,8 @@ namespace DungeonQuest.Traps
 	{
 		[SerializeField] private int damage;
 		[SerializeField] private float speed;
+		[Space(10f)]
+		[SerializeField] private AudioClip hitSFX;
 
 		private bool itHitObject;
 
@@ -43,6 +45,10 @@ namespace DungeonQuest.Traps
 			}
 			else if (collider.CompareTag("Blockable"))
 			{
+				audio.clip = hitSFX;
+				audio.pitch = Random.Range(1f, 1.5f);
+				audio.Play();
+
 				itHitObject = true;
 				direction = Vector2.zero;
 

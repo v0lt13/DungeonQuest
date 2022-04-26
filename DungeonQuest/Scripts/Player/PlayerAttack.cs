@@ -12,11 +12,9 @@ namespace DungeonQuest.Player
 		[Header("Attack Config:")]
 		public int damage;
 		[SerializeField] private float defaultTimeBetweenAttacks;
-		[Space(10f)]
-		[SerializeField] private GameObject swipePrefab;
 
-		[Header("Audio Config:")]
-		[SerializeField] private AudioSource audioSource;
+		[Header("Swipe Config:")]
+		[SerializeField] private GameObject swipePrefab;
 	    [SerializeField] private AudioClip swipeSFX;
 
 		public bool IsAttacking { get; private set; }
@@ -24,7 +22,6 @@ namespace DungeonQuest.Player
 
 		void Awake()
 		{
-			audioSource = GetComponent<AudioSource>();
 			playerManager = GetComponent<PlayerManager>();
 
 			TimeBetweenAttacks = defaultTimeBetweenAttacks;
@@ -86,7 +83,7 @@ namespace DungeonQuest.Player
 		{
 			IsAttacking = true;
 
-			audioSource.PlayOneShot(swipeSFX);
+			audio.PlayOneShot(swipeSFX);
 
 			SetSwipeTransform();
 			Instantiate(swipePrefab, swipeDirection, swipeRotation);

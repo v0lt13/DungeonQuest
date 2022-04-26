@@ -13,8 +13,8 @@ namespace DungeonQuest.Player
 		[SerializeField] private Text lifeCountText;
 
 		[Header("Audio Config:")]
-		[SerializeField] private AudioSource audioSource;
 		[SerializeField] private AudioClip deathSFX;
+		[SerializeField] private AudioClip hitSFX;
 
 		[HideInInspector] public int playerHealth = 100;
 		[HideInInspector] public int playerArmor = 100;
@@ -120,6 +120,10 @@ namespace DungeonQuest.Player
 			{
 				playerHealth -= damage;
 			}
+
+			audio.clip = hitSFX;
+			audio.pitch = Random.Range(1f, 1.3f);
+			audio.Play();
 		}
 
 		public void HealPlayer(int amount)
@@ -170,8 +174,9 @@ namespace DungeonQuest.Player
 				lifeCountText.text = lifeCount.ToString();
 			}
 
-			audioSource.clip = deathSFX;
-			audioSource.Play();
+			audio.clip = deathSFX;
+			audio.pitch = 1f;
+			audio.Play();
 
 			collider2D.enabled = false;
 			playerAttack.enabled = false;

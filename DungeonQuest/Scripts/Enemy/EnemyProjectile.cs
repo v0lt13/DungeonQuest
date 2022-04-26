@@ -14,6 +14,7 @@ namespace DungeonQuest.Enemy
 		[Header("Projectile Config:")]
 		public ProjectileType projectileType;
 		[SerializeField] private float speed;
+		[SerializeField] private AudioClip hitSFX;
 		
 		private bool itHitObject;
 
@@ -68,6 +69,10 @@ namespace DungeonQuest.Enemy
 						Destroy(gameObject);
 						break;
 				}
+
+				audio.clip = hitSFX;
+				audio.pitch = Random.Range(1f, 1.5f);
+				audio.Play();
 
 				itHitObject = true;
 				direction = Vector2.zero;
