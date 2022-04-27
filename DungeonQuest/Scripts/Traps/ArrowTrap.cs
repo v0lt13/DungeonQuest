@@ -27,14 +27,18 @@ namespace DungeonQuest.Traps
 
 			RaycastHit2D hit = Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector2.up), rayDistance, mask);
 
-			if (drawRay) Debug.DrawRay(transform.position, transform.TransformDirection(-Vector2.up) * rayDistance, Color.green);
-
 			if (hit.collider != null)
 			{
 				bool itCollided = hit.collider == playerCollider || hit.collider.CompareTag("Enemy");
 
 				if (itCollided && !corroutineActivated) StartCoroutine(TriggerTrap());
 			}
+		}
+
+		[ExecuteInEditMode]
+		void OnDrawGizmos()
+		{
+			if (drawRay) Debug.DrawRay(transform.position, transform.TransformDirection(-Vector2.up) * rayDistance, Color.green);
 		}
 
 		public IEnumerator TriggerTrap()

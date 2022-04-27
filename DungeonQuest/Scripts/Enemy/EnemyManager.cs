@@ -73,7 +73,7 @@ namespace DungeonQuest.Enemy
 		void Start()
 		{
 			// Set the enemy health and damage depending on it's level
-			enemyHealth += enemyLevel * 10;
+			enemyHealth += enemyLevel * 15;
 			enemyAI.damage += enemyLevel * 5;
 
 			healthBar.maxValue = enemyHealth;
@@ -132,7 +132,7 @@ namespace DungeonQuest.Enemy
 				enemyHealth -= damage;
 
 				audio.clip = damagedSFX;
-				audio.pitch = Random.Range(0.7f, 1.5f);
+				audio.pitch = Random.Range(0.7f, 1.3f);
 				audio.Play();
 			}
 		}
