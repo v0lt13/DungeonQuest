@@ -18,6 +18,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<uint> ADD_POTIONS;
 		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<uint> SET_SPEED;
+		private static DebugCommand<uint> UNLOCK_LEVEL;
 		private static DebugCommand<string, uint> SPAWN_ENEMY;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
@@ -27,6 +28,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand SCENE_LIST;
 		private static DebugCommand LEVEL_UP;
 		private static DebugCommand DIE;
+		private static DebugCommand SAVE;
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
 
@@ -94,6 +96,14 @@ namespace DungeonQuest.Debuging
 				GameManager.INSTANCE.playerManager.playerMovement.playerSpeed = value;
 
 				outputList.Add("Player speed has been set to " + value);
+			});
+
+			UNLOCK_LEVEL = new DebugCommand<uint>("unlocklevel", "Unlocks a specified level. Requires reloading the scene if in the Lobby", "unlocklevel <level>", (value) =>
+			{
+				GameManager.INSTANCE.UnlockLevel((int)value);
+				GameManager.INSTANCE.SaveData();
+
+				outputList.Add("Level " + value + " unlocked");
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (value) =>
@@ -187,8 +197,9 @@ namespace DungeonQuest.Debuging
 					"4 - C1L1",
 					"5 - C1L2",
 					"6 - C1L3",
-					"7 - S1",
-					"8 - Testing Scene"
+					"7 - C1L4",
+					"8 - S1",
+					"9 - Testing Scene"
 				};
 
 				outputList.Add("Scene list:");
@@ -204,6 +215,13 @@ namespace DungeonQuest.Debuging
 				GameManager.INSTANCE.playerManager.DamagePlayer(int.MaxValue);
 
 				outputList.Add("R.I.P");
+			});
+
+			SAVE = new DebugCommand("save", "Saves the player data", "save", () =>
+			{
+				GameManager.INSTANCE.SaveData();
+
+				outputList.Add("Game saved");
 			});
 
 			CLEAR = new DebugCommand("clear", "Clears the console", "clear", () =>
@@ -229,6 +247,7 @@ namespace DungeonQuest.Debuging
 				GIVE_COINS,
 				SET_DAMAGE,
 				SET_SPEED,
+				UNLOCK_LEVEL,
 				GOD_MODE,
 				NOCLIP,
 				INVISIBILITY,
@@ -239,6 +258,7 @@ namespace DungeonQuest.Debuging
 				SCENE_LIST,
 				LEVEL_UP,
 				DIE,
+				SAVE,
 				CLEAR,
 				HELP
 			};
@@ -259,7 +279,6 @@ namespace DungeonQuest.Debuging
 					isConsoleOn = true;
 					AudioListener.pause = true;
 
-					GameManager.EnableCursor(true);
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
 				}
 				else if (isConsoleOn)
@@ -267,7 +286,6 @@ namespace DungeonQuest.Debuging
 					isConsoleOn = false;
 					AudioListener.pause = false;
 
-					GameManager.EnableCursor(false);
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 				}
 			}

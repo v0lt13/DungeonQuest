@@ -33,13 +33,11 @@ namespace DungeonQuest.Menus
 		void OnEnable()
 		{
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
-			GameManager.EnableCursor(true);
 		}
 
 		public void CloseMenu() // Called by Button
 		{
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
-			GameManager.EnableCursor(false);
 			gameObject.SetActive(false);
 		}
 

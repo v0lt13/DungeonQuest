@@ -58,9 +58,7 @@ namespace DungeonQuest.Player
 
 		private void EnableGameOverScreen()
 		{
-			GameManager.EnableCursor(true);
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
-
 			gameOverScreen.SetActive(true);
 		}
 

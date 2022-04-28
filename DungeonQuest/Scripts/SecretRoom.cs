@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Grid;
 using System.Collections;
 using DungeonQuest.GameEvents;
 
@@ -10,10 +11,16 @@ namespace DungeonQuest
 		[SerializeField] private VoidEvent gameEvent;
 
 		private Collider2D playerCollider;
+		private GridGenerator grid;
 
 		void Awake()
 		{
-			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();		
+			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
+		}
+
+		void Start()
+		{
+			grid = GameManager.INSTANCE.GetComponent<GridGenerator>();
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
@@ -23,6 +30,8 @@ namespace DungeonQuest
 				GameManager.INSTANCE.SecretCount++;
 
 				gameEvent.Invoke();
+				grid.MarkObstacles("Blockable");
+
 				StartCoroutine(ToogleText());
 				Destroy(gameObject, 3f);
 			}

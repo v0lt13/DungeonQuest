@@ -32,7 +32,7 @@ namespace DungeonQuest.Grid
 			pathfinding.GetNode(x, y).SetIsWalkable(walkable);
 		}
 
-		private void MarkObstacles(string obstacleTag)
+		public void MarkObstacles(string obstacleTag)
 		{
 			var obstacles = GameObject.FindGameObjectsWithTag(obstacleTag);
 

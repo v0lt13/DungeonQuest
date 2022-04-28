@@ -10,6 +10,8 @@ namespace DungeonQuest.Player
 
 		void Start()
 		{
+			// Destroy the collider on start due to enemies beeing able to walk back into the swipe after hit and get damaged
+			Destroy(collider2D, 0.05f);
 			Destroy(gameObject, 0.1f);
 		}
 

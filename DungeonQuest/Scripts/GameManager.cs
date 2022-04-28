@@ -51,7 +51,6 @@ namespace DungeonQuest
 
 			AddEnemies();
 			AddSecrets();
-			EnableCursor(false);
 			SetGameState(GameState.Running);
 
 			TotalKillCount = enemyList.Count;
@@ -62,15 +61,23 @@ namespace DungeonQuest
 			}
 		}
 
+		void Update()
+		{
+			switch (CurrentGameState)
+			{
+				case GameState.Running:
+					Screen.lockCursor = true;
+					break;
+
+				case GameState.Paused:
+					Screen.lockCursor = false;
+					break;
+			}
+		}
+
 		void FixedUpdate()
 		{
 			CompletionTime += Time.fixedDeltaTime;
-		}
-
-		public static void EnableCursor(bool toogle)
-		{
-			Screen.lockCursor = !toogle;
-			Screen.showCursor = toogle;
 		}
 
 		public static void LoadScene(string sceneName)
@@ -101,7 +108,6 @@ namespace DungeonQuest
 			playerManager.enabled = false;
 
 			gameData.SavePlayerData();
-			EnableCursor(true);
 		}
 
 		public void UnlockLevel(int level)
@@ -115,7 +121,7 @@ namespace DungeonQuest
 			if (SecretLevelsUnlocked < level) SecretLevelsUnlocked = level;
 		}
 
-		public void SaveData() // Called by Event
+		public void SaveData() // Called by Event and Debug console
 		{
 			gameData.SavePlayerData();
 		}

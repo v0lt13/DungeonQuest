@@ -27,7 +27,6 @@ namespace DungeonQuest.Shop
 					isShopOpen = true;
 
 					audio.Play();
-					GameManager.EnableCursor(true);
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
 				}
 			}
@@ -50,7 +49,6 @@ namespace DungeonQuest.Shop
 		{
 			isShopOpen = false;
 
-			GameManager.EnableCursor(false);
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 		}
 	}

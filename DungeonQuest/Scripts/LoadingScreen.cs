@@ -9,7 +9,7 @@ namespace DungeonQuest
 
 		void Start()
 		{
-			GameManager.EnableCursor(true);
+			Screen.lockCursor = false;
 
 			if (SCENE_NAME != string.Empty)
 			{

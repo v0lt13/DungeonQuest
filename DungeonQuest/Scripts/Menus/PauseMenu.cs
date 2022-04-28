@@ -42,7 +42,6 @@ namespace DungeonQuest.Menus
 						isGamePaused = true;
 						AudioListener.pause = true;
 
-						GameManager.EnableCursor(true);
 						gameManager.SetGameState(GameManager.GameState.Paused);
 					}
 					else if (isGamePaused)
@@ -65,13 +64,11 @@ namespace DungeonQuest.Menus
 			isGamePaused = false;
 			AudioListener.pause = false;
 
-			GameManager.EnableCursor(false);
 			gameManager.SetGameState(GameManager.GameState.Running);
 		}
 
 		public void Restart() // Called by Button
 		{
-			GameManager.EnableCursor(isGamePaused);
 			GameManager.LoadScene(Application.loadedLevelName);
 		}
 
