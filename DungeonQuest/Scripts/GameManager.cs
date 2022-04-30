@@ -17,6 +17,7 @@ namespace DungeonQuest
 		public GameDataHandler gameData = new GameDataHandler();
 		public List<ShopItem> shopItems;
 
+		[HideInInspector] public bool hasDialogue;
 		[HideInInspector] public PlayerManager playerManager;
 		[HideInInspector] public List<GameObject> enemyList;
 		
@@ -55,9 +56,10 @@ namespace DungeonQuest
 
 			TotalKillCount = enemyList.Count;
 
-			if (Application.loadedLevelName == "Lobby" || Application.loadedLevelName == "Testing Scene")
+			if (Application.loadedLevelName == "Lobby")
 			{
 				gameData.LoadGameData();
+				GameObject.Find("DialogueTrigger").SetActive(!hasDialogue);
 			}
 		}
 

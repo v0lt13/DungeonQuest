@@ -198,8 +198,10 @@ namespace DungeonQuest.Debuging
 					"5 - C1L2",
 					"6 - C1L3",
 					"7 - C1L4",
-					"8 - S1",
-					"9 - Testing Scene"
+					"8 - C1L5",
+					"9 - S1",
+					"10 - Testing Scene",
+					"11 - Intermission"
 				};
 
 				outputList.Add("Scene list:");

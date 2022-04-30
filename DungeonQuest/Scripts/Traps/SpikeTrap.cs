@@ -26,7 +26,9 @@ namespace DungeonQuest.Traps
 
 		void OnTriggerStay2D(Collider2D collider)
 		{
-			if (!corroutineActivated) StartCoroutine(TriggerTrap());
+			bool canTriggerTrap = (collider == playerManager.collider2D && !playerManager.invisible) || collider.CompareTag("Enemy");
+
+			if (!corroutineActivated && canTriggerTrap) StartCoroutine(TriggerTrap());
 
 			if (!isTrapActive) return;
 
@@ -44,11 +46,11 @@ namespace DungeonQuest.Traps
 		{
 			corroutineActivated = true;
 
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(0.3f);
 
 			ActivateTrap();
 
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(0.8f);
 
 			DeactivateTrap();
 

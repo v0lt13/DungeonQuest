@@ -83,6 +83,8 @@ namespace DungeonQuest.Data
 
 			fileStream.Close();
 
+			gameManager.hasDialogue = data.hasDialogue;
+
 			for (int i = 0; i < data.shopItemRequiredLevels.Count; i++)
 			{
 				gameManager.shopItems[i].minRequiredLevel = data.shopItemRequiredLevels[i];
@@ -121,6 +123,8 @@ namespace DungeonQuest.Data
 		{
 			var gameManager = GameManager.INSTANCE;
 			var gameData = new GameData();
+
+			gameData.hasDialogue = gameManager.hasDialogue;
 
 			// Currently the game data only holds the shop upgrades required levels
 			foreach (var item in gameManager.shopItems)

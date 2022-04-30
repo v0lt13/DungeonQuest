@@ -1,24 +1,24 @@
 ﻿using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DungeonQuest.Menus
 {
 	public class MenuManager : MonoBehaviour
 	{
+		[SerializeField] private Button continueButton;
 		[SerializeField] private GameObject[] menus;
 
 		private int currentMenu;
-		private bool isNewGame;
 
 		void Awake()
 		{
+			continueButton.interactable = File.Exists(Application.dataPath + "/Data/PlayerData.dat");
+
 			if (!Directory.Exists(Application.dataPath + "/Data"))
 			{
 				Directory.CreateDirectory(Application.dataPath + "/Data");
 			}
-
-			// If there is no player data saved start a new game
-			isNewGame = !File.Exists(Application.dataPath + "/Data/PlayerData.dat");
 
 			var audioSources = GetComponents<AudioSource>();
 
@@ -36,16 +36,17 @@ namespace DungeonQuest.Menus
 			}
 		}
 
-		public void Play() // Called by Button
+		public void NewGame() // Called by Button
 		{
-			if (isNewGame)
-			{
-				GameManager.LoadScene("Entrance");
-			}
-			else
-			{
-				GameManager.LoadScene("Lobby");
-			}
+			File.Delete(Application.dataPath + "/Data/PlayerData.dat");
+			File.Delete(Application.dataPath + "/Data/GameData.dat");
+
+			Application.LoadLevel("Intermission01");
+		}
+
+		public void Continue()
+		{
+			GameManager.LoadScene("Lobby");
 		}
 
 		public void ToggleMenu(int menuIndex) // Called by Button

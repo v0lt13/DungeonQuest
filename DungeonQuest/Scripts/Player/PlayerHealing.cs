@@ -42,6 +42,7 @@ namespace DungeonQuest.Player
 			if (Input.GetButtonDown("Heal") && cooldown <= 0f && healingPotions != 0)
 			{
 				cooldown = defaultCooldown;
+				audio.pitch = 1f;
 				healingPotions--;
 
 				playerManager.HealPlayer(playerManager.defaultPlayerHealth);

@@ -5,11 +5,11 @@ namespace DungeonQuest.Traps
 {
 	public class Arrow : MonoBehaviour
 	{
-		[SerializeField] private int damage;
 		[SerializeField] private float speed;
 		[Space(10f)]
 		[SerializeField] private AudioClip hitSFX;
 
+		private int damage;
 		private bool itHitObject;
 
 		private Vector3 direction = new Vector3(0f, -1f, 0f);
@@ -20,13 +20,16 @@ namespace DungeonQuest.Traps
 		void Awake()
 		{
 			fadeOutAnim = GetComponent<Animation>();
-			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();			
+			
+			// Set damage to do 25% of the player's max health
+			damage = playerManager.defaultPlayerHealth / 4;
 		}
 
 		void Update()
 		{
 			// Move downwards
-			transform.position += direction * speed * Time.deltaTime;
+			transform.position += direction * speed * Time.deltaTime;			
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)

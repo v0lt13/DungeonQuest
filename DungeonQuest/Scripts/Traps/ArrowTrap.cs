@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DungeonQuest.Player;
 
 namespace DungeonQuest.Traps
 {
@@ -14,11 +15,11 @@ namespace DungeonQuest.Traps
 
 		private bool corroutineActivated;
 
-		private Collider2D playerCollider;
+		private PlayerManager playerManager;
 
 		void Awake()
 		{
-			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 		}
 
 		void FixedUpdate()
@@ -29,7 +30,7 @@ namespace DungeonQuest.Traps
 
 			if (hit.collider != null)
 			{
-				bool itCollided = hit.collider == playerCollider || hit.collider.CompareTag("Enemy");
+				bool itCollided = (hit.collider == playerManager.collider2D && !playerManager.invisible) || hit.collider.CompareTag("Enemy");
 
 				if (itCollided && !corroutineActivated) StartCoroutine(TriggerTrap());
 			}
