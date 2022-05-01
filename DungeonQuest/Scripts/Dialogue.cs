@@ -65,7 +65,7 @@ namespace DungeonQuest
 
 				diablogueText.text += letter;
 
-				yield return StartCoroutine(WaitForRealSeconds(0.05f));
+				yield return StartCoroutine(WaitForRealSeconds(0.03f));
 			}
 
 			canContinue = true;

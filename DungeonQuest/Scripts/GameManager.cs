@@ -17,19 +17,20 @@ namespace DungeonQuest
 		public GameDataHandler gameData = new GameDataHandler();
 		public List<ShopItem> shopItems;
 
+		[HideInInspector] public int secretCount;
+		[HideInInspector] public int killCount;
+		[HideInInspector] public int totalKillCount;
+		[HideInInspector] public int totalSecretCount;
 		[HideInInspector] public bool hasDialogue;
+		
 		[HideInInspector] public PlayerManager playerManager;
-		[HideInInspector] public List<GameObject> enemyList;
-		
-		public GameState CurrentGameState { get; private set; }
-		
-		public int SecretCount { get; set; }
-		public int KillCount { get; set; }
-		public int LevelReached { get; set; }
-		public int SecretLevelsUnlocked { get; set; }
-		public int TotalKillCount { get; private set; }
-		public int TotalSecretCount { get; private set; }
+		[HideInInspector] public List<GameObject> enemyList;		
+
+		public int LevelReached { get; private set; }
+		public int SecretLevelsUnlocked { get; private set; }
 		public float CompletionTime { get; private set; }
+
+		public GameState CurrentGameState { get; private set; }
 		
 		public static GameManager INSTANCE { get; private set; }
 
@@ -50,30 +51,12 @@ namespace DungeonQuest
 			
 			AudioListener.pause = false;
 
-			AddEnemies();
-			AddSecrets();
 			SetGameState(GameState.Running);
-
-			TotalKillCount = enemyList.Count;
 
 			if (Application.loadedLevelName == "Lobby")
 			{
 				gameData.LoadGameData();
 				GameObject.Find("DialogueTrigger").SetActive(!hasDialogue);
-			}
-		}
-
-		void Update()
-		{
-			switch (CurrentGameState)
-			{
-				case GameState.Running:
-					Screen.lockCursor = true;
-					break;
-
-				case GameState.Paused:
-					Screen.lockCursor = false;
-					break;
 			}
 		}
 
@@ -97,6 +80,8 @@ namespace DungeonQuest
 		public void SetGameState(GameState gameState)
 		{
 			CurrentGameState = gameState;
+
+			Screen.lockCursor = gameState == GameState.Paused ? false : true;
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 
@@ -123,36 +108,9 @@ namespace DungeonQuest
 			if (SecretLevelsUnlocked < level) SecretLevelsUnlocked = level;
 		}
 
-		public void SaveData() // Called by Event and Debug console
+		public void SaveData() // Called by Event
 		{
 			gameData.SavePlayerData();
-		}
-
-		public void AddEnemies() // For spawning enemies from the debug console
-		{
-			var enemyObjects = GameObject.FindGameObjectsWithTag("Enemy");
-			var enemyHolder = GameObject.Find("EnemyHolder");
-
-			if (enemyObjects == null && enemyHolder == null) return;
-
-			enemyList.Clear();
-
-			foreach (var enemyObject in enemyObjects)
-			{
-				if (enemyObject.GetComponent<Enemy.EnemyManager>() == null) continue;
-
-				enemyObject.transform.SetParent(enemyHolder.transform);
-				enemyList.Add(enemyObject);
-			}
-
-			TotalKillCount++;
-		}
-
-		private void AddSecrets()
-		{
-			var secrets = GameObject.FindGameObjectsWithTag("Secret");
-
-			TotalSecretCount = secrets.Length;
 		}
 	}
 }

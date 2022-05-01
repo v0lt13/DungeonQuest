@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DungeonQuest.Player;
+using DungeonQuest.GameEvents;
 
-namespace DungeonQuest.Enemy
+namespace DungeonQuest.Enemy.Boss
 {
-	public class EnemyManager : MonoBehaviour
+	public class BossManager : MonoBehaviour
 	{
 		public enum PlayerDirection
 		{
@@ -30,84 +31,76 @@ namespace DungeonQuest.Enemy
 			RIGHT = 3
 		}
 
-		[Header("Enemy Config:")]
-		public int enemyLevel = 1;
+		[Header("Boss Config:")]
 		[SerializeField] private float followDistance;
 		[SerializeField] private float attackDistance;
-		[SerializeField] private int enemyHealth;
+		[SerializeField] private int bossHealth;
+		[Space(10f)]
+		[SerializeField] private Slider healthBar;
+		[SerializeField]  private VoidEvent gameEvent;
 
 		[Header("Audio Config:")]
 		[SerializeField] private AudioClip deathSFX;
 		[SerializeField] private AudioClip damagedSFX;
-		public AudioClip shootSFX;
 
 		[HideInInspector] public LastMoveDirection lastMoveDir;
 		[HideInInspector] public PlayerDirection playerDir;
 		[HideInInspector] public MoveDirection moveDir;
 
 		[HideInInspector] public PlayerManager playerManager;
-		[HideInInspector] public EnemyDrops enemyDrops;
-		[HideInInspector] public EnemyAI enemyAI;
-
-		private Slider healthBar;
-		private Text levelText;
+		[HideInInspector] public BossDrops bossDrops;
+		[HideInInspector] public BossAI bossAI;
 
 		private Vector2 lastMoveDirection;
 		private Vector2 playerDirection;
 		private Vector2 moveDirection;
 
-		public int GetEnemyHealth {	get { return enemyHealth; } }
+		public int GetEnemyHealth { get { return bossHealth; } }
 
+		public bool IsAwake { get; set; }
 		public bool IsDead { get; private set; }
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-			enemyAI = GetComponent<EnemyAI>();
-			enemyDrops = GetComponent<EnemyDrops>();
-			healthBar = GetComponentInChildren<Slider>();
-			levelText = GetComponentInChildren<Text>();
+			bossAI = GetComponent<BossAI>();
+			bossDrops = GetComponent<BossDrops>();
 		}
 
 		void Start()
 		{
-			// Set the enemy health and damage depending on it's level
-			enemyHealth += enemyLevel * 15;
-			enemyAI.damage += enemyLevel * 5;
-
-			healthBar.maxValue = enemyHealth;
-			levelText.text = "Lvl " + enemyLevel;
+			healthBar.maxValue = bossHealth;
 
 			GameManager.INSTANCE.enemyList.Add(gameObject);
 			GameManager.INSTANCE.totalKillCount++;
 
 			gameObject.transform.SetParent(GameObject.Find("EnemyHolder").transform);
 		}
-		
+
 		void Update()
 		{
-			healthBar.value = enemyHealth;
+			healthBar.value = bossHealth;
 
-			if (enemyHealth <= 0)
+			if (bossHealth <= 0)
 			{
-				enemyHealth = 0;
+				bossHealth = 0;
 				Die();
 			}
 
-			if (playerManager.isDead)
+			if (playerManager.isDead || !IsAwake)
 			{
-				enemyAI.state = EnemyAI.AIstate.Idle;
+				bossAI.state = BossAI.AIstate.Idle;
 				return;
 			}
-			
+
 			playerDirection = transform.InverseTransformPoint(playerManager.transform.position);
 
-			if (enemyAI.path != null)
+			if (bossAI.path != null)
 			{
 				try
 				{
-					moveDirection = transform.InverseTransformPoint(new Vector2(enemyAI.path[1].x, enemyAI.path[1].y) * 10f + Vector2.one * 5f).normalized;
+					moveDirection = transform.InverseTransformPoint(new Vector2(bossAI.path[1].x, bossAI.path[1].y) * 10f + Vector2.one * 5f).normalized;
 				}
 				catch (System.ArgumentOutOfRangeException)
 				{
@@ -121,7 +114,7 @@ namespace DungeonQuest.Enemy
 			{
 				lastMoveDirection = moveDirection;
 			}
-			
+
 			// Cast the return value of DirectionCheck() to enums
 			lastMoveDir = (LastMoveDirection)DirectionCheck(lastMoveDirection);
 			playerDir = (PlayerDirection)DirectionCheck(playerDirection.normalized);
@@ -130,11 +123,11 @@ namespace DungeonQuest.Enemy
 			SetAIState();
 		}
 
-		public void DamageEnemy(int damage)
+		public void DamageBoss(int damage)
 		{
-			if (enemyHealth > 0)
+			if (bossHealth > 0)
 			{
-				enemyHealth -= damage;
+				bossHealth -= damage;
 
 				audio.clip = damagedSFX;
 				audio.pitch = Random.Range(0.7f, 1.3f);
@@ -155,12 +148,11 @@ namespace DungeonQuest.Enemy
 			audio.pitch = 1f;
 			audio.Play();
 
-			healthBar.gameObject.SetActive(false);
-			levelText.gameObject.SetActive(false);
+			gameEvent.Invoke();
+			bossDrops.DropLoot();
 
-			enemyDrops.DropLoot();
-			Destroy(GetComponent<CircleCollider2D>());
-			Destroy(enemyAI);
+			Destroy(collider2D);
+			Destroy(bossAI);
 			Destroy(this);
 			Destroy(gameObject, 5f);
 		}
@@ -171,22 +163,26 @@ namespace DungeonQuest.Enemy
 
 			if (!playerManager.invisible)
 			{
-				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.StunTime == 0f)
+				if (bossAI.timeBetweenSpecials <= 0f)
 				{
-					enemyAI.state = EnemyAI.AIstate.Chase;
+					bossAI.state = BossAI.AIstate.Special;
 				}
-				else if (distanceFromPlayer <= attackDistance && enemyAI.StunTime == 0f)
+				else if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && bossAI.StunTime == 0f)
 				{
-					enemyAI.state = EnemyAI.AIstate.Attack;
+					bossAI.state = BossAI.AIstate.Chase;
+				}
+				else if (distanceFromPlayer <= attackDistance && bossAI.StunTime == 0f)
+				{
+					bossAI.state = BossAI.AIstate.Attack;
 				}
 				else
 				{
-					enemyAI.state = EnemyAI.AIstate.Idle;
+					bossAI.state = BossAI.AIstate.Idle;
 				}
 			}
 			else
 			{
-				enemyAI.state = EnemyAI.AIstate.Idle;
+				bossAI.state = BossAI.AIstate.Idle;
 			}
 		}
 

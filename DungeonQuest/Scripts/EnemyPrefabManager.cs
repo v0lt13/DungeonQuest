@@ -14,8 +14,8 @@ namespace DungeonQuest
 		{
 			"MeleeSkeleton",
 			"RangedSkeleton",
-			"ArmoredMeleeSkeleton",
-			"ArmoredRangedSkeleton"
+			"ArmMeleeSkeleton",
+			"ArmRangedSkeleton"
 		};
 
 		public void LoadPrefabs()

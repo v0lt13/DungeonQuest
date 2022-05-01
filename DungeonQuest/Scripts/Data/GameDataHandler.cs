@@ -68,8 +68,8 @@ namespace DungeonQuest.Data
 			gameManager.playerManager.coinsAmount = data.coinsAmount;
 			gameManager.playerManager.playerHealing.healingPotions = data.healingPotionsAmount;
 
-			gameManager.LevelReached = data.levelReached;
-			gameManager.SecretLevelsUnlocked = data.secretLevelReached;
+			gameManager.UnlockLevel(data.levelReached);
+			gameManager.UnlockSecretlevel(data.secretLevelReached);
 		}
 		
 		public void LoadGameData()

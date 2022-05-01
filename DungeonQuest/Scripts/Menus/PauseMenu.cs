@@ -93,8 +93,8 @@ namespace DungeonQuest.Menus
 			playerArmorText.text = "AP: " + playerManager.playerArmor.ToString() + "/" + playerManager.defaultPlayerArmor.ToString();
 			playerXPText.text = playerLeveling.IsPlayerMaxLevel ? "" : playerLeveling.PlayerXP.ToString() + "\n━━━━━\n" + playerLeveling.nextLevelXP.ToString();
 
-			killCountText.text = "Kills: " + gameManager.KillCount.ToString() + "/" + gameManager.TotalKillCount.ToString();
-			secretCountText.text = "Secrets: " + gameManager.SecretCount.ToString() + "/" + gameManager.TotalSecretCount.ToString();
+			killCountText.text = "Kills: " + gameManager.killCount.ToString() + "/" + gameManager.totalKillCount.ToString();
+			secretCountText.text = "Secrets: " + gameManager.secretCount.ToString() + "/" + gameManager.totalSecretCount.ToString();
 		}
 	}
 }

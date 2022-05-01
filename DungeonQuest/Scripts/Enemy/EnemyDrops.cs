@@ -38,13 +38,13 @@ namespace DungeonQuest.Enemy
 			var dropChance = Random.Range(1, 100);
 
 			if (dropChance <= healthDropChance)
-				Instantiate(healthPotionPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
+				Instantiate(healthPotionPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y + Random.Range(-5f, 5f)), Quaternion.identity);
 
 			if (dropChance <= coinDropChance)
-				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
+				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y + Random.Range(-5f, 5f)), Quaternion.identity);
 
 			if (dropChance <= pileOfCoinsDropChance)
-				Instantiate(pileOfCoinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y), Quaternion.identity);
+				Instantiate(pileOfCoinsPrefab, new Vector2(transform.position.x + Random.Range(-5f, 5f), transform.position.y + Random.Range(-5f, 5f)), Quaternion.identity);
 		}
 	}
 }

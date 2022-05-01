@@ -16,6 +16,7 @@ namespace DungeonQuest
 		void Start()
 		{
 			Time.timeScale = 1f;
+			audio.ignoreListenerPause = true;
 
 			StartCoroutine(DisplayText());
 		}

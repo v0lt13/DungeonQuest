@@ -33,8 +33,8 @@ namespace DungeonQuest.Menus
 				}
 			}
 
-			killCountText.text = "Kills: " + gameManager.KillCount.ToString() + "/" + gameManager.TotalKillCount.ToString();
-			secretCountText.text = "Secrets: " + gameManager.SecretCount.ToString() + "/" + gameManager.TotalSecretCount.ToString();
+			killCountText.text = "Kills: " + gameManager.killCount.ToString() + "/" + gameManager.totalKillCount.ToString();
+			secretCountText.text = "Secrets: " + gameManager.secretCount.ToString() + "/" + gameManager.totalSecretCount.ToString();
 			completionTimeText.text = "Time: " + completionTimeHours + "h " + completionTimeMinutes + "m " + completionTimeSeconds + "s";
 		}
 

@@ -101,7 +101,7 @@ namespace DungeonQuest.Debuging
 			UNLOCK_LEVEL = new DebugCommand<uint>("unlocklevel", "Unlocks a specified level. Requires reloading the scene if in the Lobby", "unlocklevel <level>", (value) =>
 			{
 				GameManager.INSTANCE.UnlockLevel((int)value);
-				GameManager.INSTANCE.SaveData();
+				GameManager.INSTANCE.gameData.SavePlayerData();
 
 				outputList.Add("Level " + value + " unlocked");
 			});
@@ -137,8 +137,6 @@ namespace DungeonQuest.Debuging
 			SPAWN_ENEMY = new DebugCommand<string, uint>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name> <level>", (primaryValue, secondaryValue) =>
 			{
 				SpawnEnemy(primaryValue, secondaryValue);
-
-				GameManager.INSTANCE.AddEnemies();
 			});
 
 			LEVEL_UP = new DebugCommand("levelup", "Levels up the player", "levelup", () =>
@@ -200,8 +198,7 @@ namespace DungeonQuest.Debuging
 					"7 - C1L4",
 					"8 - C1L5",
 					"9 - S1",
-					"10 - Testing Scene",
-					"11 - Intermission"
+					"10 - Intermission01"
 				};
 
 				outputList.Add("Scene list:");
@@ -221,7 +218,7 @@ namespace DungeonQuest.Debuging
 
 			SAVE = new DebugCommand("save", "Saves the player data", "save", () =>
 			{
-				GameManager.INSTANCE.SaveData();
+				GameManager.INSTANCE.gameData.SavePlayerData();
 
 				outputList.Add("Game saved");
 			});
@@ -342,7 +339,7 @@ namespace DungeonQuest.Debuging
 							(commandList[i] as DebugCommand<string>).Invoke(proprieties[1]);
 						}
 						else if (commandList[i] as DebugCommand<string, uint> != null)
-						{
+						{								
 							(commandList[i] as DebugCommand<string, uint>).Invoke(proprieties[1], uint.Parse(proprieties[2]));
 						}
 						else if (commandList[i] as DebugCommand<int> != null)
@@ -409,12 +406,12 @@ namespace DungeonQuest.Debuging
 					outputList.Add(name + " spawned");
 					break;
 
-				case "armoredmeleeskeleton":
+				case "armmeleeskeleton":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.ArmoredMeleeSkeleton as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 
-				case "armoredrangedskeleton":
+				case "armrangedskeleton":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.ArmoredRangedSkeleton as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;

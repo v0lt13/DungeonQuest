@@ -32,10 +32,10 @@ namespace DungeonQuest
 			var dropChance = Random.Range(1, 100);
 
 			if (dropChance <= coinDropChance)
-				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-3f, 3f), transform.position.y), Quaternion.identity);
+				Instantiate(coinsPrefab, new Vector2(transform.position.x + Random.Range(-3f, 3f), transform.position.y + Random.Range(-3f, 3f)), Quaternion.identity);
 
 			if (dropChance <= pileOfCoinsDropChance)
-				Instantiate(pileOfCoinsPrefab, new Vector2(transform.position.x + Random.Range(-3f, 3f), transform.position.y), Quaternion.identity);
+				Instantiate(pileOfCoinsPrefab, new Vector2(transform.position.x + Random.Range(-3f, 3f), transform.position.y + Random.Range(-3f, 3f)), Quaternion.identity);
 		}
 	}
 }

@@ -5,12 +5,12 @@ namespace DungeonQuest.Enemy
 	public class EnemySounds : MonoBehaviour
 	{
 		[Header ("Sound Config:")]
-		[SerializeField] private float minTimeBetwenSounds;
-		[SerializeField] private float maxTimeBetwenSounds;
+		[SerializeField] private float minTimeBetweenSounds;
+		[SerializeField] private float maxTimeBetweenSounds;
 		[Space(10f)]
 		[SerializeField] private AudioClip[] enemySounds;
 
-		private float timeBetwenSounds;
+		private float timeBetweenSounds;
 
 		private EnemyManager enemyManager;
 
@@ -18,26 +18,26 @@ namespace DungeonQuest.Enemy
 		{
 			enemyManager = GetComponent<EnemyManager>();
 			
-			timeBetwenSounds = Random.Range(minTimeBetwenSounds, maxTimeBetwenSounds);
+			timeBetweenSounds = Random.Range(minTimeBetweenSounds, maxTimeBetweenSounds);
 		}
 		
 		void Update()
 		{
 			if (enemyManager.IsDead) return;
 
-			if (timeBetwenSounds > 0)
+			if (timeBetweenSounds > 0)
 			{
-				timeBetwenSounds -= Time.deltaTime;
+				timeBetweenSounds -= Time.deltaTime;
 			}
 
-			if (timeBetwenSounds <= 0)
+			if (timeBetweenSounds <= 0)
 			{
 				audio.pitch = Random.Range(0.7f, 1.5f);
 
 				// Play a random SFX from the array
 				audio.PlayOneShot(enemySounds[Random.Range(0, enemySounds.Length)]);
 				
-				timeBetwenSounds = Random.Range(minTimeBetwenSounds, maxTimeBetwenSounds);
+				timeBetweenSounds = Random.Range(minTimeBetweenSounds, maxTimeBetweenSounds);
 			}
 		}
 	}

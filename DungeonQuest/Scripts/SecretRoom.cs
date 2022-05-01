@@ -21,13 +21,15 @@ namespace DungeonQuest
 		void Start()
 		{
 			grid = GameManager.INSTANCE.GetComponent<GridGenerator>();
+
+			GameManager.INSTANCE.totalSecretCount++;
 		}
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
 			if (collider == playerCollider)
 			{
-				GameManager.INSTANCE.SecretCount++;
+				GameManager.INSTANCE.secretCount++;
 
 				gameEvent.Invoke();
 				grid.MarkObstacles("Blockable");

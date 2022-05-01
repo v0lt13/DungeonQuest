@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DungeonQuest.Enemy;
+using DungeonQuest.Enemy.Boss;
 
 namespace DungeonQuest.Player
 {
@@ -40,6 +41,22 @@ namespace DungeonQuest.Player
 				enemyManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
 
 				collider.GetComponent<EnemyAI>().StunEnemy(stunTime);
+			}
+			else if (collider.CompareTag("Boss"))
+			{
+				var bossManager = collider.GetComponent<BossManager>();
+				var playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+
+				var damage = playerManager.playerAttack.damage;
+
+				if (bossManager == null) return;
+
+				Vector2 difference = (bossManager.transform.position - playerManager.transform.position).normalized * knockbackPower;
+
+				bossManager.DamageBoss(damage);
+				bossManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
+
+				collider.GetComponent<BossAI>().StunEnemy(stunTime);
 			}
 			else if (collider.CompareTag("Breakeble"))
 			{
