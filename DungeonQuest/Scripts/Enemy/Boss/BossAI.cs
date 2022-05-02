@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
 using System.Collections.Generic;
+using DungeonQuest.Enemy.Boss.Special;
 
 namespace DungeonQuest.Enemy.Boss
 {
@@ -21,6 +22,8 @@ namespace DungeonQuest.Enemy.Boss
 		[SerializeField] private float bossSpeed;
 		[Space(10f)]
 		[SerializeField] private bool showPath;
+		[Space(10f)]
+		[SerializeField] private SpecialAbility specialAbility; 
 
 		[HideInInspector] public AIstate state;
 		[HideInInspector] public float timeBetweenSpecials;
@@ -31,8 +34,6 @@ namespace DungeonQuest.Enemy.Boss
 		private BossManager bossManager;
 		private GridGenerator grid;
 
-		public float StunTime { get; private set; }
-
 		void Awake()
 		{
 			grid = GameObject.Find("GameManager").GetComponent<GridGenerator>();
@@ -41,17 +42,6 @@ namespace DungeonQuest.Enemy.Boss
 
 		void Update()
 		{
-			// Wait for the stun to wear off, then stop the knockback
-			if (StunTime <= 0f)
-			{
-				StunTime = 0f;
-				bossManager.rigidbody2D.velocity = Vector2.zero;
-			}
-			else if (StunTime > 0f)
-			{
-				StunTime -= Time.deltaTime;
-			}
-
 			if (bossManager.playerManager.isDead || !bossManager.IsAwake) return;
 
 			if (timeBetweenSpecials > 0f)
@@ -75,13 +65,9 @@ namespace DungeonQuest.Enemy.Boss
 					break;
 
 				case AIstate.Special:
+					Idle();
 					break;
 			}
-		}
-
-		public void StunEnemy(float duration)
-		{
-			StunTime = duration;
 		}
 
 		private void Idle()
@@ -93,41 +79,35 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
-			if (StunTime == 0f)
-			{
-				timeBetweenAttacks = defaultTimeBetweenAttacks;
-				FindPathToPlayer(bossManager.playerManager.transform.position, out path);
+			timeBetweenAttacks = defaultTimeBetweenAttacks;
+			FindPathToPlayer(bossManager.playerManager.transform.position, out path);
 
-				if (path != null)
+			if (path != null)
+			{
+				try
 				{
-					try
-					{
-						transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, bossSpeed * Time.deltaTime);
-					}
-					catch (System.ArgumentOutOfRangeException)
-					{
-						transform.position = Vector2.MoveTowards(transform.position, bossManager.playerManager.transform.position, bossSpeed * Time.deltaTime);
-					}
+					transform.position = Vector2.MoveTowards(transform.position, new Vector2(path[1].x, path[1].y) * 10f + Vector2.one * 5f, bossSpeed * Time.deltaTime);
 				}
-				else
+				catch (System.ArgumentOutOfRangeException)
 				{
-					state = AIstate.Idle;
+					transform.position = Vector2.MoveTowards(transform.position, bossManager.playerManager.transform.position, bossSpeed * Time.deltaTime);
 				}
+			}
+			else
+			{
+				state = AIstate.Idle;
 			}
 		}
 
 		private void Attack()
 		{
-			if (StunTime == 0f)
+			if (timeBetweenAttacks <= 0f)
 			{
-				if (timeBetweenAttacks <= 0f)
-				{
-					timeBetweenAttacks = defaultTimeBetweenAttacks;
-				}
-				else
-				{
-					timeBetweenAttacks -= Time.deltaTime;
-				}
+				timeBetweenAttacks = defaultTimeBetweenAttacks;
+			}
+			else
+			{
+				timeBetweenAttacks -= Time.deltaTime;
 			}
 		}
 
@@ -152,6 +132,8 @@ namespace DungeonQuest.Enemy.Boss
 		private void ActivateSpecial() // Called by Animation event
 		{
 			timeBetweenSpecials = defaultTimeBetweenSpecials;
+
+			specialAbility.Special();
 		}
 
 		private void HitPlayer() // Called by Animation event

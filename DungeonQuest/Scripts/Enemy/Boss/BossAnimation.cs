@@ -25,7 +25,6 @@ namespace DungeonQuest.Enemy.Boss
 
 		[HideInInspector] public Animator bossAnimator;
 
-		private bool itAwoke;
 		private BossManager bossManager;
 
 		void Awake()
@@ -36,12 +35,7 @@ namespace DungeonQuest.Enemy.Boss
 
 		void Update()
 		{
-			if (bossManager.IsAwake && !itAwoke)
-			{
-				itAwoke = true;
-
-				bossAnimator.Play(BOSS_WAKE);
-			}
+			if (!bossManager.IsAwake) return;
 
 			if (bossManager.IsDead)
 			{
@@ -53,6 +47,7 @@ namespace DungeonQuest.Enemy.Boss
 			{
 				default:
 				case BossAI.AIstate.Idle:
+
 					switch (bossManager.lastMoveDir)
 					{
 						case BossManager.LastMoveDirection.DOWN:
@@ -132,6 +127,11 @@ namespace DungeonQuest.Enemy.Boss
 					}
 					break;
 			}
+		}
+
+		public void WakeBoss() // Called By Event
+		{
+			bossAnimator.Play(BOSS_WAKE);
 		}
 	}
 }

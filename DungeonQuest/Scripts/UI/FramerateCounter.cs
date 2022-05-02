@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace DungeonQuest
+namespace DungeonQuest.UI
 {
 	public class FramerateCounter : MonoBehaviour
 	{

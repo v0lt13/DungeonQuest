@@ -49,14 +49,9 @@ namespace DungeonQuest.Player
 
 				var damage = playerManager.playerAttack.damage;
 
-				if (bossManager == null) return;
-
-				Vector2 difference = (bossManager.transform.position - playerManager.transform.position).normalized * knockbackPower;
+				if (bossManager == null || !bossManager.IsAwake) return;
 
 				bossManager.DamageBoss(damage);
-				bossManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
-
-				collider.GetComponent<BossAI>().StunEnemy(stunTime);
 			}
 			else if (collider.CompareTag("Breakeble"))
 			{

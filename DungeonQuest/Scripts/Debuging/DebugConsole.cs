@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Enemy;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Debuging
@@ -19,10 +20,10 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<uint> SET_SPEED;
 		private static DebugCommand<uint> UNLOCK_LEVEL;
-		private static DebugCommand<string, uint> SPAWN_ENEMY;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
 		private static DebugCommand<bool> INVISIBILITY;
+		private static DebugCommand<string, uint> SPAWN_ENEMY;
 		private static DebugCommand KILL_ENEMIES;
 		private static DebugCommand ENEMY_LIST;
 		private static DebugCommand SCENE_LIST;
@@ -31,6 +32,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand SAVE;
 		private static DebugCommand CLEAR;
 		private static DebugCommand HELP;
+
 
 		private Vector2 scroll;
 
@@ -42,6 +44,8 @@ namespace DungeonQuest.Debuging
 
 		void Awake()
 		{
+			enemyPrefabs.LoadPrefabs();
+
 			#region COMMANDS			
 			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
 			{
@@ -198,7 +202,8 @@ namespace DungeonQuest.Debuging
 					"7 - C1L4",
 					"8 - C1L5",
 					"9 - S1",
-					"10 - Intermission01"
+					"10 - Intermission01",
+					"11 - Intermission02"
 				};
 
 				outputList.Add("Scene list:");
@@ -264,8 +269,6 @@ namespace DungeonQuest.Debuging
 			#endregion
 
 			outputList.Add("Type \"help\" to view the list of available commands");
-
-			enemyPrefabs.LoadPrefabs();
 		}
 
 		void Update()

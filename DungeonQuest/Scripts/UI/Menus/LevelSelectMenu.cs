@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace DungeonQuest.Menus
+namespace DungeonQuest.UI.Menus
 {
 	public class LevelSelectMenu : MonoBehaviour
 	{

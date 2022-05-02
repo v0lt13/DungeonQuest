@@ -51,19 +51,19 @@ namespace DungeonQuest.Enemy.Boss
 		[HideInInspector] public BossDrops bossDrops;
 		[HideInInspector] public BossAI bossAI;
 
+		private BoxCollider2D boxCollider;
 		private Vector2 lastMoveDirection;
 		private Vector2 playerDirection;
 		private Vector2 moveDirection;
 
-		public int GetEnemyHealth { get { return bossHealth; } }
-
-		public bool IsAwake { get; set; }
+		public bool IsAwake { get; private set; }
 		public bool IsDead { get; private set; }
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
+			boxCollider = GetComponent<BoxCollider2D>();
 			bossAI = GetComponent<BossAI>();
 			bossDrops = GetComponent<BossDrops>();
 		}
@@ -88,7 +88,23 @@ namespace DungeonQuest.Enemy.Boss
 				Die();
 			}
 
-			if (playerManager.isDead || !IsAwake)
+			switch (playerDir)
+			{
+				case PlayerDirection.DOWN:
+					renderer.sortingOrder = 1;
+					break;
+
+				case PlayerDirection.UP:
+					renderer.sortingOrder = 4;
+					break;
+			}
+
+			if (!IsAwake)
+			{
+				return;
+			}
+
+			if (playerManager.isDead)
 			{
 				bossAI.state = BossAI.AIstate.Idle;
 				return;
@@ -139,10 +155,20 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			IsDead = true;
 			rigidbody2D.isKinematic = true;
-			GetComponent<SpriteRenderer>().sortingOrder = 0;
+			renderer.sortingOrder = 0;
 
 			GameManager.INSTANCE.killCount++;
 			GameManager.INSTANCE.enemyList.Remove(gameObject);
+
+			var enemyList = GameManager.INSTANCE.enemyList;
+
+			// Kill all enemies on death
+			for (int i = 0; i < enemyList.Count; i++)
+			{
+				enemyList[i].GetComponent<EnemyManager>().DamageEnemy(int.MaxValue);
+			}
+
+			enemyList.Clear();
 
 			audio.clip = deathSFX;
 			audio.pitch = 1f;
@@ -154,7 +180,6 @@ namespace DungeonQuest.Enemy.Boss
 			Destroy(collider2D);
 			Destroy(bossAI);
 			Destroy(this);
-			Destroy(gameObject, 5f);
 		}
 
 		private void SetAIState()
@@ -167,11 +192,11 @@ namespace DungeonQuest.Enemy.Boss
 				{
 					bossAI.state = BossAI.AIstate.Special;
 				}
-				else if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && bossAI.StunTime == 0f)
+				else if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance)
 				{
 					bossAI.state = BossAI.AIstate.Chase;
 				}
-				else if (distanceFromPlayer <= attackDistance && bossAI.StunTime == 0f)
+				else if (distanceFromPlayer <= attackDistance)
 				{
 					bossAI.state = BossAI.AIstate.Attack;
 				}
@@ -193,24 +218,41 @@ namespace DungeonQuest.Enemy.Boss
 			{
 				if (direction.x > 0)
 				{
-					return 3;
+					boxCollider.center = new Vector2(-0.1f, 0f);
+					boxCollider.size = new Vector2(0.5f, 1f);
+
+					return 3; // Right
 				}
 				else
 				{
-					return 2;
+					boxCollider.center = new Vector2(0.1f, 0f);
+					boxCollider.size = new Vector2(0.5f, 1f);
+
+					return 2; // Left
 				}
 			}
 			else
 			{
 				if (direction.y > 0)
 				{
-					return 1;
+					boxCollider.center = new Vector2(0f, 0f);
+					boxCollider.size = new Vector2(1f, 1f);
+
+					return 1; // Up
 				}
 				else
 				{
-					return 0;
+					boxCollider.center = new Vector2(0f, 0f);
+					boxCollider.size = new Vector2(1f, 1f);
+
+					return 0; // Down
 				}
 			}
+		}
+
+		public void WakeUp() // Called By Animation Event
+		{
+			IsAwake = true;
 		}
 	}
 }

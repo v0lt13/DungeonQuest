@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace DungeonQuest.Menus
+namespace DungeonQuest.UI.Menus
 {
 	public class EndMenu : MonoBehaviour
 	{
@@ -42,5 +42,11 @@ namespace DungeonQuest.Menus
 		{
 			GameManager.LoadScene("Lobby");
 		}
+
+		public void LoadIntermission(int sceneIndex) // Called by Button
+		{
+			Application.LoadLevel(sceneIndex);
+		}
+
 	}
 }

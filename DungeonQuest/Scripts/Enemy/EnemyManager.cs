@@ -73,7 +73,7 @@ namespace DungeonQuest.Enemy
 		void Start()
 		{
 			// Set the enemy health and damage depending on it's level
-			enemyHealth += enemyLevel * 15;
+			enemyHealth += enemyLevel * 20;
 			enemyAI.damage += enemyLevel * 5;
 
 			healthBar.maxValue = enemyHealth;
@@ -93,6 +93,17 @@ namespace DungeonQuest.Enemy
 			{
 				enemyHealth = 0;
 				Die();
+			}
+
+			switch (playerDir)
+			{
+				case PlayerDirection.DOWN:
+					renderer.sortingOrder = 0;
+					break;
+
+				case PlayerDirection.UP:
+					renderer.sortingOrder = 3;
+					break;
 			}
 
 			if (playerManager.isDead)
@@ -146,7 +157,7 @@ namespace DungeonQuest.Enemy
 		{
 			IsDead = true;
 			rigidbody2D.isKinematic = true;
-			GetComponent<SpriteRenderer>().sortingOrder = 0;
+			renderer.sortingOrder = 0;
 
 			GameManager.INSTANCE.killCount++;
 			GameManager.INSTANCE.enemyList.Remove(gameObject);
@@ -159,7 +170,7 @@ namespace DungeonQuest.Enemy
 			levelText.gameObject.SetActive(false);
 
 			enemyDrops.DropLoot();
-			Destroy(GetComponent<CircleCollider2D>());
+			Destroy(collider2D);
 			Destroy(enemyAI);
 			Destroy(this);
 			Destroy(gameObject, 5f);

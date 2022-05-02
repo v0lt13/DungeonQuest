@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-namespace DungeonQuest
+namespace DungeonQuest.Enemy
 {
 	public class EnemyPrefabManager
 	{
@@ -29,11 +29,11 @@ namespace DungeonQuest
 		public void InstatiateEnemy(GameObject enemy, uint level)
 		{
 			var playerPosition = GameManager.INSTANCE.playerManager.transform.position;
-			var spawnPositionOffset = new Vector2(playerPosition.x + Random.Range(-5, 5), playerPosition.y + Random.Range(-5, 5));
+			var spawnPosition = new Vector2(playerPosition.x + Random.Range(-5, 5), playerPosition.y + Random.Range(-5, 5));
 
-			var enemyObject = MonoBehaviour.Instantiate(enemy, spawnPositionOffset, Quaternion.identity) as GameObject;
+			var enemyObject = MonoBehaviour.Instantiate(enemy, spawnPosition, Quaternion.identity) as GameObject;
 
-			enemyObject.GetComponent<Enemy.EnemyManager>().enemyLevel = (int)level;
+			enemyObject.GetComponent<EnemyManager>().enemyLevel = (int)level;
 		}
 	}
 }

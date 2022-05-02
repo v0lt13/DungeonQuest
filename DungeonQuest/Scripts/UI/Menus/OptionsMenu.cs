@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DungeonQuest.Data;
 
-namespace DungeonQuest.Menus
+namespace DungeonQuest.UI.Menus
 {
 	public class OptionsMenu : MonoBehaviour
 	{

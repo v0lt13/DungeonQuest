@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-namespace DungeonQuest
+namespace DungeonQuest.UI
 {
 	public class Intermission : MonoBehaviour
 	{
