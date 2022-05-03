@@ -29,7 +29,7 @@ namespace DungeonQuest.UI
 
 				frameCounter = 0;
 				timeCounter = 0.0f;
-				framerateText.text = "FPS: " + lastFramerate.ToString("n1");
+				framerateText.text = "FPS: " + lastFramerate.ToString("n0");
 			}
 		}
 	}

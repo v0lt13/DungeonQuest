@@ -29,17 +29,17 @@ namespace DungeonQuest.Player
 		void Update()
 		{
 			levelText.text = "lvl " + playerLevel.ToString();
-			xpBar.maxValue = nextLevelXP;
-			xpBar.value = PlayerXP;
 
 			if (playerLevel == maxLevel)
 			{
 				IsPlayerMaxLevel = true;
-				nextLevelXP = 1;
-				PlayerXP = 1;
+				return;
 			}
 
-			if (PlayerXP >= nextLevelXP && !IsPlayerMaxLevel)
+			xpBar.maxValue = nextLevelXP;
+			xpBar.value = PlayerXP;
+
+			if (PlayerXP >= nextLevelXP)
 			{
 				LevelUp();
 			}
@@ -47,8 +47,6 @@ namespace DungeonQuest.Player
 
 		public void LevelUp()
 		{
-			if (IsPlayerMaxLevel) return;
-
 			playerLevel++;
 			PlayerXP = 0;
 			nextLevelXP *= 2;

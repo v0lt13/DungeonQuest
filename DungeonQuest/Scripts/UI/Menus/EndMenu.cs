@@ -12,7 +12,6 @@ namespace DungeonQuest.UI.Menus
 
 		private int completionTimeSeconds;
 		private int completionTimeMinutes;
-		private int completionTimeHours;
 
 		void Start()
 		{
@@ -20,22 +19,16 @@ namespace DungeonQuest.UI.Menus
 
 			completionTimeSeconds = (int)gameManager.CompletionTime;
 
-			// Convert seconds to minutes and hours
+			// Convert seconds to minutes
 			while (completionTimeSeconds >= 60)
 			{
 				completionTimeMinutes++;
 				completionTimeSeconds -= 60;
-
-				while (completionTimeMinutes >= 60)
-				{
-					completionTimeHours++;
-					completionTimeMinutes -= 60;
-				}
 			}
 
 			killCountText.text = "Kills: " + gameManager.killCount.ToString() + "/" + gameManager.totalKillCount.ToString();
 			secretCountText.text = "Secrets: " + gameManager.secretCount.ToString() + "/" + gameManager.totalSecretCount.ToString();
-			completionTimeText.text = "Time: " + completionTimeHours + "h " + completionTimeMinutes + "m " + completionTimeSeconds + "s";
+			completionTimeText.text = "Time: " + completionTimeMinutes + "m " + completionTimeSeconds + "s";
 		}
 
 		public void Continue() // Called by Button

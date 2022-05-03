@@ -6,7 +6,7 @@ namespace DungeonQuest.Debuging
 {
 	public class DebugConsole : MonoBehaviour
 	{
-		private const float OUTPUT_WINDOW_HEIGHT = 300f;
+		private const float OUTPUT_WINDOW_HEIGHT = 350f;
 		public static bool ENABLE_CONSOLE;
 
 		private bool isConsoleOn;
@@ -45,6 +45,7 @@ namespace DungeonQuest.Debuging
 		void Awake()
 		{
 			enemyPrefabs.LoadPrefabs();
+			outputList.Add("Type \"help\" to view the list of available commands");
 
 			#region COMMANDS			
 			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
@@ -267,8 +268,6 @@ namespace DungeonQuest.Debuging
 				HELP
 			};
 			#endregion
-
-			outputList.Add("Type \"help\" to view the list of available commands");
 		}
 
 		void Update()

@@ -23,7 +23,8 @@ namespace DungeonQuest.Enemy.Boss
 		[Space(10f)]
 		[SerializeField] private bool showPath;
 		[Space(10f)]
-		[SerializeField] private SpecialAbility specialAbility; 
+		[SerializeField] private SpecialAbility specialAbility;
+		[SerializeField] private AudioClip attackSFX;
 
 		[HideInInspector] public AIstate state;
 		[HideInInspector] public float timeBetweenSpecials;
@@ -138,6 +139,8 @@ namespace DungeonQuest.Enemy.Boss
 
 		private void HitPlayer() // Called by Animation event
 		{
+			audio.pitch = 1f;
+			audio.PlayOneShot(attackSFX);
 			bossManager.playerManager.DamagePlayer(damage);
 		}
 	}

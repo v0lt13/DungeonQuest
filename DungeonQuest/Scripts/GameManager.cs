@@ -50,7 +50,6 @@ namespace DungeonQuest
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 			
 			AudioListener.pause = false;
-
 			SetGameState(GameState.Running);
 
 			if (Application.loadedLevelName == "Lobby")
@@ -99,7 +98,7 @@ namespace DungeonQuest
 
 		public void UnlockLevel(int level)
 		{
-			// We only want to set the reached level if we complete the last unlocked level
+			// We only want to unlock a new level if we complete the last unlocked level
 			if (LevelReached < level) LevelReached = level;
 		}
 
