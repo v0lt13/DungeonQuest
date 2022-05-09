@@ -21,6 +21,7 @@ namespace DungeonQuest
 		[HideInInspector] public int killCount;
 		[HideInInspector] public int totalKillCount;
 		[HideInInspector] public int totalSecretCount;
+		[HideInInspector] public int bossesCompleted;
 		[HideInInspector] public bool hasDialogue;
 		
 		[HideInInspector] public PlayerManager playerManager;

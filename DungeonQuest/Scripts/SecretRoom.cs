@@ -34,12 +34,12 @@ namespace DungeonQuest
 				gameEvent.Invoke();
 				grid.MarkObstacles("Blockable");
 
-				StartCoroutine(ToogleText());
+				StartCoroutine(ToggleText());
 				Destroy(gameObject, 3f);
 			}
 		}
 
-		private IEnumerator ToogleText()
+		private IEnumerator ToggleText()
 		{
 			secretRoomText.SetActive(true);
 

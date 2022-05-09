@@ -20,5 +20,7 @@
 
 		public int levelReached;
 		public int secretLevelReached;
+
+		public int bossesCompleted;
 	}
 }

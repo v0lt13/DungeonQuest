@@ -36,9 +36,9 @@ namespace DungeonQuest.UI.Menus
 			GameManager.LoadScene("Lobby");
 		}
 
-		public void LoadIntermission(int sceneIndex) // Called by Button
+		public void LoadIntermission(string intermissionNumber) // Called by Button
 		{
-			Application.LoadLevel(sceneIndex);
+			Application.LoadLevel("Intermission0" + intermissionNumber);
 		}
 
 	}

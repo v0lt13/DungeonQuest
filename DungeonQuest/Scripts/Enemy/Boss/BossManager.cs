@@ -35,6 +35,7 @@ namespace DungeonQuest.Enemy.Boss
 		[SerializeField] private float followDistance;
 		[SerializeField] private float attackDistance;
 		[SerializeField] private int bossHealth;
+		[SerializeField] private int bossID;
 		[Space(10f)]
 		[SerializeField] private Slider healthBar;
 		[SerializeField]  private VoidEvent gameEvent;
@@ -55,6 +56,8 @@ namespace DungeonQuest.Enemy.Boss
 		private Vector2 lastMoveDirection;
 		private Vector2 playerDirection;
 		private Vector2 moveDirection;
+
+		public int GetBossID { get { return bossID; } }
 
 		public bool IsAwake { get; private set; }
 		public bool IsDead { get; private set; }
@@ -153,29 +156,28 @@ namespace DungeonQuest.Enemy.Boss
 
 		private void Die()
 		{
+			var gameManager = GameManager.INSTANCE;
+
 			IsDead = true;
 			rigidbody2D.isKinematic = true;
 			renderer.sortingOrder = 0;
 
-			GameManager.INSTANCE.killCount++;
-			GameManager.INSTANCE.enemyList.Remove(gameObject);
-
-			var enemyList = GameManager.INSTANCE.enemyList;
+			gameManager.killCount++;
+			gameManager.enemyList.Remove(gameObject);
 
 			// Kill all enemies on death
-			for (int i = 0; i < enemyList.Count; i++)
-			{
-				enemyList[i].GetComponent<EnemyManager>().DamageEnemy(int.MaxValue);
-			}
+			for (int i = 0; i < gameManager.enemyList.Count; i++) gameManager.enemyList[i].GetComponent<EnemyManager>().DamageEnemy(int.MaxValue);
 
-			enemyList.Clear();
-
+			gameManager.enemyList.Clear();
+			
 			audio.clip = deathSFX;
 			audio.pitch = 1f;
 			audio.Play();
 
 			gameEvent.Invoke();
 			bossDrops.DropLoot();
+
+			if (gameManager.bossesCompleted < bossID) gameManager.bossesCompleted = bossID;
 
 			Destroy(collider2D);
 			Destroy(bossAI);

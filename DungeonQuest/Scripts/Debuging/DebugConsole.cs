@@ -125,18 +125,18 @@ namespace DungeonQuest.Debuging
 				GameManager.INSTANCE.playerManager.noClip = value;
 				GameManager.INSTANCE.playerManager.invisible = value;
 
-				var toogleText = value ? "On" : "Off";
+				var toggleText = value ? "On" : "Off";
 
-				outputList.Add("Noclip " + toogleText);
+				outputList.Add("Noclip " + toggleText);
 			});
 
 			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (value) =>
 			{
 				GameManager.INSTANCE.playerManager.invisible = value;
 
-				var toogleText = value ? "On" : "Off";
+				var toggleText = value ? "On" : "Off";
 
-				outputList.Add("Invisiblity " + toogleText);
+				outputList.Add("Invisiblity " + toggleText);
 			});
 
 			SPAWN_ENEMY = new DebugCommand<string, uint>("spawnenemy", "Spawns a specified enemy in the scene. To see the enemy list type \"enemylist\" ", "spawnenemy <name> <level>", (primaryValue, secondaryValue) =>
@@ -203,8 +203,14 @@ namespace DungeonQuest.Debuging
 					"7 - C1L4",
 					"8 - C1L5",
 					"9 - S1",
-					"10 - Intermission01",
-					"11 - Intermission02"
+					"10 - C2L1",
+					"11 - C2L2",
+					"12 - C2L3",
+					"13 - C2L4",
+					"14 - C2L5",
+					"15 - S2",
+					"16 - Intermission01",
+					"17 - Intermission02"
 				};
 
 				outputList.Add("Scene list:");
@@ -415,6 +421,11 @@ namespace DungeonQuest.Debuging
 
 				case "armrangedskeleton":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.ArmoredRangedSkeleton as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "spider":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.Spider as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 
