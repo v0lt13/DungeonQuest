@@ -23,7 +23,7 @@ namespace DungeonQuest.UI
 
 		void Update()
 		{
-			if (Input.anyKeyDown && canContinue)
+			if (Input.GetButtonDown("Skip") && canContinue)
 			{
 				GameManager.LoadScene(sceneName);
 			}
@@ -35,7 +35,7 @@ namespace DungeonQuest.UI
 
 			foreach (var letter in story.ToCharArray())
 			{
-				if (Input.anyKeyDown)
+				if (Input.GetButtonDown("Skip"))
 				{
 					storyText.text = story;
 					canContinue = true;

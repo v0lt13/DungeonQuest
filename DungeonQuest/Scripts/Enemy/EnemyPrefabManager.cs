@@ -10,6 +10,8 @@ namespace DungeonQuest.Enemy
 		public Object ArmoredMeleeSkeleton { get; private set; }
 		public Object ArmoredRangedSkeleton { get; private set; }
 		public Object Spider { get; private set; }
+		public Object SnowGolem { get; private set; }
+		public Object IceGolem { get; private set; }
 
 		public List<string> enemyList = new List<string>
 		{
@@ -17,7 +19,9 @@ namespace DungeonQuest.Enemy
 			"RangedSkeleton",
 			"ArmMeleeSkeleton",
 			"ArmRangedSkeleton",
-			"Spider"
+			"Spider",
+			"SnowGolem",
+			"IceGolem"
 		};
 
 		public void LoadPrefabs()
@@ -27,6 +31,8 @@ namespace DungeonQuest.Enemy
 			ArmoredMeleeSkeleton = Resources.Load("Prefabs/Entities/ArmoredMeleeSkeleton", typeof(GameObject));
 			ArmoredRangedSkeleton = Resources.Load("Prefabs/Entities/ArmoredRangedSkeleton", typeof(GameObject));
 			Spider = Resources.Load("Prefabs/Entities/Spider", typeof(GameObject));
+			SnowGolem = Resources.Load("Prefabs/Entities/SnowGolem", typeof(GameObject));
+			IceGolem = Resources.Load("Prefabs/Entities/IceGolem", typeof(GameObject));
 		}
 
 		public void InstatiateEnemy(GameObject enemy, uint level)
@@ -34,7 +40,7 @@ namespace DungeonQuest.Enemy
 			var playerPosition = GameManager.INSTANCE.playerManager.transform.position;
 			var spawnPosition = new Vector2(playerPosition.x + Random.Range(-5, 5), playerPosition.y + Random.Range(-5, 5));
 
-			var enemyObject = MonoBehaviour.Instantiate(enemy, spawnPosition, Quaternion.identity) as GameObject;
+			var enemyObject = Object.Instantiate(enemy, spawnPosition, Quaternion.identity) as GameObject;
 
 			enemyObject.GetComponent<EnemyManager>().enemyLevel = (int)level;
 		}

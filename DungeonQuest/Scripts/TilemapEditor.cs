@@ -8,6 +8,13 @@ namespace DungeonQuest
 {
 	public class TilemapEditor : EditorWindow
 	{
+		private int selectedItem;
+
+		private string[] options = new string[]
+		{
+			"Map Tiles", "Enviromental", "Traps"
+		};
+
 		private GameObject[] prefabs;
 		private GameObject selectedPrefab;
 		private GameObject selectedGameObject;
@@ -32,12 +39,27 @@ namespace DungeonQuest
 
 		void OnGUI()
 		{
+			selectedItem = EditorGUILayout.Popup(selectedItem, options);
+
 			var objects = Resources.LoadAll("Prefabs/Map", typeof(GameObject));
 
-			prefabs = new GameObject[objects.Length];
+			if (selectedItem == 0)
+			{
+				objects = Resources.LoadAll("Prefabs/Map/Tiles", typeof(GameObject));
 
-			for (int i = 0; i < objects.Length; i++) prefabs[i] = (GameObject)objects[i];
+			}
+			else if (selectedItem == 1)
+			{
+				objects = Resources.LoadAll("Prefabs/Map/Enviromental", typeof(GameObject));
+			}
+			else if (selectedItem == 2)
+			{
+				objects = Resources.LoadAll("Prefabs/Map/Traps", typeof(GameObject));
+			}
 			
+			prefabs = new GameObject[objects.Length];
+			for (int i = 0; i < objects.Length; i++) prefabs[i] = (GameObject)objects[i];
+
 			// Drawing the window
 
 			scrollPosition = GUILayout.BeginScrollView(scrollPosition);
@@ -58,7 +80,7 @@ namespace DungeonQuest
 						SceneView.onSceneGUIDelegate -= OnSceneGUI;
 						SceneView.onSceneGUIDelegate += OnSceneGUI;
 
-						EditorWindow.FocusWindowIfItsOpen<SceneView>();
+						FocusWindowIfItsOpen<SceneView>();
 					}
 				}
 			}

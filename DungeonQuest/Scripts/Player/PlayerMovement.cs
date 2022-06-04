@@ -28,6 +28,7 @@ namespace DungeonQuest.Player
 			RIGHT = 3
 		}
 
+		[HideInInspector] public bool isWalkingOnIce;
 		[HideInInspector] public LastMoveDirection lastMoveDir;
 		[HideInInspector] public FaceingDirection faceingDir;
 		[HideInInspector] public MoveDirection moveDir;
@@ -86,7 +87,15 @@ namespace DungeonQuest.Player
 				y *= MOVE_LIMITER;
 			}
 
-			rigidbody2D.velocity = new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed);
+			if (isWalkingOnIce)
+			{
+				// Make the player slide on ice
+				rigidbody2D.AddForce(new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed));
+			}
+			else
+			{
+				rigidbody2D.velocity = new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed);
+			}
 		}
 
 		private void MovementInputs()

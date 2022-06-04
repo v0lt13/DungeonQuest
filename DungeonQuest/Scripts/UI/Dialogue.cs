@@ -25,7 +25,7 @@ namespace DungeonQuest.UI
 		{
 			prompt.SetActive(canContinue);
 
-			if (Input.anyKeyDown && canContinue)
+			if (Input.GetButtonDown("Skip") && canContinue)
 			{
 				if (currentDialogue != dialogue.Length - 1)
 				{
@@ -55,7 +55,7 @@ namespace DungeonQuest.UI
 
 			foreach (var letter in dialogue[currentDialogue].ToCharArray())
 			{
-				if (Input.anyKeyDown)
+				if (Input.GetButtonDown("Skip"))
 				{
 					diablogueText.text = dialogue[currentDialogue];
 					canContinue = true;

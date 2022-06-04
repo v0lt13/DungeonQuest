@@ -429,6 +429,16 @@ namespace DungeonQuest.Debuging
 					outputList.Add(name + " spawned");
 					break;
 
+				case "snowgolem":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.SnowGolem as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "icegolem":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.IceGolem as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
 				default:
 					outputList.Add("Enemy not found");
 					break;
