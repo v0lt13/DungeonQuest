@@ -22,5 +22,7 @@
 		public int secretLevelReached;
 
 		public int bossesCompleted;
+
+		public float playerSpeed;
 	}
 }

@@ -60,6 +60,7 @@ namespace DungeonQuest.Data
 			gameManager.playerManager.defaultPlayerArmor = data.maxPlayerArmor;
 
 			gameManager.playerManager.playerAttack.damage = data.playerAttackPower;
+			gameManager.playerManager.playerMovement.playerSpeed = data.playerSpeed;
 
 			gameManager.playerManager.playerLeveling.playerLevel = data.playerLevel;
 			gameManager.playerManager.playerLeveling.PlayerXP = data.playerXP;
@@ -106,6 +107,7 @@ namespace DungeonQuest.Data
 				maxPlayerArmor = gameManager.playerManager.defaultPlayerArmor,
 
 				playerAttackPower = gameManager.playerManager.playerAttack.damage,
+				playerSpeed = gameManager.playerManager.playerMovement.playerSpeed,
 
 				playerLevel = gameManager.playerManager.playerLeveling.playerLevel,
 				playerXP = gameManager.playerManager.playerLeveling.PlayerXP,

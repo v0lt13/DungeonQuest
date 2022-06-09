@@ -14,7 +14,7 @@ namespace DungeonQuest.Shop
 		private static void CreateItem()
 		{
 			var item = ScriptableObject.CreateInstance<Item>();
-			UnityEditor.AssetDatabase.CreateAsset(item, "Assets/ShopItems/Item.asset");
+			UnityEditor.AssetDatabase.CreateAsset(item, "Assets/Shop Items/Item.asset");
 		}
 		#endif
 	}

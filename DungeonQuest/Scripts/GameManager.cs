@@ -16,6 +16,8 @@ namespace DungeonQuest
 
 		public GameDataHandler gameData = new GameDataHandler();
 		public List<ShopItem> shopItems;
+		[Space(10f)]
+		[SerializeField] private GameObject speedUpgradeItem;
 
 		[HideInInspector] public int secretCount;
 		[HideInInspector] public int killCount;
@@ -51,12 +53,20 @@ namespace DungeonQuest
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 			
 			AudioListener.pause = false;
+
 			SetGameState(GameState.Running);
+			gameData.LoadPlayerData();
 
 			if (Application.loadedLevelName == "Lobby")
 			{
 				gameData.LoadGameData();
+
 				GameObject.Find("DialogueTrigger").SetActive(!hasDialogue);
+
+				if (LevelReached == 6)
+				{
+					speedUpgradeItem.SetActive(true);
+				}
 			}
 		}
 
@@ -81,7 +91,7 @@ namespace DungeonQuest
 		{
 			CurrentGameState = gameState;
 
-			Screen.lockCursor = gameState == GameState.Paused ? false : true;
+			Screen.lockCursor = gameState != GameState.Paused;
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 

@@ -53,8 +53,6 @@ namespace DungeonQuest.Player
 
 		void Start()
 		{
-			GameManager.INSTANCE.gameData.LoadPlayerData();
-
 			healthBar.maxValue = defaultPlayerHealth;
 			armorBar.maxValue = defaultPlayerArmor;
 		}
@@ -161,6 +159,11 @@ namespace DungeonQuest.Player
 
 			playerArmor = defaultPlayerArmor;
 			armorBar.maxValue = defaultPlayerArmor;
+		}
+
+		public void IncreaseSpeed(float amount)
+		{
+			playerMovement.playerSpeed += amount;
 		}
 
 		private void Die()
