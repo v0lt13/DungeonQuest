@@ -8,6 +8,7 @@ namespace DungeonQuest.Enemy
 		public enum ProjectileType
 		{
 			Arrow,
+			Snowball,
 			Other
 		}
 
@@ -49,6 +50,12 @@ namespace DungeonQuest.Enemy
 			if (collider == playerManager.collider2D)
 			{
 				playerManager.DamagePlayer(ProjectileDamage);
+
+				if (projectileType == ProjectileType.Snowball)
+				{
+					playerManager.ChillPlayer();
+				}
+
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Breakeble"))
@@ -65,8 +72,10 @@ namespace DungeonQuest.Enemy
 						Destroy(gameObject, 5f);
 						break;
 
+					default:
 					case ProjectileType.Other:
-						Destroy(gameObject);
+						GetComponent<SpriteRenderer>().enabled = false;
+						Destroy(gameObject, 1f);
 						break;
 				}
 

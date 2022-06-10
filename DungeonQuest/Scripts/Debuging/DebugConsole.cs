@@ -44,27 +44,30 @@ namespace DungeonQuest.Debuging
 
 		void Awake()
 		{
+			var gameManager = GameManager.INSTANCE;
+			var playerManager = GameManager.INSTANCE.playerManager;
+
 			enemyPrefabs.LoadPrefabs();
 			outputList.Add("Type \"help\" to view the list of available commands");
 
 			#region COMMANDS			
 			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.HealPlayer(value);
+				playerManager.HealPlayer(value);
 
 				outputList.Add("Player health set");
 			});
 
 			ARMOR = new DebugCommand<int>("armor", "Armors the player, negative numbers substract the armor", "armor <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.ArmorPlayer(value);
+				playerManager.ArmorPlayer(value);
 
 				outputList.Add("Player armor set");
 			});
 
 			GIVE_COINS = new DebugCommand<int>("givecoins", "Gives coins to the player, negative numbers substract the amount", "givecoins <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.GiveCoins(value);
+				playerManager.GiveCoins(value);
 
 				outputList.Add(value.ToString() + " coins given");
 			});
@@ -73,8 +76,8 @@ namespace DungeonQuest.Debuging
 			{
 				if (value < Application.levelCount)
 				{
-					GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
-					GameManager.INSTANCE.LoadScene((int)value);
+					gameManager.SetGameState(GameManager.GameState.Running);
+					gameManager.LoadScene((int)value);
 				}
 				else
 				{
@@ -84,36 +87,37 @@ namespace DungeonQuest.Debuging
 
 			ADD_POTIONS = new DebugCommand<uint>("addpotions", "Gives healing potions to the player", "addpotions <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerHealing.AddPotions((int)value);
+				playerManager.playerHealing.AddPotions((int)value);
 
 				outputList.Add(value + " potions added");
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerAttack.damage = (int)value;
+				playerManager.playerAttack.damage = (int)value;
 
 				outputList.Add("Player damage has been set to " + value);
 			});
 
-			SET_SPEED = new DebugCommand<uint>("setspeed", "Sets the player speed. Default = 35", "setspeed <amount>", (value) =>
+			SET_SPEED = new DebugCommand<uint>("setspeed", "Sets the player speed", "setspeed <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerMovement.playerSpeed = value;
+				playerManager.playerMovement.defaultPlayerSpeed = value;
+				playerManager.playerMovement.playerSpeed = playerManager.playerMovement.defaultPlayerSpeed;
 
 				outputList.Add("Player speed has been set to " + value);
 			});
 
 			UNLOCK_LEVEL = new DebugCommand<uint>("unlocklevel", "Unlocks a specified level. Requires reloading the scene if in the Lobby", "unlocklevel <level>", (value) =>
 			{
-				GameManager.INSTANCE.UnlockLevel((int)value);
-				GameManager.INSTANCE.gameData.SavePlayerData();
+				gameManager.UnlockLevel((int)value);
+				gameManager.gameData.SavePlayerData();
 
 				outputList.Add("Level " + value + " unlocked");
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.GodMode = value;
+				playerManager.GodMode = value;
 
 				var toogleText = value ? "On" : "Off";
 
@@ -122,8 +126,8 @@ namespace DungeonQuest.Debuging
 
 			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects and invisible", "noclip <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.noClip = value;
-				GameManager.INSTANCE.playerManager.invisible = value;
+				playerManager.noClip = value;
+				playerManager.invisible = value;
 
 				var toggleText = value ? "On" : "Off";
 
@@ -132,7 +136,7 @@ namespace DungeonQuest.Debuging
 
 			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.invisible = value;
+				playerManager.invisible = value;
 
 				var toggleText = value ? "On" : "Off";
 
@@ -146,28 +150,26 @@ namespace DungeonQuest.Debuging
 
 			LEVEL_UP = new DebugCommand("levelup", "Levels up the player", "levelup", () =>
 			{
-				var playerLeveling = GameManager.INSTANCE.playerManager.playerLeveling;
-
-				if (playerLeveling.IsPlayerMaxLevel)
+				if (playerManager.playerLeveling.IsPlayerMaxLevel)
 				{
 					outputList.Add("Player is max level");
 				}
 				else
 				{
-					playerLeveling.LevelUp();
+					playerManager.playerLeveling.LevelUp();
 					outputList.Add("Player has leveled up");
 				}
 			});
 
 			KILL_ENEMIES = new DebugCommand("killenemies", "Kills all enemies in the level", "killenemies", () =>
 			{
-				var enemyList = GameManager.INSTANCE.enemyList;
+				var enemyList = gameManager.enemyList;
 
 				if (enemyList.Count != 0)
 				{
 					for (int i = 0; i < enemyList.Count; i++)
 					{
-						enemyList[i].GetComponent<Enemy.EnemyManager>().DamageEnemy(int.MaxValue);
+						enemyList[i].GetComponent<EnemyManager>().DamageEnemy(int.MaxValue);
 					}
 
 					outputList.Add(enemyList.Count + " enemies killed");
@@ -223,14 +225,14 @@ namespace DungeonQuest.Debuging
 
 			DIE = new DebugCommand("die", "Kills the player", "die", () =>
 			{
-				GameManager.INSTANCE.playerManager.DamagePlayer(int.MaxValue);
+				playerManager.DamagePlayer(int.MaxValue);
 
 				outputList.Add("R.I.P");
 			});
 
 			SAVE = new DebugCommand("save", "Saves the player data", "save", () =>
 			{
-				GameManager.INSTANCE.gameData.SavePlayerData();
+				gameManager.gameData.SavePlayerData();
 
 				outputList.Add("Game saved");
 			});
@@ -436,6 +438,11 @@ namespace DungeonQuest.Debuging
 
 				case "icegolem":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.IceGolem as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "frostgolem":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.FrostGolem as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 

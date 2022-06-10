@@ -144,7 +144,7 @@ namespace DungeonQuest.Enemy
 			enemyManager.playerManager.DamagePlayer(damage);
 		}
 
-		private void ShootArrow() // Called by Animation event
+		private void ShootPlayer() // Called by Animation event
 		{
 			var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity) as GameObject;
 

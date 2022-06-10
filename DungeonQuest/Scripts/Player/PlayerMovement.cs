@@ -28,12 +28,13 @@ namespace DungeonQuest.Player
 			RIGHT = 3
 		}
 
+		[HideInInspector] public float playerSpeed;
 		[HideInInspector] public bool isWalkingOnIce;
 		[HideInInspector] public LastMoveDirection lastMoveDir;
 		[HideInInspector] public FaceingDirection faceingDir;
 		[HideInInspector] public MoveDirection moveDir;
 
-		public float playerSpeed;
+		public float defaultPlayerSpeed;
 
 		private const float MOVE_LIMITER = 0.7f;
 		private float x, y;

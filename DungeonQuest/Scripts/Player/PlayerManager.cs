@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace DungeonQuest.Player
 {
@@ -31,6 +32,9 @@ namespace DungeonQuest.Player
 		[HideInInspector] public Slider healthBar;
 		[HideInInspector] public Slider armorBar;
 
+		private float chillTimer;
+		private bool playerChilled;
+
 		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;
 		private Image vignette;
@@ -53,8 +57,11 @@ namespace DungeonQuest.Player
 
 		void Start()
 		{
+			if (Application.loadedLevelName != "Lobby") GameManager.INSTANCE.gameData.LoadPlayerData();
+
 			healthBar.maxValue = defaultPlayerHealth;
 			armorBar.maxValue = defaultPlayerArmor;
+			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
 		}
 
 		void Update()
@@ -90,7 +97,16 @@ namespace DungeonQuest.Player
 			{
 				playerHealth = 0;
 				Die();
-			}	
+			}
+
+			if (chillTimer > 0f)
+			{
+				chillTimer -= Time.deltaTime;
+			}
+			else if (playerChilled)
+			{
+				UnchillPlayer();
+			}
 		}
 
 		public void DamagePlayer(int damage)
@@ -163,7 +179,9 @@ namespace DungeonQuest.Player
 
 		public void IncreaseSpeed(float amount)
 		{
-			playerMovement.playerSpeed += amount;
+			playerMovement.defaultPlayerSpeed += amount;
+
+			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
 		}
 
 		private void Die()
@@ -186,6 +204,21 @@ namespace DungeonQuest.Player
 			playerHealing.enabled = false;
 			playerMovement.enabled = false;
 			enabled = false;
+		}
+
+		public void ChillPlayer()
+		{
+			chillTimer = 2f;
+			playerChilled = true;
+
+			if (playerMovement.playerSpeed == playerMovement.defaultPlayerSpeed) playerMovement.playerSpeed /= 1.5f;
+		}
+
+		private void UnchillPlayer()
+		{
+			chillTimer = 0f;
+			playerChilled = false;
+			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
 		}
 	}
 }

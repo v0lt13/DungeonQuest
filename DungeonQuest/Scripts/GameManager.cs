@@ -55,10 +55,10 @@ namespace DungeonQuest
 			AudioListener.pause = false;
 
 			SetGameState(GameState.Running);
-			gameData.LoadPlayerData();
 
 			if (Application.loadedLevelName == "Lobby")
 			{
+				gameData.LoadPlayerData();
 				gameData.LoadGameData();
 
 				GameObject.Find("DialogueTrigger").SetActive(!hasDialogue);

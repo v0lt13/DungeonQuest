@@ -12,6 +12,7 @@ namespace DungeonQuest.Enemy
 		public Object Spider { get; private set; }
 		public Object SnowGolem { get; private set; }
 		public Object IceGolem { get; private set; }
+		public Object FrostGolem { get; private set; }
 
 		public List<string> enemyList = new List<string>
 		{
@@ -21,7 +22,8 @@ namespace DungeonQuest.Enemy
 			"ArmRangedSkeleton",
 			"Spider",
 			"SnowGolem",
-			"IceGolem"
+			"IceGolem",
+			"FrostGolem"
 		};
 
 		public void LoadPrefabs()
@@ -33,6 +35,7 @@ namespace DungeonQuest.Enemy
 			Spider = Resources.Load("Prefabs/Entities/Spider", typeof(GameObject));
 			SnowGolem = Resources.Load("Prefabs/Entities/SnowGolem", typeof(GameObject));
 			IceGolem = Resources.Load("Prefabs/Entities/IceGolem", typeof(GameObject));
+			FrostGolem = Resources.Load("Prefabs/Entities/FrostGolem", typeof(GameObject));
 		}
 
 		public void InstatiateEnemy(GameObject enemy, uint level)
