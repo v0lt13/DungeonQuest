@@ -237,15 +237,15 @@ namespace DungeonQuest.Enemy.Boss
 			{
 				if (direction.y > 0)
 				{
-					boxCollider.center = new Vector2(0f, 0f);
-					boxCollider.size = new Vector2(1f, 1f);
+					boxCollider.center = new Vector2(0f, -0.14f);
+					boxCollider.size = new Vector2(1f, 0.75f);
 
 					return 1; // Up
 				}
 				else
 				{
-					boxCollider.center = new Vector2(0f, 0f);
-					boxCollider.size = new Vector2(1f, 1f);
+					boxCollider.center = new Vector2(0f, -0.14f);
+					boxCollider.size = new Vector2(1f, 0.75f);
 
 					return 0; // Down
 				}

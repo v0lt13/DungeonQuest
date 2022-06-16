@@ -10,7 +10,7 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioClip healingSFX;
 
 		[HideInInspector] public int healingPotions;
-		private float cooldown;
+		private float cooldown = 0f;
 		
 		private PlayerManager playerManager;
 		private Text healingPotionsAmount;
@@ -23,7 +23,6 @@ namespace DungeonQuest.Player
 
 			playerManager = GetComponent<PlayerManager>();
 
-			cooldown = defaultCooldown;
 			cooldownSlider.maxValue = defaultCooldown;
 		}
 

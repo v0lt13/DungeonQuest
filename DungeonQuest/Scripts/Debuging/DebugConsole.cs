@@ -45,7 +45,6 @@ namespace DungeonQuest.Debuging
 		void Awake()
 		{
 			var gameManager = GameManager.INSTANCE;
-			var playerManager = GameManager.INSTANCE.playerManager;
 
 			enemyPrefabs.LoadPrefabs();
 			outputList.Add("Type \"help\" to view the list of available commands");
@@ -53,21 +52,21 @@ namespace DungeonQuest.Debuging
 			#region COMMANDS			
 			HEAL = new DebugCommand<int>("heal", "Heals the player, negative numbers substracts the health", "heal <amount>", (value) =>
 			{
-				playerManager.HealPlayer(value);
+				gameManager.playerManager.HealPlayer(value);
 
 				outputList.Add("Player health set");
 			});
 
 			ARMOR = new DebugCommand<int>("armor", "Armors the player, negative numbers substract the armor", "armor <amount>", (value) =>
 			{
-				playerManager.ArmorPlayer(value);
+				gameManager.playerManager.ArmorPlayer(value);
 
 				outputList.Add("Player armor set");
 			});
 
 			GIVE_COINS = new DebugCommand<int>("givecoins", "Gives coins to the player, negative numbers substract the amount", "givecoins <amount>", (value) =>
 			{
-				playerManager.GiveCoins(value);
+				gameManager.playerManager.GiveCoins(value);
 
 				outputList.Add(value.ToString() + " coins given");
 			});
@@ -87,22 +86,22 @@ namespace DungeonQuest.Debuging
 
 			ADD_POTIONS = new DebugCommand<uint>("addpotions", "Gives healing potions to the player", "addpotions <amount>", (value) =>
 			{
-				playerManager.playerHealing.AddPotions((int)value);
+				gameManager.playerManager.playerHealing.AddPotions((int)value);
 
 				outputList.Add(value + " potions added");
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>
 			{
-				playerManager.playerAttack.damage = (int)value;
+				gameManager.playerManager.playerAttack.damage = (int)value;
 
 				outputList.Add("Player damage has been set to " + value);
 			});
 
 			SET_SPEED = new DebugCommand<uint>("setspeed", "Sets the player speed", "setspeed <amount>", (value) =>
 			{
-				playerManager.playerMovement.defaultPlayerSpeed = value;
-				playerManager.playerMovement.playerSpeed = playerManager.playerMovement.defaultPlayerSpeed;
+				gameManager.playerManager.playerMovement.defaultPlayerSpeed = value;
+				gameManager.playerManager.playerMovement.playerSpeed = GameManager.INSTANCE.playerManager.playerMovement.defaultPlayerSpeed;
 
 				outputList.Add("Player speed has been set to " + value);
 			});
@@ -117,7 +116,7 @@ namespace DungeonQuest.Debuging
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (value) =>
 			{
-				playerManager.GodMode = value;
+				gameManager.playerManager.GodMode = value;
 
 				var toogleText = value ? "On" : "Off";
 
@@ -126,8 +125,8 @@ namespace DungeonQuest.Debuging
 
 			NOCLIP = new DebugCommand<bool>("noclip", "Makes the player able to go trough objects and invisible", "noclip <true/false>", (value) =>
 			{
-				playerManager.noClip = value;
-				playerManager.invisible = value;
+				gameManager.playerManager.noClip = value;
+				gameManager.playerManager.invisible = value;
 
 				var toggleText = value ? "On" : "Off";
 
@@ -136,7 +135,7 @@ namespace DungeonQuest.Debuging
 
 			INVISIBILITY = new DebugCommand<bool>("invisibility", "Makes the player invisible to the enemies", "invisibility <true/false>", (value) =>
 			{
-				playerManager.invisible = value;
+				gameManager.playerManager.invisible = value;
 
 				var toggleText = value ? "On" : "Off";
 
@@ -150,13 +149,13 @@ namespace DungeonQuest.Debuging
 
 			LEVEL_UP = new DebugCommand("levelup", "Levels up the player", "levelup", () =>
 			{
-				if (playerManager.playerLeveling.IsPlayerMaxLevel)
+				if (gameManager.playerManager.playerLeveling.IsPlayerMaxLevel)
 				{
 					outputList.Add("Player is max level");
 				}
 				else
 				{
-					playerManager.playerLeveling.LevelUp();
+					gameManager.playerManager.playerLeveling.LevelUp();
 					outputList.Add("Player has leveled up");
 				}
 			});
@@ -225,7 +224,7 @@ namespace DungeonQuest.Debuging
 
 			DIE = new DebugCommand("die", "Kills the player", "die", () =>
 			{
-				playerManager.DamagePlayer(int.MaxValue);
+				gameManager.playerManager.DamagePlayer(int.MaxValue);
 
 				outputList.Add("R.I.P");
 			});
@@ -443,6 +442,11 @@ namespace DungeonQuest.Debuging
 
 				case "frostgolem":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.FrostGolem as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+				
+				case "icewarrior":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.IceWarrior as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 

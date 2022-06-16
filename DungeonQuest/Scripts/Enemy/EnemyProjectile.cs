@@ -7,7 +7,7 @@ namespace DungeonQuest.Enemy
 	{
 		public enum ProjectileType
 		{
-			Arrow,
+			Weapon,
 			Snowball,
 			Other
 		}
@@ -67,7 +67,7 @@ namespace DungeonQuest.Enemy
 			{
 				switch (projectileType)
 				{
-					case ProjectileType.Arrow:
+					case ProjectileType.Weapon:
 						fadeOutAnim.Play();
 						Destroy(gameObject, 5f);
 						break;
