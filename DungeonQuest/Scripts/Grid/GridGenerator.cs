@@ -4,7 +4,7 @@ namespace DungeonQuest.Grid
 {
 	public class GridGenerator : MonoBehaviour
 	{
-		[SerializeField] private int gridX, gridY = 0;
+		public int gridX, gridY = 0;
 		[SerializeField] private bool drawGrid;
 		
 		public GridPathfinding pathfinding;

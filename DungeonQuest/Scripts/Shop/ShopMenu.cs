@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.UI.Menus;
 
 namespace DungeonQuest.Shop
 {
@@ -12,10 +13,12 @@ namespace DungeonQuest.Shop
 		private bool canOpenShop;
 
 		private Collider2D playerCollider;
+		private PauseMenu pauseMenu;
 
 		void Awake()
 		{
 			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
+			pauseMenu = GameObject.Find("GameCanvas").GetComponent<PauseMenu>();
 		}
 
 		void Update()
@@ -25,11 +28,15 @@ namespace DungeonQuest.Shop
 				if (!isShopOpen && GameManager.INSTANCE.CurrentGameState != GameManager.GameState.Paused)
 				{
 					isShopOpen = true;
+					pauseMenu.enabled = false;
 
 					audio.Play();
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
 				}
+
 			}
+
+			if (Input.GetButtonDown("Back") && isShopOpen) CloseShop();
 
 			prompt.SetActive(canOpenShop);
 			shopMenu.SetActive(isShopOpen);
@@ -45,9 +52,10 @@ namespace DungeonQuest.Shop
 			if (collider == playerCollider) canOpenShop = false;
 		}
 
-		public void CloseShop() // Called by Button
+		public void CloseShop()
 		{
 			isShopOpen = false;
+			pauseMenu.enabled = true;
 
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 		}

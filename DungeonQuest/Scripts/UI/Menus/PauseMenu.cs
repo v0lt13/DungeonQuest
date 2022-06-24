@@ -13,8 +13,6 @@ namespace DungeonQuest.UI.Menus
 		[SerializeField] private Text playerHealthText;
 		[SerializeField] private Text playerArmorText;
 		[SerializeField] private Text playerXPText;
-		[SerializeField] private Text killCountText;
-		[SerializeField] private Text secretCountText;
 
 		private int currentMenu;
 		private bool isGamePaused = false;
@@ -37,7 +35,7 @@ namespace DungeonQuest.UI.Menus
 			{
 				if (currentMenu == 0)
 				{					
-					if (!isGamePaused && gameManager.CurrentGameState != GameManager.GameState.Paused)
+					if (gameManager.CurrentGameState != GameManager.GameState.Paused && !isGamePaused)
 					{
 						isGamePaused = true;
 						AudioListener.pause = true;
@@ -92,9 +90,6 @@ namespace DungeonQuest.UI.Menus
 			playerHealthText.text = "HP: " + playerManager.playerHealth.ToString() + "/" + playerManager.defaultPlayerHealth.ToString();
 			playerArmorText.text = "AP: " + playerManager.playerArmor.ToString() + "/" + playerManager.defaultPlayerArmor.ToString();
 			playerXPText.text = playerLeveling.IsPlayerMaxLevel ? "" : playerLeveling.PlayerXP.ToString() + "\n━━━━━\n" + playerLeveling.nextLevelXP.ToString();
-
-			killCountText.text = "Kills: " + gameManager.killCount.ToString() + "/" + gameManager.totalKillCount.ToString();
-			secretCountText.text = "Secrets: " + gameManager.secretCount.ToString() + "/" + gameManager.totalSecretCount.ToString();
 		}
 	}
 }

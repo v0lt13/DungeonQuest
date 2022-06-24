@@ -188,7 +188,7 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
 
-			if (!playerManager.invisible)
+			if (!playerManager.Invisible)
 			{
 				if (bossAI.timeBetweenSpecials <= 0f)
 				{

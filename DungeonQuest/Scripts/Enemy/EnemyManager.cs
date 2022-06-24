@@ -180,7 +180,7 @@ namespace DungeonQuest.Enemy
 		{
 			float distanceFromPlayer = Vector2.Distance(transform.position, playerManager.transform.position);
 
-			if (!playerManager.invisible)
+			if (!playerManager.Invisible)
 			{
 				if (distanceFromPlayer <= followDistance && distanceFromPlayer > attackDistance && enemyAI.StunTime == 0f)
 				{

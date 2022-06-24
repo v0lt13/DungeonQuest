@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using DungeonQuest.Player;
 
-namespace DungeonQuest.Traps
+namespace DungeonQuest.Traps.Projectiles
 {
-	public class Arrow : MonoBehaviour
+	public class IceSpike : MonoBehaviour
 	{
 		[SerializeField] private float speed;
 		[Space(10f)]
@@ -14,16 +14,14 @@ namespace DungeonQuest.Traps
 
 		private Vector3 direction = new Vector3(0f, -1f, 0f);
 
-		private Animation fadeOutAnim;
 		private PlayerManager playerManager;
 
 		void Awake()
 		{
-			fadeOutAnim = GetComponent<Animation>();
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();			
 			
-			// Set damage to do 25% of the player's max health
-			damage = playerManager.defaultPlayerHealth / 4;
+			// Set damage to do 15% of the player's max health
+			damage = playerManager.defaultPlayerHealth / 8;
 		}
 
 		void Update()
@@ -39,6 +37,8 @@ namespace DungeonQuest.Traps
 			if (playerManager.collider2D == collider)
 			{
 				playerManager.DamagePlayer(damage);
+				playerManager.ChillPlayer();
+
 				Destroy(gameObject);
 			}
 			else if (collider.CompareTag("Enemy"))
@@ -55,7 +55,7 @@ namespace DungeonQuest.Traps
 				itHitObject = true;
 				direction = Vector2.zero;
 
-				fadeOutAnim.Play();
+				Destroy(renderer);
 				Destroy(gameObject, 5f);
 			}
 		}

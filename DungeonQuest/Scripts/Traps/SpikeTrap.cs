@@ -26,7 +26,7 @@ namespace DungeonQuest.Traps
 
 		void OnTriggerStay2D(Collider2D collider)
 		{
-			bool canTriggerTrap = (collider == playerManager.collider2D && !playerManager.invisible) || collider.CompareTag("Enemy");
+			bool canTriggerTrap = (collider == playerManager.collider2D && !playerManager.Invisible) || collider.CompareTag("Enemy");
 
 			if (!corroutineActivated && canTriggerTrap) StartCoroutine(TriggerTrap());
 

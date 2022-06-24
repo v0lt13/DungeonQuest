@@ -35,7 +35,7 @@ namespace DungeonQuest.Player
 
 				if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
-				if (Input.GetButtonDown("Attack") && !playerManager.invisible)
+				if (Input.GetButtonDown("Attack") && !playerManager.Invisible)
 				{
 					TimeBetweenAttacks = defaultTimeBetweenAttacks;
 					StartCoroutine(Attack());

@@ -7,6 +7,7 @@ namespace DungeonQuest.Player
 	public class PlayerRespawning : MonoBehaviour
 	{
 		[SerializeField] private GameObject gameOverScreen;
+		[SerializeField] private GameObject tipTextObject;
 		[SerializeField] private Text respawnText;
 
 		private float respawnCooldown = 5f;
@@ -30,9 +31,10 @@ namespace DungeonQuest.Player
 
 			if (playerManager.isDead && respawnCooldown > 0f && playerManager.lifeCount != 0)
 			{
-				respawnCooldown -= Time.deltaTime;
-
+				tipTextObject.SetActive(true);
 				respawnText.gameObject.SetActive(true);
+
+				respawnCooldown -= Time.deltaTime;
 				respawnText.text = "Respawning in: " + respawnCooldown.ToString("n0");
 			}
 
@@ -50,7 +52,9 @@ namespace DungeonQuest.Player
 				canRespawn = false;
 				respawnCooldown = 5f;
 
+				tipTextObject.SetActive(false);
 				respawnText.gameObject.SetActive(false);
+
 				playerManager.HealPlayer(int.MaxValue);
 				StartCoroutine(RespawnInvicibility());
 			}
@@ -64,13 +68,13 @@ namespace DungeonQuest.Player
 
 		private IEnumerator RespawnInvicibility()
 		{
-			playerManager.invisible = true;
 			playerManager.GodMode = true;
+			playerManager.ToogleInvisibility(true);
 
 			yield return new WaitForSeconds(3f);
 
-			playerManager.invisible = false;
 			playerManager.GodMode = false;
+			playerManager.ToogleInvisibility(false);
 		}
 	}
 }

@@ -20,7 +20,6 @@ namespace DungeonQuest.Player
 		[HideInInspector] public int playerHealth = 100;
 		[HideInInspector] public int playerArmor = 100;
 		[HideInInspector] public int coinsAmount;
-		[HideInInspector] public bool invisible;
 		[HideInInspector] public bool noClip;
 		[HideInInspector] public bool isDead;
 
@@ -40,6 +39,7 @@ namespace DungeonQuest.Player
 		private Image vignette;
 
 		public bool GodMode { private get; set; }
+		public bool Invisible { get; private set; }
 
 		void Awake()
 		{
@@ -70,16 +70,6 @@ namespace DungeonQuest.Player
 			armorBar.value = playerArmor;
 			coinsAmountText.text = coinsAmount.ToString();
 			collider2D.enabled = !noClip;
-
-			// Make the player transparent if he is invisible
-			if (invisible)
-			{
-				spriteRenderer.color = new Color(255f, 255f, 255f, 0.5f);
-			}
-			else
-			{
-				spriteRenderer.color = new Color(255f, 255f, 255f, 1f);
-			}
 			
 			var healthFraction = defaultPlayerHealth / 4;
 
@@ -184,6 +174,21 @@ namespace DungeonQuest.Player
 			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
 		}
 
+		public void ToogleInvisibility(bool value)
+		{
+			Invisible = value;
+
+			// Make the player transparent if he is invisible
+			if (Invisible)
+			{
+				spriteRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+			}
+			else
+			{
+				spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
+			}
+		}
+
 		private void Die()
 		{
 			isDead = true;
@@ -210,6 +215,7 @@ namespace DungeonQuest.Player
 		{
 			chillTimer = 2f;
 			playerChilled = true;
+			spriteRenderer.color = new Color(0.85f, 0.95f, 1f);
 
 			if (playerMovement.playerSpeed == playerMovement.defaultPlayerSpeed) playerMovement.playerSpeed /= 1.5f;
 		}
@@ -218,6 +224,8 @@ namespace DungeonQuest.Player
 		{
 			chillTimer = 0f;
 			playerChilled = false;
+			spriteRenderer.color = Color.white;
+
 			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
 		}
 	}

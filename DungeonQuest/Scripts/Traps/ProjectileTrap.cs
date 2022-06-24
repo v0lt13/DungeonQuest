@@ -4,14 +4,14 @@ using DungeonQuest.Player;
 
 namespace DungeonQuest.Traps
 {
-	public class ArrowTrap : MonoBehaviour, ITrap
+	public class ProjectileTrap : MonoBehaviour, ITrap
 	{
 		[Header("Trap Config")]
 		[SerializeField] private float timeBetweenShots;
 		[SerializeField] private float rayDistance;
 		[SerializeField] private bool drawRay;
 		[Space(10f)]
-		[SerializeField] private GameObject arrowPrefab;
+		[SerializeField] private GameObject projectilePrefab;
 
 		private bool corroutineActivated;
 
@@ -30,7 +30,7 @@ namespace DungeonQuest.Traps
 
 			if (hit.collider != null)
 			{
-				bool itCollided = (hit.collider == playerManager.collider2D && !playerManager.invisible) || hit.collider.CompareTag("Enemy");
+				bool itCollided = (hit.collider == playerManager.collider2D && !playerManager.Invisible) || hit.collider.CompareTag("Enemy");
 
 				if (itCollided && !corroutineActivated) StartCoroutine(TriggerTrap());
 			}
@@ -48,14 +48,14 @@ namespace DungeonQuest.Traps
 
 			yield return new WaitForSeconds(timeBetweenShots);
 
-			ShootArrow();
+			ShootProjectile();
 
 			corroutineActivated = false;
 		}
 
-		private void ShootArrow()
+		private void ShootProjectile()
 		{
-			Instantiate(arrowPrefab, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.Euler(0, 0, -180));
+			Instantiate(projectilePrefab, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.Euler(0, 0, -180));
 
 			audio.Play();
 		}
