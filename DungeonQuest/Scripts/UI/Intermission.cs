@@ -12,6 +12,7 @@ namespace DungeonQuest.UI
 		[SerializeField] private Text storyText;
 
 		private bool canContinue;
+		private bool breakEnumerator;
 
 		void Start()
 		{
@@ -23,9 +24,16 @@ namespace DungeonQuest.UI
 
 		void Update()
 		{
-			if (Input.GetButtonDown("Skip") && canContinue)
+			if (Input.GetButtonDown("Skip"))
 			{
-				GameManager.LoadScene(sceneName);
+				if (canContinue)
+				{
+					GameManager.LoadScene(sceneName);
+				}
+				else
+				{
+					breakEnumerator = true;
+				}
 			}
 		}
 
@@ -35,7 +43,7 @@ namespace DungeonQuest.UI
 
 			foreach (var letter in story.ToCharArray())
 			{
-				if (Input.GetButtonDown("Skip"))
+				if (breakEnumerator)
 				{
 					storyText.text = story;
 					canContinue = true;

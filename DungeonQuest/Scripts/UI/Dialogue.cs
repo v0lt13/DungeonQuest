@@ -14,6 +14,7 @@ namespace DungeonQuest.UI
 
 		private int currentDialogue;
 		private bool canContinue;
+		private bool breakEnumaretor;
 
 		void Start()
 		{
@@ -25,23 +26,31 @@ namespace DungeonQuest.UI
 		{
 			prompt.SetActive(canContinue);
 
-			if (Input.GetButtonDown("Skip") && canContinue)
+			if (Input.GetButtonDown("Skip"))
 			{
-				if (currentDialogue != dialogue.Length - 1)
+				if (canContinue)
 				{
-					currentDialogue++;
+					if (currentDialogue != dialogue.Length - 1)
+					{
+						currentDialogue++;
+						breakEnumaretor = false;
 
-					StartCoroutine(DisplayText());
+						StartCoroutine(DisplayText());
+					}
+					else
+					{
+						var gameManager = GameManager.INSTANCE;
+					 
+						gameManager.hasDialogue = true;
+						gameManager.SetGameState(GameManager.GameState.Running);
+						gameManager.gameData.SaveGameData();
+
+						gameObject.SetActive(false);
+					}
 				}
 				else
 				{
-					var gameManager = GameManager.INSTANCE;
-					 
-					gameManager.hasDialogue = true;
-					gameManager.SetGameState(GameManager.GameState.Running);
-					gameManager.gameData.SaveGameData();
-
-					gameObject.SetActive(false);
+					breakEnumaretor = true;
 				}
 			}
 		}
@@ -55,7 +64,7 @@ namespace DungeonQuest.UI
 
 			foreach (var letter in dialogue[currentDialogue].ToCharArray())
 			{
-				if (Input.GetButtonDown("Skip"))
+				if (breakEnumaretor)
 				{
 					diablogueText.text = dialogue[currentDialogue];
 					canContinue = true;

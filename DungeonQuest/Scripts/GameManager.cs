@@ -63,7 +63,7 @@ namespace DungeonQuest
 
 				GameObject.Find("DialogueTrigger").SetActive(!hasDialogue);
 
-				if (LevelReached == 6)
+				if (LevelReached >= 6)
 				{
 					speedUpgradeItem.SetActive(true);
 				}
