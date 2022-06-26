@@ -194,6 +194,8 @@ namespace DungeonQuest.Player
 			isDead = true;
 			rigidbody2D.isKinematic = true;
 
+			UnchillPlayer();
+
 			if (lifeCount > 0)
 			{
 				lifeCount--;
