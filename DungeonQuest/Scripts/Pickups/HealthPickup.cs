@@ -18,6 +18,9 @@ namespace DungeonQuest.Pickups
 		{
 			if (collider == playerManager.collider2D)
 			{
+				// We return if the player reached the potion cap
+				if (playerManager.playerHealing.healingPotions == PlayerHealing.POTION_CAP) return;
+
 				playerManager.playerHealing.AddPotions(1);
 				audio.Play();
 

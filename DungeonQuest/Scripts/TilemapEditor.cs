@@ -177,7 +177,7 @@ namespace DungeonQuest
 
 			spawnedGameObjects.Add(gameObject);
 
-			if (spawnedGameObjects.Count > 3) spawnedGameObjects.RemoveAt(0);
+			if (spawnedGameObjects.Count > 70) spawnedGameObjects.RemoveAt(0);
 		}
 	}
 }

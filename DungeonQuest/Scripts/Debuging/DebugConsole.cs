@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DungeonQuest.Enemy;
+using DungeonQuest.Player;
 using System.Collections.Generic;
 
 namespace DungeonQuest.Debuging
@@ -64,9 +65,16 @@ namespace DungeonQuest.Debuging
 
 			GIVE_COINS = new DebugCommand<int>("givecoins", "Gives coins to the player, negative numbers substract the amount", "givecoins <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.GiveCoins(value);
+				if (GameManager.INSTANCE.playerManager.coinsAmount < PlayerManager.COINS_CAP)
+				{
+					GameManager.INSTANCE.playerManager.GiveCoins(value);
 
-				outputList.Add(value.ToString() + " coins given");
+					outputList.Add(value.ToString() + " coins given");
+				}
+				else
+				{
+					outputList.Add("coins cap reached");
+				}
 			});
 
 			LOAD_SCENE = new DebugCommand<uint>("loadscene", "Loads a specified scene", "loadscene <index>", (value) =>
@@ -84,9 +92,16 @@ namespace DungeonQuest.Debuging
 
 			ADD_POTIONS = new DebugCommand<uint>("addpotions", "Gives healing potions to the player", "addpotions <amount>", (value) =>
 			{
-				GameManager.INSTANCE.playerManager.playerHealing.AddPotions((int)value);
+				if (GameManager.INSTANCE.playerManager.playerHealing.healingPotions < PlayerHealing.POTION_CAP)
+				{
+					GameManager.INSTANCE.playerManager.playerHealing.AddPotions((int)value);
 
-				outputList.Add(value + " potions added");
+					outputList.Add(value + " potions added");
+				}
+				else
+				{
+					outputList.Add("potion cap reached");
+				}
 			});
 
 			SET_DAMAGE = new DebugCommand<uint>("setdamage", "Sets the player damage", "setdamage <amount>", (value) =>

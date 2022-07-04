@@ -10,8 +10,10 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioClip healingSFX;
 
 		[HideInInspector] public int healingPotions;
+		public const int POTION_CAP = 15;
+
 		private float cooldown = 0f;
-		
+
 		private PlayerManager playerManager;
 		private Text healingPotionsAmount;
 		private Slider cooldownSlider;
@@ -31,10 +33,9 @@ namespace DungeonQuest.Player
 			cooldownSlider.value = cooldown;
 			healingPotionsAmount.text = healingPotions.ToString();
 
-			if (cooldown > 0f)
-			{
-				cooldown -= Time.deltaTime;
-			}
+			if (cooldown > 0f) cooldown -= Time.deltaTime;
+
+			if (healingPotions > POTION_CAP) healingPotions = POTION_CAP;
 
 			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 

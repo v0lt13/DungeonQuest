@@ -6,8 +6,17 @@ namespace DungeonQuest.Shop
 {
 	public class ShopItem : MonoBehaviour
 	{
+		public enum AditionalProblem
+		{
+			None,
+			HealthCap,
+			ArmorCap,
+			PotionCap
+		}
+
 		[Header("ItemConfig:")]
 		public int minRequiredLevel;
+		[SerializeField] private AditionalProblem aditionalProblem;
 		[Space(10f)]
 		[SerializeField] private Item item;
 		[SerializeField] private Image itemIcon;
@@ -42,16 +51,31 @@ namespace DungeonQuest.Shop
 					return;
 				}
 
-				HoustonWeHaveProblem("level " + minRequiredLevel.ToString() + " required");
+				HoustonWeHaveProblem("Level " + minRequiredLevel.ToString() + " required");
 			}
 			else if (playerManager.coinsAmount < item.itemPrice)
 			{
-				HoustonWeHaveProblem("you're to poor");
+				HoustonWeHaveProblem("You're too poor");
 			}
 			else
 			{
 				buyButton.interactable = true;
 				problemText.text = string.Empty;
+			}
+
+			switch (aditionalProblem)
+			{
+				case AditionalProblem.HealthCap:
+					if (playerManager.playerHealth == playerManager.defaultPlayerHealth) HoustonWeHaveProblem("Health is full");
+					break;
+
+				case AditionalProblem.ArmorCap:
+					if (playerManager.playerArmor == playerManager.defaultPlayerArmor) HoustonWeHaveProblem("Armor is full");
+					break;
+
+				case AditionalProblem.PotionCap:
+					if (playerManager.playerHealing.healingPotions == PlayerHealing.POTION_CAP) HoustonWeHaveProblem("Max potions");
+					break;
 			}
 		}
 

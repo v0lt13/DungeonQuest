@@ -91,7 +91,7 @@ namespace DungeonQuest.Player
 			if (isWalkingOnIce)
 			{
 				// Make the player slide on ice
-				rigidbody2D.AddForce(new Vector2(moveDirection.x * playerSpeed, moveDirection.y * playerSpeed));
+				rigidbody2D.AddForce(new Vector2(moveDirection.x * (playerSpeed * 2), moveDirection.y * (playerSpeed * 2)));
 			}
 			else
 			{

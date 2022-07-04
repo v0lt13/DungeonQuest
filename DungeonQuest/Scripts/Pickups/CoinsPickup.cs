@@ -19,6 +19,9 @@ namespace DungeonQuest.Pickups
 		{
 			if (collider == playerManager.collider2D)
 			{
+				// Return if the player has reached the coins cap, somehow
+				if (playerManager.coinsAmount == PlayerManager.COINS_CAP) return;
+
 				playerManager.GiveCoins(amountGiven);
 				audio.Play();
 

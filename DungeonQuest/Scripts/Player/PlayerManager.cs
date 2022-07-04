@@ -17,6 +17,7 @@ namespace DungeonQuest.Player
 		[SerializeField] private AudioClip deathSFX;
 		[SerializeField] private AudioClip hitSFX;
 
+		public const int COINS_CAP = 2000000000;
 		[HideInInspector] public int playerHealth = 100;
 		[HideInInspector] public int playerArmor = 100;
 		[HideInInspector] public int coinsAmount;
@@ -72,6 +73,8 @@ namespace DungeonQuest.Player
 			collider2D.enabled = !noClip;
 			
 			var healthFraction = defaultPlayerHealth / 4;
+
+			if (coinsAmount > COINS_CAP) coinsAmount = COINS_CAP;
 
 			// We check if the player's health is less then 25%
 			if (playerHealth < healthFraction)
