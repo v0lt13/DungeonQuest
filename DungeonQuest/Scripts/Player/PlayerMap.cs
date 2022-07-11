@@ -6,6 +6,8 @@ namespace DungeonQuest
 {
 	public class PlayerMap : MonoBehaviour
 	{
+		[SerializeField] private float scrollSensitivity;
+		[Space(10f)]
 		[SerializeField] private GameObject mapUI;
 		[SerializeField] private GameObject playerUI;
 		[SerializeField] private GameObject mapCameraObject;
@@ -30,12 +32,15 @@ namespace DungeonQuest
 
 		private Camera mapCamera;
 		private GameObject playerCameraObject;
+		private GameObject levelStartHeader;
 		private GridGenerator grid;
 		private AudioSource audioSource;
 
 		void Start()
 		{
 			playerCameraObject = GameObject.Find("Main Camera");
+			levelStartHeader = GameObject.Find("LevelStartHeader");
+
 			grid = GameObject.Find("GameManager").GetComponent<GridGenerator>();
 
 			mapCamera = mapCameraObject.GetComponent<Camera>();
@@ -66,8 +71,8 @@ namespace DungeonQuest
 
 			if (isMapOn)
 			{
-				mapCamera.orthographicSize += Input.mouseScrollDelta.x * 5;
-				mapCamera.orthographicSize -= Input.mouseScrollDelta.y * 5;
+				mapCamera.orthographicSize += Input.mouseScrollDelta.x * scrollSensitivity;
+				mapCamera.orthographicSize -= Input.mouseScrollDelta.y * scrollSensitivity;
 
 				if (Input.GetKeyDown(KeyCode.C)) mapCameraObject.transform.position = playerCameraObject.transform.position;
 
@@ -132,6 +137,8 @@ namespace DungeonQuest
 
 			playerUI.SetActive(true);
 			playerCameraObject.SetActive(true);
+
+			if (levelStartHeader != null) Destroy(levelStartHeader);
 
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 		}

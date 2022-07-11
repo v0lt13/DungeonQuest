@@ -12,6 +12,7 @@ namespace DungeonQuest.Player
 		[HideInInspector] public int nextLevelXP = 100;
 		
 		private PlayerManager playerManager;
+		private Animation levelupAnim;
 		private Text levelText;
 		private Slider xpBar;
 
@@ -22,6 +23,7 @@ namespace DungeonQuest.Player
 		{
 			xpBar = GameObject.Find("PlayerXPBar").GetComponent<Slider>();
 			levelText = GameObject.Find("PlayerLevelText").GetComponent<Text>();
+			levelupAnim = GameObject.Find("Vignette").GetComponent<Animation>();
 
 			playerManager = GetComponent<PlayerManager>();
 		}
@@ -51,6 +53,7 @@ namespace DungeonQuest.Player
 			PlayerXP = 0;
 			nextLevelXP *= 2;
 
+			levelupAnim.Play();
 			playerManager.IncreaseMaxHealth(20);
 			playerManager.IncreaseMaxArmor(20);
 			playerManager.playerAttack.IncreaseDamage(10);

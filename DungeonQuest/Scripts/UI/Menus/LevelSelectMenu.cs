@@ -21,7 +21,7 @@ namespace DungeonQuest.UI.Menus
 
 			for (int i = 0; i < secretLevelButtons.Length; i++)
 			{
-				if (i < GameManager.INSTANCE.SecretLevelsUnlocked) secretLevelButtons[i].SetActive(true);
+				secretLevelButtons[i].SetActive(GameManager.INSTANCE.secretLevelsUnlocked[i + 1]);
 			}
 		}
 

@@ -1,4 +1,6 @@
-﻿namespace DungeonQuest.Data
+﻿using System.Collections.Generic;
+
+namespace DungeonQuest.Data
 {
 	[System.Serializable]
 	public class PlayerData
@@ -19,10 +21,10 @@
 		public int healingPotionsAmount;
 
 		public int levelReached;
-		public int secretLevelReached;
-
 		public int bossesCompleted;
 
 		public float playerSpeed;
+
+		public Dictionary<int, bool> secretLevelUnlocked;
 	}
 }

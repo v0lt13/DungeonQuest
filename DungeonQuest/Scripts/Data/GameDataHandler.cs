@@ -70,9 +70,9 @@ namespace DungeonQuest.Data
 			gameManager.playerManager.playerHealing.healingPotions = data.healingPotionsAmount;
 
 			gameManager.bossesCompleted = data.bossesCompleted;
+			gameManager.secretLevelsUnlocked = data.secretLevelUnlocked;
 
 			gameManager.UnlockLevel(data.levelReached);
-			gameManager.UnlockSecretlevel(data.secretLevelReached);
 		}
 		
 		public void LoadGameData()
@@ -117,7 +117,7 @@ namespace DungeonQuest.Data
 				healingPotionsAmount = gameManager.playerManager.playerHealing.healingPotions,
 
 				levelReached = gameManager.LevelReached,
-				secretLevelReached = gameManager.SecretLevelsUnlocked,
+				secretLevelUnlocked = gameManager.secretLevelsUnlocked,
 
 				bossesCompleted = gameManager.bossesCompleted
 			};

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DungeonQuest.Grid;
+using System.Collections;
 using System.Collections.Generic;
 using DungeonQuest.Enemy.Boss.Special;
 
@@ -25,6 +26,7 @@ namespace DungeonQuest.Enemy.Boss
 		[Space(10f)]
 		[SerializeField] private SpecialAbility specialAbility;
 		[SerializeField] private AudioClip attackSFX;
+		[SerializeField] private AudioClip specialSFX;
 
 		[HideInInspector] public AIstate state;
 		[HideInInspector] public float timeBetweenSpecials;
@@ -39,6 +41,8 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			grid = GameObject.Find("GameManager").GetComponent<GridGenerator>();
 			bossManager = GetComponent<BossManager>();
+
+			timeBetweenSpecials = defaultTimeBetweenSpecials;
 		}
 
 		void Update()
@@ -130,18 +134,21 @@ namespace DungeonQuest.Enemy.Boss
 			}
 		}
 
-		private void ActivateSpecial() // Called by Animation event
-		{
-			timeBetweenSpecials = defaultTimeBetweenSpecials;
-
-			specialAbility.Special();
-		}
-
 		private void HitPlayer() // Called by Animation event
 		{
 			audio.pitch = 1f;
 			audio.PlayOneShot(attackSFX);
 			bossManager.playerManager.DamagePlayer(damage);
+		}
+
+		private IEnumerator ActivateSpecial(float duration) // Called by Animation event
+		{
+			specialAbility.Special();
+			audio.PlayOneShot(specialSFX);
+
+			yield return new WaitForSeconds(duration);
+
+			timeBetweenSpecials = defaultTimeBetweenSpecials;
 		}
 	}
 }

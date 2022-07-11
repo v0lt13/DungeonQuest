@@ -27,10 +27,17 @@ namespace DungeonQuest
 		[HideInInspector] public bool hasDialogue;
 		
 		[HideInInspector] public PlayerManager playerManager;
-		[HideInInspector] public List<GameObject> enemyList;		
+		[HideInInspector] public List<GameObject> enemyList;
+
+		public Dictionary<int, bool> secretLevelsUnlocked = new Dictionary<int, bool>
+		{
+			{1, false}, // S1
+			{2, false}, // S2
+			{3, false}, // S3
+			{4, false}  // S4
+		};
 
 		public int LevelReached { get; private set; }
-		public int SecretLevelsUnlocked { get; private set; }
 		public float CompletionTime { get; private set; }
 
 		public GameState CurrentGameState { get; private set; }
@@ -115,7 +122,7 @@ namespace DungeonQuest
 
 		public void UnlockSecretlevel(int level)
 		{
-			if (SecretLevelsUnlocked < level) SecretLevelsUnlocked = level;
+			secretLevelsUnlocked[level] = true;
 		}
 
 		public void SaveData() // Called by Event

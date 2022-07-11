@@ -8,6 +8,7 @@ namespace DungeonQuest.Player
 		[SerializeField] private float defaultCooldown;
 
 		[SerializeField] private AudioClip healingSFX;
+		[SerializeField] private AudioClip noHealingSFX;
 
 		[HideInInspector] public int healingPotions;
 		public const int POTION_CAP = 15;
@@ -39,14 +40,21 @@ namespace DungeonQuest.Player
 
 			if (GameManager.INSTANCE.CurrentGameState == GameManager.GameState.Paused) return;
 
-			if (Input.GetButtonDown("Heal") && cooldown <= 0f && healingPotions != 0)
+			if (Input.GetButtonDown("Heal"))
 			{
-				cooldown = defaultCooldown;
-				audio.pitch = 1f;
-				healingPotions--;
+				if (cooldown <= 0f && healingPotions != 0)
+				{
+					cooldown = defaultCooldown;
+					audio.pitch = 1f;
+					healingPotions--;
 
-				playerManager.HealPlayer(playerManager.defaultPlayerHealth);
-				audio.PlayOneShot(healingSFX);
+					playerManager.HealPlayer(playerManager.defaultPlayerHealth);
+					audio.PlayOneShot(healingSFX);
+				}
+				else
+				{
+					audio.PlayOneShot(noHealingSFX);
+				}
 			}
 		}
 

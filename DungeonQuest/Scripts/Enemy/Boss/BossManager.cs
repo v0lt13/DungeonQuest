@@ -37,6 +37,11 @@ namespace DungeonQuest.Enemy.Boss
 		[SerializeField] private int bossHealth;
 		[SerializeField] private int bossID;
 		[Space(10f)]
+		[SerializeField] private Vector2 boxColliderCenterX;
+		[SerializeField] private Vector2 boxColliderSizeX;
+		[SerializeField] private Vector2 boxColliderCenterY;
+		[SerializeField] private Vector2 boxColliderSizeY;
+		[Space(10f)]
 		[SerializeField] private Slider healthBar;
 		[SerializeField]  private VoidEvent gameEvent;
 
@@ -75,7 +80,6 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			healthBar.maxValue = bossHealth;
 
-			GameManager.INSTANCE.enemyList.Add(gameObject);
 			GameManager.INSTANCE.totalKillCount++;
 
 			gameObject.transform.SetParent(GameObject.Find("EnemyHolder").transform);
@@ -218,35 +222,30 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))
 			{
+				boxCollider.size = boxColliderSizeX;
+
 				if (direction.x > 0)
 				{
-					boxCollider.center = new Vector2(-0.1f, 0f);
-					boxCollider.size = new Vector2(0.5f, 1f);
-
+					boxCollider.center = new Vector2(-boxColliderCenterX.x, boxColliderCenterX.y);
 					return 3; // Right
 				}
 				else
 				{
-					boxCollider.center = new Vector2(0.1f, 0f);
-					boxCollider.size = new Vector2(0.5f, 1f);
-
+					boxCollider.center = new Vector2(boxColliderCenterX.x, boxColliderCenterX.y);
 					return 2; // Left
 				}
 			}
 			else
 			{
+				boxCollider.center = boxColliderCenterY;
+				boxCollider.size = boxColliderSizeY;
+
 				if (direction.y > 0)
 				{
-					boxCollider.center = new Vector2(0f, -0.14f);
-					boxCollider.size = new Vector2(1f, 0.75f);
-
 					return 1; // Up
 				}
 				else
 				{
-					boxCollider.center = new Vector2(0f, -0.14f);
-					boxCollider.size = new Vector2(1f, 0.75f);
-
 					return 0; // Down
 				}
 			}

@@ -236,7 +236,8 @@ namespace DungeonQuest.Debuging
 					"14 - C2L5",
 					"15 - S2",
 					"16 - Intermission01",
-					"17 - Intermission02"
+					"17 - Intermission02",
+					"18 - Intermission03"
 				};
 
 				outputList.Add("Scene list:");
