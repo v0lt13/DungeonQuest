@@ -16,6 +16,7 @@ namespace DungeonQuest.Player
 		private float cooldown = 0f;
 
 		private PlayerManager playerManager;
+		private Animator noHealinganim;
 		private Text healingPotionsAmount;
 		private Slider cooldownSlider;
 
@@ -23,6 +24,7 @@ namespace DungeonQuest.Player
 		{
 			cooldownSlider = GameObject.Find("CooldownSlider").GetComponent<Slider>();
 			healingPotionsAmount = GameObject.Find("PotionAmountText").GetComponent<Text>();
+			noHealinganim = GameObject.Find("HealIconHighlight").GetComponent<Animator>();
 
 			playerManager = GetComponent<PlayerManager>();
 
@@ -53,6 +55,7 @@ namespace DungeonQuest.Player
 				}
 				else
 				{
+					noHealinganim.Play("NoHealing", -1, 0f);
 					audio.PlayOneShot(noHealingSFX);
 				}
 			}
