@@ -30,6 +30,7 @@ namespace DungeonQuest.Player
 
 		[HideInInspector] public float playerSpeed;
 		[HideInInspector] public bool isWalkingOnIce;
+		[HideInInspector] public bool isWalkingOnGoo;
 		[HideInInspector] public LastMoveDirection lastMoveDir;
 		[HideInInspector] public FaceingDirection faceingDir;
 		[HideInInspector] public MoveDirection moveDir;
@@ -58,6 +59,7 @@ namespace DungeonQuest.Player
 		{
 			HasMovementInput = x != 0 || y != 0;
 			IsMoveing = moveDirection.x != 0 || moveDirection.y != 0;
+			playerSpeed = isWalkingOnGoo ? defaultPlayerSpeed / 2 : defaultPlayerSpeed;
 
 			if (playerManager.playerAttack.IsAttacking) moveDirection = Vector2.zero;
 

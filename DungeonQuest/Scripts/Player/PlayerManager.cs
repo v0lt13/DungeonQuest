@@ -83,7 +83,7 @@ namespace DungeonQuest.Player
 			}
 			else
 			{
-				vignette.color = new Color(0f, 0f, 0f, 0.7f); // Sethe color to black
+				vignette.color = new Color(0f, 0f, 0f, 0.7f); // Set the color to black
 			}
 
 			if (playerHealth <= 0)
@@ -216,11 +216,11 @@ namespace DungeonQuest.Player
 			enabled = false;
 		}
 
-		public void ChillPlayer()
+		public void ChillPlayer(float duration)
 		{
-			chillTimer = 2f;
+			chillTimer = duration;
 			playerChilled = true;
-			spriteRenderer.color = new Color(0.85f, 0.95f, 1f);
+			spriteRenderer.color = new Color(0.80f, 0.95f, 1f);
 
 			if (playerMovement.playerSpeed == playerMovement.defaultPlayerSpeed) playerMovement.playerSpeed /= 1.5f;
 		}

@@ -12,7 +12,7 @@ namespace DungeonQuest
 
 		private string[] options = new string[]
 		{
-			"Map Tiles", "Enviromental", "Traps"
+			"Map Tiles - CH1","Map Tiles - CH2","Map Tiles - CH3","Map Tiles - CH4", "Enviromental", "Traps"
 		};
 
 		private GameObject[] prefabs;
@@ -43,20 +43,33 @@ namespace DungeonQuest
 
 			var objects = Resources.LoadAll("Prefabs/Map", typeof(GameObject));
 
-			if (selectedItem == 0)
+			switch (selectedItem)
 			{
-				objects = Resources.LoadAll("Prefabs/Map/Tiles", typeof(GameObject));
+				case 0:
+					objects = Resources.LoadAll("Prefabs/Map/Tiles/CH1", typeof(GameObject));
+					break;
 
+				case 1:
+					objects = Resources.LoadAll("Prefabs/Map/Tiles/CH2", typeof(GameObject));
+					break;
+
+				case 2:
+					objects = Resources.LoadAll("Prefabs/Map/Tiles/CH3", typeof(GameObject));
+					break;
+
+				case 3:
+					objects = Resources.LoadAll("Prefabs/Map/Tiles/CH4", typeof(GameObject));
+					break;
+
+				case 4:
+					objects = Resources.LoadAll("Prefabs/Map/Enviromental", typeof(GameObject));
+					break;
+
+				case 5:
+					objects = Resources.LoadAll("Prefabs/Map/Traps", typeof(GameObject));
+					break;
 			}
-			else if (selectedItem == 1)
-			{
-				objects = Resources.LoadAll("Prefabs/Map/Enviromental", typeof(GameObject));
-			}
-			else if (selectedItem == 2)
-			{
-				objects = Resources.LoadAll("Prefabs/Map/Traps", typeof(GameObject));
-			}
-			
+
 			prefabs = new GameObject[objects.Length];
 			for (int i = 0; i < objects.Length; i++) prefabs[i] = (GameObject)objects[i];
 

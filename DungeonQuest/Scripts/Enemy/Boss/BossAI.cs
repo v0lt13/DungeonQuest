@@ -144,6 +144,8 @@ namespace DungeonQuest.Enemy.Boss
 		private IEnumerator ActivateSpecial(float duration) // Called by Animation event
 		{
 			specialAbility.Special();
+
+			audio.pitch = 1f;
 			audio.PlayOneShot(specialSFX);
 
 			yield return new WaitForSeconds(duration);

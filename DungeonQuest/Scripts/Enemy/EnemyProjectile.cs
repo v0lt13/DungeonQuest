@@ -53,7 +53,7 @@ namespace DungeonQuest.Enemy
 
 				if (projectileType == ProjectileType.Snowball)
 				{
-					playerManager.ChillPlayer();
+					playerManager.ChillPlayer(2f);
 				}
 
 				Destroy(gameObject);

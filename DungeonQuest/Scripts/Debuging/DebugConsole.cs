@@ -21,6 +21,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<uint> SET_DAMAGE;
 		private static DebugCommand<uint> SET_SPEED;
 		private static DebugCommand<uint> UNLOCK_LEVEL;
+		private static DebugCommand<uint> UNLOCK_SECRET_LEVEL;
 		private static DebugCommand<bool> GOD_MODE;
 		private static DebugCommand<bool> NOCLIP;
 		private static DebugCommand<bool> INVISIBILITY;
@@ -121,10 +122,32 @@ namespace DungeonQuest.Debuging
 
 			UNLOCK_LEVEL = new DebugCommand<uint>("unlocklevel", "Unlocks a specified level. Requires reloading the scene if in the Lobby", "unlocklevel <level>", (value) =>
 			{
-				GameManager.INSTANCE.UnlockLevel((int)value);
-				GameManager.INSTANCE.gameData.SavePlayerData();
+				if (value <= 15)
+				{
+					GameManager.INSTANCE.UnlockLevel((int)value);
+					GameManager.INSTANCE.gameData.SavePlayerData();
 
-				outputList.Add("Level " + value + " unlocked");
+					outputList.Add("Level " + value + " unlocked");
+				}
+				else
+				{
+					outputList.Add("Level doesent exist");
+				}
+			});
+
+			UNLOCK_SECRET_LEVEL = new DebugCommand<uint>("unlocksecret", "Unlocks a specified secret level. Requires reloading the scene if in the Lobby", "unlocksecret <level>", (value) =>
+			{
+				if (value <= 3)
+				{
+					GameManager.INSTANCE.UnlockSecretlevel((int)value);
+					GameManager.INSTANCE.gameData.SavePlayerData();
+
+					outputList.Add("Secret level " + value + " unlocked");
+				}
+				else
+				{
+					outputList.Add("Level doesent exist");
+				}
 			});
 
 			GOD_MODE = new DebugCommand<bool>("godmode", "Makes the player invincible", "godmode <true/false>", (value) =>
@@ -235,9 +258,15 @@ namespace DungeonQuest.Debuging
 					"13 - C2L4",
 					"14 - C2L5",
 					"15 - S2",
-					"16 - Intermission01",
-					"17 - Intermission02",
-					"18 - Intermission03"
+					"16 - C3L1",
+					"17 - C3L2",
+					"18 - C3L3",
+					"19 - C3L4",
+					"20 - C3L5",
+					"21 - S3",
+					"22 - Intermission01",
+					"23 - Intermission02",
+					"24 - Intermission03"
 				};
 
 				outputList.Add("Scene list:");
@@ -286,6 +315,7 @@ namespace DungeonQuest.Debuging
 				SET_DAMAGE,
 				SET_SPEED,
 				UNLOCK_LEVEL,
+				UNLOCK_SECRET_LEVEL,
 				GOD_MODE,
 				NOCLIP,
 				INVISIBILITY,
@@ -474,6 +504,16 @@ namespace DungeonQuest.Debuging
 				
 				case "icewarrior":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.IceWarrior as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "goblin":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.Goblin as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "speargoblin":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.SpearGoblin as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 

@@ -35,7 +35,7 @@ namespace DungeonQuest.Traps.Projectiles
 			if (playerManager.collider2D == collider)
 			{
 				playerManager.DamagePlayer(damage);
-				playerManager.ChillPlayer();
+				playerManager.ChillPlayer(5f);
 
 				Destroy(gameObject);
 			}
