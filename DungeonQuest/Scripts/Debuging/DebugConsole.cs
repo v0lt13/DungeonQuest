@@ -122,6 +122,7 @@ namespace DungeonQuest.Debuging
 
 			UNLOCK_LEVEL = new DebugCommand<uint>("unlocklevel", "Unlocks a specified level. Requires reloading the scene if in the Lobby", "unlocklevel <level>", (value) =>
 			{
+				// Yes, I hardcoded the amount of levels, fight me.
 				if (value <= 15)
 				{
 					GameManager.INSTANCE.UnlockLevel((int)value);
@@ -136,7 +137,7 @@ namespace DungeonQuest.Debuging
 			});
 
 			UNLOCK_SECRET_LEVEL = new DebugCommand<uint>("unlocksecret", "Unlocks a specified secret level. Requires reloading the scene if in the Lobby", "unlocksecret <level>", (value) =>
-			{
+			{				
 				if (value <= 3)
 				{
 					GameManager.INSTANCE.UnlockSecretlevel((int)value);
@@ -163,6 +164,9 @@ namespace DungeonQuest.Debuging
 			{
 				GameManager.INSTANCE.playerManager.noClip = value;
 				GameManager.INSTANCE.playerManager.ToogleInvisibility(value);
+
+				GameManager.INSTANCE.playerManager.playerMovement.isWalkingOnIce = false;
+				GameManager.INSTANCE.playerManager.playerMovement.isWalkingOnGoo = false;
 
 				var toggleText = value ? "On" : "Off";
 
@@ -514,6 +518,21 @@ namespace DungeonQuest.Debuging
 
 				case "speargoblin":
 					enemyPrefabs.InstatiateEnemy(enemyPrefabs.SpearGoblin as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "elitegoblin":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.EliteGoblin as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "goblinassasin":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.GoblinAssasin as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "slime":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.Slime as GameObject, level);
 					outputList.Add(name + " spawned");
 					break;
 

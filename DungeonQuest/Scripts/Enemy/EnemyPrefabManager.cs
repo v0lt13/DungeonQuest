@@ -16,6 +16,9 @@ namespace DungeonQuest.Enemy
 		public Object IceWarrior { get; private set; }
 		public Object Goblin { get; private set; }
 		public Object SpearGoblin { get; private set; }
+		public Object EliteGoblin { get; private set; }
+		public Object GoblinAssasin { get; private set; }
+		public Object Slime { get; private set; }
 
 		public List<string> enemyList = new List<string>
 		{
@@ -29,7 +32,10 @@ namespace DungeonQuest.Enemy
 			"FrostGolem",
 			"IceWarrior",
 			"Goblin",
-			"SpearGoblin"
+			"SpearGoblin",
+			"EliteGoblin",
+			"GoblinAssasin",
+			"Slime"
 		};
 
 		public void LoadPrefabs()
@@ -45,6 +51,9 @@ namespace DungeonQuest.Enemy
 			IceWarrior = Resources.Load("Prefabs/Entities/IceWarrior", typeof(GameObject));
 			Goblin = Resources.Load("Prefabs/Entities/Goblin", typeof(GameObject));
 			SpearGoblin = Resources.Load("Prefabs/Entities/SpearGoblin", typeof(GameObject));
+			EliteGoblin = Resources.Load("Prefabs/Entities/EliteGoblin", typeof(GameObject));
+			GoblinAssasin = Resources.Load("Prefabs/Entities/GoblinAssasin", typeof(GameObject));
+			Slime = Resources.Load("Prefabs/Entities/Slime", typeof(GameObject));
 		}
 
 		public void InstatiateEnemy(GameObject enemy, uint level)

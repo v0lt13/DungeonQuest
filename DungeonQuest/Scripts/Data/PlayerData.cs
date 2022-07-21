@@ -24,6 +24,7 @@ namespace DungeonQuest.Data
 		public int bossesCompleted;
 
 		public float playerSpeed;
+		public float lifestealAmount;
 
 		public Dictionary<int, bool> secretLevelUnlocked;
 	}

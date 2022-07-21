@@ -39,6 +39,7 @@ namespace DungeonQuest.Player
 		private Text coinsAmountText;
 		private Image vignette;
 
+		public float LifestealAmount { get; private set; }
 		public bool GodMode { private get; set; }
 		public bool Invisible { get; private set; }
 
@@ -175,6 +176,11 @@ namespace DungeonQuest.Player
 			playerMovement.defaultPlayerSpeed += amount;
 
 			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
+		}
+
+		public void IncreaseLifesteal(float amount)
+		{
+			LifestealAmount += amount;
 		}
 
 		public void ToogleInvisibility(bool value)

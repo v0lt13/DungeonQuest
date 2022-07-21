@@ -18,6 +18,7 @@ namespace DungeonQuest
 		public List<ShopItem> shopItems;
 		[Space(10f)]
 		[SerializeField] private GameObject speedUpgradeItem;
+		[SerializeField] private GameObject lifestealItem;
 
 		[HideInInspector] public int secretCount;
 		[HideInInspector] public int killCount;
@@ -73,6 +74,11 @@ namespace DungeonQuest
 				if (LevelReached >= 6)
 				{
 					speedUpgradeItem.SetActive(true);
+				}
+
+				if (LevelReached >= 11)
+				{
+					lifestealItem.SetActive(true);
 				}
 			}
 		}

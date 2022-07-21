@@ -32,7 +32,8 @@ namespace DungeonQuest.Player
 				// We check if the enemy is gonna die on the next hit, then we give the player XP if is true
 				if (healthDifference <= 0)
 				{
-					playerManager.playerLeveling.PlayerXP += Random.Range(enemyManager.enemyDrops.GetMinXpDrop, enemyManager.enemyDrops.GetMaxXpDrop);					
+					playerManager.playerLeveling.PlayerXP += Random.Range(enemyManager.enemyDrops.GetMinXpDrop, enemyManager.enemyDrops.GetMaxXpDrop);
+					playerManager.HealPlayer((int)(playerManager.LifestealAmount * (playerManager.defaultPlayerHealth / 8)));
 				}
 
 				Vector2 difference = (enemyManager.transform.position - playerManager.transform.position).normalized * knockbackPower;

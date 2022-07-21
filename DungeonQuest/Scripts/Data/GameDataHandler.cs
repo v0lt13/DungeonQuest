@@ -72,6 +72,7 @@ namespace DungeonQuest.Data
 			gameManager.bossesCompleted = data.bossesCompleted;
 			gameManager.secretLevelsUnlocked = data.secretLevelUnlocked;
 
+			gameManager.playerManager.IncreaseLifesteal(data.lifestealAmount);
 			gameManager.UnlockLevel(data.levelReached);
 		}
 		
@@ -115,6 +116,7 @@ namespace DungeonQuest.Data
 
 				coinsAmount = gameManager.playerManager.coinsAmount,
 				healingPotionsAmount = gameManager.playerManager.playerHealing.healingPotions,
+				lifestealAmount = gameManager.playerManager.LifestealAmount,
 
 				levelReached = gameManager.LevelReached,
 				secretLevelUnlocked = gameManager.secretLevelsUnlocked,
