@@ -23,6 +23,7 @@ namespace DungeonQuest.Player
 		[HideInInspector] public int coinsAmount;
 		[HideInInspector] public bool noClip;
 		[HideInInspector] public bool isDead;
+		[HideInInspector] public bool playerChilled;
 
 		[HideInInspector] public PlayerMovement playerMovement;
 		[HideInInspector] public PlayerLeveling playerLeveling;
@@ -33,7 +34,6 @@ namespace DungeonQuest.Player
 		[HideInInspector] public Slider armorBar;
 
 		private float chillTimer;
-		private bool playerChilled;
 
 		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;

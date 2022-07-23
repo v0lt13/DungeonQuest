@@ -59,7 +59,8 @@ namespace DungeonQuest.Player
 		{
 			HasMovementInput = x != 0 || y != 0;
 			IsMoveing = moveDirection.x != 0 || moveDirection.y != 0;
-			playerSpeed = isWalkingOnGoo ? defaultPlayerSpeed / 2 : defaultPlayerSpeed;
+
+			if (!playerManager.playerChilled) playerSpeed = isWalkingOnGoo ? defaultPlayerSpeed / 2 : defaultPlayerSpeed;
 
 			if (playerManager.playerAttack.IsAttacking) moveDirection = Vector2.zero;
 
