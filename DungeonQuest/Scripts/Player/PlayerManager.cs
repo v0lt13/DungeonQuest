@@ -37,7 +37,7 @@ namespace DungeonQuest.Player
 
 		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;
-		private Image vignette;
+		private Animator vignetteAnimator;
 
 		public float LifestealAmount { get; private set; }
 		public bool GodMode { private get; set; }
@@ -48,7 +48,7 @@ namespace DungeonQuest.Player
 			healthBar = GameObject.Find("PlayerHealthBar").GetComponent<Slider>();
 			armorBar = GameObject.Find("PlayerArmorBar").GetComponent<Slider>();
 			coinsAmountText = GameObject.Find("CoinsAmountText").GetComponent<Text>();
-			vignette = GameObject.Find("Vignette").GetComponent<Image>();
+			vignetteAnimator = GameObject.Find("Vignette").GetComponent<Animator>();
 
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			playerMovement = GetComponent<PlayerMovement>();
@@ -72,19 +72,13 @@ namespace DungeonQuest.Player
 			armorBar.value = playerArmor;
 			coinsAmountText.text = coinsAmount.ToString();
 			collider2D.enabled = !noClip;
-			
-			var healthFraction = defaultPlayerHealth / 4;
 
 			if (coinsAmount > COINS_CAP) coinsAmount = COINS_CAP;
 
 			// We check if the player's health is less then 25%
-			if (playerHealth < healthFraction)
+			if (playerHealth < defaultPlayerHealth / 4)
 			{
-				vignette.color = new Color(0.35f, 0f, 0f, 0.7f); // Set the color to a dark red
-			}
-			else
-			{
-				vignette.color = new Color(0f, 0f, 0f, 0.7f); // Set the color to black
+				vignetteAnimator.Play("LowHealth");
 			}
 
 			if (playerHealth <= 0)
@@ -213,7 +207,9 @@ namespace DungeonQuest.Player
 
 			audio.clip = deathSFX;
 			audio.pitch = 1f;
+
 			audio.Play();
+			vignetteAnimator.Play("Default");
 
 			collider2D.enabled = false;
 			playerAttack.enabled = false;
