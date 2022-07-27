@@ -80,7 +80,7 @@ namespace DungeonQuest.Player
 			{
 				vignetteAnimator.Play("LowHealth");
 			}
-
+			
 			if (playerHealth <= 0)
 			{
 				playerHealth = 0;
@@ -123,6 +123,9 @@ namespace DungeonQuest.Player
 				playerHealth -= damage;
 			}
 
+			// We check if the player's health is less then 25% then play the animation that makes the vignette red
+			if (playerHealth < defaultPlayerHealth / 4) vignetteAnimator.Play("LowHealth");
+
 			audio.clip = hitSFX;
 			audio.pitch = Random.Range(1f, 1.3f);
 			audio.Play();
@@ -133,6 +136,9 @@ namespace DungeonQuest.Player
 			playerHealth += amount;
 
 			if (playerHealth > defaultPlayerHealth) playerHealth = defaultPlayerHealth;
+
+			// We check if the player's health is more then 25% then play the animation that makes the vignette back to normal
+			if (playerHealth > defaultPlayerHealth / 4) vignetteAnimator.Play("Default");
 		}
 
 		public void ArmorPlayer(int amount)
