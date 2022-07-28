@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using DungeonQuest.Player;
 
-namespace DungeonQuest.Traps.Projectiles
+namespace DungeonQuest.Enemy.Boss.Projectiles
 {
 	public class BossIceSpike : MonoBehaviour
 	{

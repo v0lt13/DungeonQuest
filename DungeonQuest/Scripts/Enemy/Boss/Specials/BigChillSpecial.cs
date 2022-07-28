@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using DungeonQuest.Traps.Projectiles;
+using DungeonQuest.Enemy.Boss.Projectiles;
 
 namespace DungeonQuest.Enemy.Boss.Special
 {
