@@ -62,7 +62,6 @@ namespace DungeonQuest.Enemy.Boss.Special
 						iceSpike.direction = new Vector2(-1f, -1f);
 						iceSpike.transform.rotation = Quaternion.Euler(0f, 0f, 135f);
 						break;
-
 				}
 			}
 		}

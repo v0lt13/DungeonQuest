@@ -35,11 +35,11 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 			}
 			else if (!hasExploded)
 			{
-				transform.Rotate(new Vector3(0f, 0f, 10f + Time.deltaTime));
-				Vector2.MoveTowards(transform.position, direction, speed * Time.deltaTime);
+				transform.Rotate(new Vector3(0f, 0f, 500f * Time.deltaTime));
+				transform.position = Vector2.MoveTowards(transform.position, direction, speed * Time.deltaTime);				
 			}
 		}
-		
+
 		void OnTriggerEnter2D(Collider2D collider)
 		{
 			if (itHitObject || playerManager == null) return;
@@ -60,6 +60,8 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 
 		private void Explode()
 		{
+			if (hasExploded) return;
+
 			hasExploded = true;
 			audio.clip = explosionSFX;
 			audio.pitch = Random.Range(1f, 1.5f);
@@ -69,7 +71,7 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 
 			if (Vector2.Distance(transform.position, playerManager.transform.position) <= explosionRange) playerManager.DamagePlayer(damage);
 
-			Destroy(gameObject, 5f);
+			Destroy(gameObject, 3f);
 		}
 	}
 }

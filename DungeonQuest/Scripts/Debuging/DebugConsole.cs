@@ -208,7 +208,10 @@ namespace DungeonQuest.Debuging
 				{
 					for (int i = 0; i < enemyList.Count; i++)
 					{
-						enemyList[i].GetComponent<EnemyManager>().DamageEnemy(int.MaxValue);
+						var enemyManager = enemyList[i].GetComponent<EnemyManager>();
+
+						enemyManager.DamageEnemy(int.MaxValue);
+						GameManager.INSTANCE.playerManager.playerLeveling.PlayerXP += Random.Range(enemyManager.enemyDrops.GetMinXpDrop, enemyManager.enemyDrops.GetMaxXpDrop);
 					}
 
 					outputList.Add(enemyList.Count + " enemies killed");
@@ -270,7 +273,8 @@ namespace DungeonQuest.Debuging
 					"21 - S3",
 					"22 - Intermission01",
 					"23 - Intermission02",
-					"24 - Intermission03"
+					"24 - Intermission03",
+					"25 - Intermission04"
 				};
 
 				outputList.Add("Scene list:");
