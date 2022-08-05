@@ -7,7 +7,7 @@ namespace DungeonQuest.Player
 	{
 		[SerializeField] private AudioClip levelUpSFX;
 
-		public readonly int maxLevel = 20;
+		public readonly int maxLevel = 25;
 		[HideInInspector] public int playerLevel = 1;
 		[HideInInspector] public int nextLevelXP = 100;
 		

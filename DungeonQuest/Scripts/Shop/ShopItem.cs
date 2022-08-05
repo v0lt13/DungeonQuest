@@ -27,6 +27,8 @@ namespace DungeonQuest.Shop
 		[SerializeField] private Text itemPriceText;
 		[SerializeField] private Text problemText;
 
+		private const int MAX_UPGARDE_LEVEL = 20;
+
 		private PlayerManager playerManager;
 
 		void Awake()
@@ -45,7 +47,7 @@ namespace DungeonQuest.Shop
 
 			if (playerLeveling.playerLevel < minRequiredLevel)
 			{
-				if (playerLeveling.playerLevel == playerLeveling.maxLevel)
+				if (playerLeveling.playerLevel >= MAX_UPGARDE_LEVEL)
 				{
 					HoustonWeHaveProblem("Maxed out");
 					return;

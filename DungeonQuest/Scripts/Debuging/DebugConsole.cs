@@ -123,7 +123,7 @@ namespace DungeonQuest.Debuging
 			UNLOCK_LEVEL = new DebugCommand<uint>("unlocklevel", "Unlocks a specified level. Requires reloading the scene if in the Lobby", "unlocklevel <level>", (value) =>
 			{
 				// Yes, I hardcoded the amount of levels, fight me.
-				if (value <= 15)
+				if (value <= 20)
 				{
 					GameManager.INSTANCE.UnlockLevel((int)value);
 					GameManager.INSTANCE.gameData.SavePlayerData();
@@ -138,7 +138,7 @@ namespace DungeonQuest.Debuging
 
 			UNLOCK_SECRET_LEVEL = new DebugCommand<uint>("unlocksecret", "Unlocks a specified secret level. Requires reloading the scene if in the Lobby", "unlocksecret <level>", (value) =>
 			{				
-				if (value <= 3)
+				if (value <= 4)
 				{
 					GameManager.INSTANCE.UnlockSecretlevel((int)value);
 					GameManager.INSTANCE.gameData.SavePlayerData();
@@ -271,10 +271,16 @@ namespace DungeonQuest.Debuging
 					"19 - C3L4",
 					"20 - C3L5",
 					"21 - S3",
-					"22 - Intermission01",
-					"23 - Intermission02",
-					"24 - Intermission03",
-					"25 - Intermission04"
+					"22 - C4L1",
+					"23 - C4L2",
+					"24 - C4L3",
+					"25 - C4L4",
+					"26 - C4L5",
+					"27 - S4",
+					"28 - Intermission01",
+					"29 - Intermission02",
+					"30 - Intermission03",
+					"31 - Intermission04"
 				};
 
 				outputList.Add("Scene list:");
