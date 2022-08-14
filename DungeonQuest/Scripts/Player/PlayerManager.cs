@@ -75,8 +75,8 @@ namespace DungeonQuest.Player
 
 			if (coinsAmount > COINS_CAP) coinsAmount = COINS_CAP;
 
-			// We check if the player's health is less then 25%
-			if (playerHealth < defaultPlayerHealth / 4)
+			// We check if the player's health is 25% or less
+			if (playerHealth <= defaultPlayerHealth / 4)
 			{
 				vignetteAnimator.Play("LowHealth");
 			}

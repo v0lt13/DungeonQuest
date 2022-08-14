@@ -280,7 +280,8 @@ namespace DungeonQuest.Debuging
 					"28 - Intermission01",
 					"29 - Intermission02",
 					"30 - Intermission03",
-					"31 - Intermission04"
+					"31 - Intermission04",
+					"32 - Intermission05"
 				};
 
 				outputList.Add("Scene list:");
