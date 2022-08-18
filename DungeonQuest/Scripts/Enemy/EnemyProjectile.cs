@@ -9,7 +9,7 @@ namespace DungeonQuest.Enemy
 		{
 			Weapon,
 			Snowball,
-			Other
+			Fireball
 		}
 
 		[Header("Projectile Config:")]
@@ -20,7 +20,7 @@ namespace DungeonQuest.Enemy
 		private bool itHitObject;
 
 		private PlayerManager playerManager;
-		private Animation fadeOutAnim;
+		private Animator animator;
 		private Vector3 direction;
 
 		public int ProjectileDamage { private get; set; }
@@ -28,7 +28,7 @@ namespace DungeonQuest.Enemy
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
-			fadeOutAnim = GetComponent<Animation>();
+			animator = GetComponent<Animator>();
 
 			direction = (playerManager.transform.position - transform.position).normalized;
 
@@ -68,12 +68,18 @@ namespace DungeonQuest.Enemy
 				switch (projectileType)
 				{
 					case ProjectileType.Weapon:
-						fadeOutAnim.Play();
+						animator.Play("ProjectileFadeOut");
 						Destroy(gameObject, 5f);
 						break;
 
+					case ProjectileType.Fireball:
+						if (Vector2.Distance(transform.position, playerManager.transform.position) <= 12) playerManager.DamagePlayer(ProjectileDamage);
+
+						animator.Play("Explosion");
+						Destroy(gameObject, 3f);
+						break;
+
 					default:
-					case ProjectileType.Other:
 						GetComponent<SpriteRenderer>().enabled = false;
 						Destroy(gameObject, 1f);
 						break;

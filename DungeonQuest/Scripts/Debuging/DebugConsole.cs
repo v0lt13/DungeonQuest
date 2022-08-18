@@ -547,6 +547,26 @@ namespace DungeonQuest.Debuging
 					outputList.Add(name + " spawned");
 					break;
 
+				case "lavagolem":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.LavaGolem as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "pyroarcher":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.PyroArcher as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "pyroknight":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.PyroKnight as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
+				case "blastgolem":
+					enemyPrefabs.InstatiateEnemy(enemyPrefabs.BlastGolem as GameObject, level);
+					outputList.Add(name + " spawned");
+					break;
+
 				default:
 					outputList.Add("Enemy not found");
 					break;
