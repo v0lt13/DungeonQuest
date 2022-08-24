@@ -60,7 +60,7 @@ namespace DungeonQuest.Traps
 
 		private IEnumerator StopFire()
 		{
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(1f);
 
 			fire.SetActive(false);
 			audio.Stop();

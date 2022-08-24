@@ -14,12 +14,12 @@ namespace DungeonQuest.Traps.Projectiles
 
 		private Vector3 direction = new Vector3(0f, -1f, 0f);
 
-		private Animation fadeOutAnim;
+		private Animator fadeOutAnim;
 		private PlayerManager playerManager;
 
 		void Awake()
 		{
-			fadeOutAnim = GetComponent<Animation>();
+			fadeOutAnim = GetComponent<Animator>();
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();			
 			
 			// Set damage to do 25% of the player's max health
@@ -55,7 +55,7 @@ namespace DungeonQuest.Traps.Projectiles
 				itHitObject = true;
 				direction = Vector2.zero;
 
-				fadeOutAnim.Play();
+				fadeOutAnim.Play("ProjectileFadeOut");
 				Destroy(gameObject, 5f);
 			}
 		}

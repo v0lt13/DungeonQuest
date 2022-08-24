@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DungeonQuest.Player;
+using DungeonQuest.Data;
 
 namespace DungeonQuest.Shop
 {
@@ -85,8 +86,8 @@ namespace DungeonQuest.Shop
 		{
 			playerManager.GiveCoins(-item.itemPrice); // We substract the coins
 
-			GameManager.INSTANCE.gameData.SavePlayerData();
-			GameManager.INSTANCE.gameData.SaveGameData();
+			GameManager.INSTANCE.gameData.SaveData(GameDataHandler.DataType.Player);
+			GameManager.INSTANCE.gameData.SaveData(GameDataHandler.DataType.Game);
 		}
 
 		public void IncreaseMinRequiredLevel(int amount)

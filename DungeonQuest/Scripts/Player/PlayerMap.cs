@@ -46,6 +46,7 @@ namespace DungeonQuest
 			mapCamera = mapCameraObject.GetComponent<Camera>();
 			audioSource = GetComponent<AudioSource>();
 
+			audioSource.ignoreListenerPause = true;
 			mapCameraObject.transform.position = playerCameraObject.transform.position;
 
 			mapCameraBorderX = grid.gridX * 10;
@@ -116,6 +117,7 @@ namespace DungeonQuest
 		private void EnableMap()
 		{
 			isMapOn = true;
+			AudioListener.pause = true;
 
 			mapUI.SetActive(true);
 			mapCameraObject.SetActive(true);
@@ -131,6 +133,7 @@ namespace DungeonQuest
 		private void DisableMap()
 		{
 			isMapOn = false;
+			AudioListener.pause = false;
 
 			mapUI.SetActive(false);
 			mapCameraObject.SetActive(false);

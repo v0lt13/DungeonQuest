@@ -2,6 +2,7 @@
 using DungeonQuest.Data;
 using DungeonQuest.Shop;
 using DungeonQuest.Player;
+using DungeonQuest.UI.Menus;
 using System.Collections.Generic;
 
 namespace DungeonQuest
@@ -61,7 +62,6 @@ namespace DungeonQuest
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
 			
 			AudioListener.pause = false;
-
 			SetGameState(GameState.Running);
 
 			if (Application.loadedLevelName == "Lobby")
@@ -117,7 +117,21 @@ namespace DungeonQuest
 			playerManager.collider2D.enabled = false;
 			playerManager.enabled = false;
 
-			gameData.SavePlayerData();
+			gameData.SaveData(GameDataHandler.DataType.Player);
+		}
+
+		public void CompleteGame() // Called by Event
+		{
+			if (PlayerManager.ROGUE_MODE)
+			{
+				// Unlock achivement
+			}
+			else
+			{
+				MenuManager.GAME_COMPLETED = true;
+			}
+
+			gameData.SaveData(GameDataHandler.DataType.Menu);
 		}
 
 		public void UnlockLevel(int level)
@@ -133,7 +147,7 @@ namespace DungeonQuest
 
 		public void SaveData() // Called by Event
 		{
-			gameData.SavePlayerData();
+			gameData.SaveData(GameDataHandler.DataType.Player);
 		}
 	}
 }

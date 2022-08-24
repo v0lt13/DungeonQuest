@@ -26,6 +26,8 @@ namespace DungeonQuest.Data
 		public float playerSpeed;
 		public float lifestealAmount;
 
+		public bool rogueMode;
+
 		public Dictionary<int, bool> secretLevelUnlocked;
 	}
 }

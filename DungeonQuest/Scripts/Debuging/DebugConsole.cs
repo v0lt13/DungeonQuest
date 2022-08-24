@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using DungeonQuest.Data;
 using DungeonQuest.Enemy;
 using DungeonQuest.Player;
 using System.Collections.Generic;
@@ -126,7 +127,7 @@ namespace DungeonQuest.Debuging
 				if (value <= 20)
 				{
 					GameManager.INSTANCE.UnlockLevel((int)value);
-					GameManager.INSTANCE.gameData.SavePlayerData();
+					GameManager.INSTANCE.gameData.SaveData(GameDataHandler.DataType.Player);
 
 					outputList.Add("Level " + value + " unlocked");
 				}
@@ -141,7 +142,7 @@ namespace DungeonQuest.Debuging
 				if (value <= 4)
 				{
 					GameManager.INSTANCE.UnlockSecretlevel((int)value);
-					GameManager.INSTANCE.gameData.SavePlayerData();
+					GameManager.INSTANCE.gameData.SaveData(GameDataHandler.DataType.Player);
 
 					outputList.Add("Secret level " + value + " unlocked");
 				}
@@ -301,7 +302,7 @@ namespace DungeonQuest.Debuging
 
 			SAVE = new DebugCommand("save", "Saves the player data", "save", () =>
 			{
-				GameManager.INSTANCE.gameData.SavePlayerData();
+				GameManager.INSTANCE.gameData.SaveData(GameDataHandler.DataType.Player);
 
 				outputList.Add("Game saved");
 			});

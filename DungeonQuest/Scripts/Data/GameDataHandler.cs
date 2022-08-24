@@ -1,13 +1,64 @@
 ﻿using System.IO;
 using UnityEngine;
+using DungeonQuest.Player;
+using DungeonQuest.UI.Menus;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DungeonQuest.Data
 {
 	public class GameDataHandler
 	{
+		public enum DataType
+		{
+			Player,
+			Game,
+			Menu
+		}
+
 		private BinaryFormatter binaryFormatter = new BinaryFormatter();
 
+		public void SaveData(DataType dataType)
+		{
+			FileStream fileStream;
+			var binaryFormatter = new BinaryFormatter();
+
+			if (!Directory.Exists(Application.dataPath + "/Data"))
+			{
+				Directory.CreateDirectory(Application.dataPath + "/Data");
+			}
+
+			switch (dataType)
+			{
+				case DataType.Player:
+					var playerData = PlayerData();
+
+					fileStream = File.Create(Application.dataPath + "/Data/PlayerData.dat");
+
+					binaryFormatter.Serialize(fileStream, playerData);
+					fileStream.Close();
+					break;
+
+				case DataType.Game:
+					var gameData = GameData();
+
+					fileStream = File.Create(Application.dataPath + "/Data/GameData.dat");
+
+					binaryFormatter.Serialize(fileStream, gameData);
+					fileStream.Close();
+					break;
+
+				case DataType.Menu:
+					var menuData = MenuData();
+
+					fileStream = File.Create(Application.dataPath + "/Data/MenuData.dat");
+
+					binaryFormatter.Serialize(fileStream, menuData);
+					fileStream.Close();
+					break;
+			}
+		}
+
+		/*
 		public void SavePlayerData() 
 		{
 			var data = PlayerData();
@@ -42,6 +93,22 @@ namespace DungeonQuest.Data
 			fileStream.Close();
 		}
 
+		public void SaveMenuData()
+		{
+			var data = GameData();
+			var binaryFormatter = new BinaryFormatter();
+
+			if (!Directory.Exists(Application.dataPath + "/Data"))
+			{
+				Directory.CreateDirectory(Application.dataPath + "/Data");
+			}
+
+			FileStream fileStream = File.Create(Application.dataPath + "/Data/MenuData.dat");
+
+			binaryFormatter.Serialize(fileStream, data);
+			fileStream.Close();
+		}
+		*/
 		public void LoadPlayerData()
 		{
 			var gameManager = GameManager.INSTANCE;
@@ -69,6 +136,8 @@ namespace DungeonQuest.Data
 			gameManager.playerManager.coinsAmount = data.coinsAmount;
 			gameManager.playerManager.playerHealing.healingPotions = data.healingPotionsAmount;
 
+			PlayerManager.ROGUE_MODE = data.rogueMode;
+
 			gameManager.bossesCompleted = data.bossesCompleted;
 			gameManager.secretLevelsUnlocked = data.secretLevelUnlocked;
 
@@ -95,6 +164,18 @@ namespace DungeonQuest.Data
 			}
 		}
 
+		public void LoadMenuData()
+		{
+			if (!File.Exists(Application.dataPath + "/Data/MenuData.dat")) return;
+
+			FileStream fileStream = File.Open(Application.dataPath + "/Data/MenuData.dat", FileMode.Open);
+			MenuData data = binaryFormatter.Deserialize(fileStream) as MenuData;
+
+			fileStream.Close();
+
+			MenuManager.GAME_COMPLETED = data.gameCompleted;
+		}
+
 		private PlayerData PlayerData()
 		{
 			var gameManager = GameManager.INSTANCE;
@@ -118,6 +199,8 @@ namespace DungeonQuest.Data
 				healingPotionsAmount = gameManager.playerManager.playerHealing.healingPotions,
 				lifestealAmount = gameManager.playerManager.LifestealAmount,
 
+				rogueMode = PlayerManager.ROGUE_MODE,
+
 				levelReached = gameManager.LevelReached,
 				secretLevelUnlocked = gameManager.secretLevelsUnlocked,
 
@@ -134,7 +217,6 @@ namespace DungeonQuest.Data
 
 			gameData.hasDialogue = gameManager.hasDialogue;
 
-			// Currently the game data only holds the shop upgrades required levels
 			foreach (var item in gameManager.shopItems)
 			{
 				if (item != null)
@@ -144,6 +226,15 @@ namespace DungeonQuest.Data
 			}
 
 			return gameData;
+		}
+
+		private MenuData MenuData()
+		{
+			var menuData = new MenuData();
+
+			menuData.gameCompleted = MenuManager.GAME_COMPLETED;
+
+			return menuData;
 		}
 	}
 }

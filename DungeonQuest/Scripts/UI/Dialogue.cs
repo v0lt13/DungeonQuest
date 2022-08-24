@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 using DungeonQuest.GameEvents;
+using DungeonQuest.Data;
 
 namespace DungeonQuest.UI
 {
@@ -43,7 +44,7 @@ namespace DungeonQuest.UI
 					 
 						gameManager.hasDialogue = true;
 						gameManager.SetGameState(GameManager.GameState.Running);
-						gameManager.gameData.SaveGameData();
+						gameManager.gameData.SaveData(GameDataHandler.DataType.Game);
 
 						gameObject.SetActive(false);
 					}

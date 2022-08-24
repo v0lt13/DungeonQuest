@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.IO;
 using UnityEngine.UI;
 using System.Collections;
 
@@ -12,12 +13,15 @@ namespace DungeonQuest.Player
 		public int lifeCount;
 		[Space(10f)]
 		[SerializeField] private Text lifeCountText;
+		[SerializeField] private Button goToLobbyButton;
 
 		[Header("Audio Config:")]
 		[SerializeField] private AudioClip deathSFX;
 		[SerializeField] private AudioClip hitSFX;
 
+		public static bool ROGUE_MODE;
 		public const int COINS_CAP = 2000000000;
+
 		[HideInInspector] public int playerHealth = 100;
 		[HideInInspector] public int playerArmor = 100;
 		[HideInInspector] public int coinsAmount;
@@ -61,6 +65,14 @@ namespace DungeonQuest.Player
 		{
 			if (Application.loadedLevelName != "Lobby") GameManager.INSTANCE.gameData.LoadPlayerData();
 
+			if (ROGUE_MODE)
+			{
+				lifeCount = 1;
+				
+				if (goToLobbyButton != null) goToLobbyButton.interactable = false;
+			}
+
+			lifeCountText.text = lifeCount.ToString();
 			healthBar.maxValue = defaultPlayerHealth;
 			armorBar.maxValue = defaultPlayerArmor;
 			playerMovement.playerSpeed = playerMovement.defaultPlayerSpeed;
@@ -209,6 +221,12 @@ namespace DungeonQuest.Player
 			{
 				lifeCount--;
 				lifeCountText.text = lifeCount.ToString();
+			}
+
+			if (ROGUE_MODE)
+			{
+				File.Delete(Application.dataPath + "/Data/PlayerData.dat");
+				File.Delete(Application.dataPath + "/Data/GameData.dat");
 			}
 
 			audio.clip = deathSFX;
