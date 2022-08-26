@@ -16,7 +16,14 @@ namespace DungeonQuest.UI
 
 		void Update()
 		{
-			framerateText.enabled = SHOW_FPS;
+			if (!GameManager.INSTANCE.playerManager.playerMap.isMapOn)
+			{
+				framerateText.enabled = SHOW_FPS;
+			}
+			else
+			{
+				framerateText.enabled = false;
+			}
 
 			if (timeCounter < REFRESH_TIME)
 			{

@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+﻿using DungeonQuest.Achievements;
 using System.IO;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
 namespace DungeonQuest.Player
 {
@@ -33,6 +33,7 @@ namespace DungeonQuest.Player
 		[HideInInspector] public PlayerLeveling playerLeveling;
 		[HideInInspector] public PlayerHealing playerHealing;
 		[HideInInspector] public PlayerAttack playerAttack;
+		[HideInInspector] public PlayerMap playerMap;
 
 		[HideInInspector] public Slider healthBar;
 		[HideInInspector] public Slider armorBar;
@@ -59,6 +60,7 @@ namespace DungeonQuest.Player
 			playerLeveling = GetComponent<PlayerLeveling>();
 			playerHealing = GetComponent<PlayerHealing>();
 			playerAttack = GetComponent<PlayerAttack>();
+			playerMap = GetComponent<PlayerMap>();
 		}
 
 		void Start()

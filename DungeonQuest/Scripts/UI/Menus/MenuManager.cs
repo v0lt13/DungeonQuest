@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DungeonQuest.Data;
 using DungeonQuest.Player;
+using System.Collections.Generic;
 
 namespace DungeonQuest.UI.Menus
 {
@@ -11,13 +12,16 @@ namespace DungeonQuest.UI.Menus
 		[SerializeField] private Button continueButton;
 		[SerializeField] private Button rogueButton;
 		[SerializeField] private Text rogueText;
+		[SerializeField] private Text achievementPercentange;
 		[Space(10f)]
 		[SerializeField] private GameObject[] menus;
+		[SerializeField] private Toggle[] achievementCheckboxes;
 
 		public static bool GAME_COMPLETED;
+		public static List<bool> achivementCheckboxValues = new List<bool>();
 
 		private int currentMenu;
-		private GameDataHandler data = new GameDataHandler(); 
+		private GameDataHandler data = new GameDataHandler();
 
 		void Awake()
 		{
@@ -28,9 +32,15 @@ namespace DungeonQuest.UI.Menus
 
 			data.LoadMenuData();
 
-			continueButton.interactable = File.Exists(Application.dataPath + "/Data/PlayerData.dat");
+			for (int i = 0; i < achivementCheckboxValues.Count; i++)
+			{
+				achievementCheckboxes[i].isOn = achivementCheckboxValues[i];
+			}
+
 			rogueButton.interactable = GAME_COMPLETED;
 			rogueText.text = GAME_COMPLETED ? "Survive the whole campaign with only 1 life" : "Complete the game on Normal mode to unlock Rogue mode";
+
+			continueButton.interactable = File.Exists(Application.dataPath + "/Data/PlayerData.dat");
 
 			var audioSources = GetComponents<AudioSource>();
 
@@ -38,6 +48,20 @@ namespace DungeonQuest.UI.Menus
 			{
 				audioSource.ignoreListenerPause = true;
 			}
+
+			var numberOfUnlockedAchievements = 0f;
+
+			for (int i = 0; i < achivementCheckboxValues.Count; i++)
+			{
+				if (achivementCheckboxValues[i])
+				{
+					numberOfUnlockedAchievements++;
+				}
+			}
+
+			var achivevementPercentage = (numberOfUnlockedAchievements / achivementCheckboxValues.Count * 100);
+
+			achievementPercentange.text = numberOfUnlockedAchievements != 0 ? "Completed: " + achivevementPercentage.ToString("n0") + "%" : "Completed: 0%";
 		}
 
 		void Update()

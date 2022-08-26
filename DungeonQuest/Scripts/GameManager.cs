@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using DungeonQuest.Data;
 using DungeonQuest.Shop;
+using System.Collections;
 using DungeonQuest.Player;
 using DungeonQuest.UI.Menus;
+using DungeonQuest.Achievements;
 using System.Collections.Generic;
 
 namespace DungeonQuest
@@ -17,9 +19,6 @@ namespace DungeonQuest
 
 		public GameDataHandler gameData = new GameDataHandler();
 		public List<ShopItem> shopItems;
-		[Space(10f)]
-		[SerializeField] private GameObject speedUpgradeItem;
-		[SerializeField] private GameObject lifestealItem;
 
 		[HideInInspector] public int secretCount;
 		[HideInInspector] public int killCount;
@@ -29,7 +28,11 @@ namespace DungeonQuest
 		[HideInInspector] public bool hasDialogue;
 		
 		[HideInInspector] public PlayerManager playerManager;
+		[HideInInspector] public AchievementManager achievementManager;
+
 		[HideInInspector] public List<GameObject> enemyList;
+
+		private bool isCheckingUpgrades;
 
 		public Dictionary<int, bool> secretLevelsUnlocked = new Dictionary<int, bool>
 		{
@@ -60,6 +63,7 @@ namespace DungeonQuest
 			#endregion
 
 			playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+			achievementManager = GetComponent<AchievementManager>();
 			
 			AudioListener.pause = false;
 			SetGameState(GameState.Running);
@@ -73,13 +77,44 @@ namespace DungeonQuest
 
 				if (LevelReached >= 6)
 				{
-					speedUpgradeItem.SetActive(true);
+					shopItems[3].gameObject.SetActive(true);
 				}
 
 				if (LevelReached >= 11)
 				{
-					lifestealItem.SetActive(true);
+					shopItems[4].gameObject.SetActive(true);
 				}
+			}
+		}
+
+		void Start()
+		{
+			// Unlock secret level achievements
+			switch (Application.loadedLevel)
+			{
+				case 9:
+					achievementManager.UnlockAchivement(9);
+					break;
+
+				case 15:
+					achievementManager.UnlockAchivement(10);
+					break;
+
+				case 21:
+					achievementManager.UnlockAchivement(11);
+					break;
+
+				case 27:
+					achievementManager.UnlockAchivement(12);
+					break;
+			}
+		}
+
+		void Update()
+		{
+			if (Application.loadedLevelName == "Lobby")
+			{
+				if (!isCheckingUpgrades) StartCoroutine(CheckUpgrades());
 			}
 		}
 
@@ -124,7 +159,7 @@ namespace DungeonQuest
 		{
 			if (PlayerManager.ROGUE_MODE)
 			{
-				// Unlock achivement
+				achievementManager.UnlockAchivement(23);
 			}
 			else
 			{
@@ -148,6 +183,20 @@ namespace DungeonQuest
 		public void SaveData() // Called by Event
 		{
 			gameData.SaveData(GameDataHandler.DataType.Player);
+		}
+
+		private IEnumerator CheckUpgrades()
+		{
+			isCheckingUpgrades = true;
+
+			yield return new WaitForSeconds(1f);
+
+			if (shopItems.TrueForAll((ShopItem item) => item.isUpgradeMaxed))
+			{
+				achievementManager.UnlockAchivement(19);
+			}
+
+			isCheckingUpgrades = false;
 		}
 	}
 }

@@ -6,5 +6,6 @@ namespace DungeonQuest.Data
 	public class MenuData
 	{
 		public bool gameCompleted;
+		public List<bool> achievementsCompleted = new List<bool>();
 	}
 }

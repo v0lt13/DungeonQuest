@@ -2,6 +2,7 @@
 using UnityEngine;
 using DungeonQuest.Player;
 using DungeonQuest.UI.Menus;
+using DungeonQuest.Achievements;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DungeonQuest.Data
@@ -58,57 +59,6 @@ namespace DungeonQuest.Data
 			}
 		}
 
-		/*
-		public void SavePlayerData() 
-		{
-			var data = PlayerData();
-			var binaryFormatter = new BinaryFormatter();
-
-			if (!Directory.Exists(Application.dataPath + "/Data"))
-			{
-				Directory.CreateDirectory(Application.dataPath + "/Data");
-			}
-
-			FileStream fileStream = File.Create(Application.dataPath + "/Data/PlayerData.dat");
-
-			binaryFormatter.Serialize(fileStream, data);
-			fileStream.Close();
-		}
-
-		public void SaveGameData()
-		{
-			var data = GameData();
-			var binaryFormatter = new BinaryFormatter();
-
-			if (!Directory.Exists(Application.dataPath + "/Data"))
-			{
-				Directory.CreateDirectory(Application.dataPath + "/Data");
-			}
-
-			// We save the game data separate from the player data because we want to save the game data only when the player is in the lobby or the testing scene
-			// Saveing the game data on other scenes will overwrite it with the wrong values
-			FileStream fileStream = File.Create(Application.dataPath + "/Data/GameData.dat");
-
-			binaryFormatter.Serialize(fileStream, data);
-			fileStream.Close();
-		}
-
-		public void SaveMenuData()
-		{
-			var data = GameData();
-			var binaryFormatter = new BinaryFormatter();
-
-			if (!Directory.Exists(Application.dataPath + "/Data"))
-			{
-				Directory.CreateDirectory(Application.dataPath + "/Data");
-			}
-
-			FileStream fileStream = File.Create(Application.dataPath + "/Data/MenuData.dat");
-
-			binaryFormatter.Serialize(fileStream, data);
-			fileStream.Close();
-		}
-		*/
 		public void LoadPlayerData()
 		{
 			var gameManager = GameManager.INSTANCE;
@@ -174,6 +124,7 @@ namespace DungeonQuest.Data
 			fileStream.Close();
 
 			MenuManager.GAME_COMPLETED = data.gameCompleted;
+			MenuManager.achivementCheckboxValues = data.achievementsCompleted;
 		}
 
 		private PlayerData PlayerData()
@@ -217,11 +168,11 @@ namespace DungeonQuest.Data
 
 			gameData.hasDialogue = gameManager.hasDialogue;
 
-			foreach (var item in gameManager.shopItems)
+			for (int i = 0; i < gameManager.shopItems.Count; i++)
 			{
-				if (item != null)
+				if (gameManager.shopItems[i] != null)
 				{
-					gameData.shopItemRequiredLevels.Add(item.minRequiredLevel);
+					gameData.shopItemRequiredLevels.Add(gameManager.shopItems[i].minRequiredLevel);
 				}
 			}
 
@@ -233,6 +184,11 @@ namespace DungeonQuest.Data
 			var menuData = new MenuData();
 
 			menuData.gameCompleted = MenuManager.GAME_COMPLETED;
+
+			for (int i = 0; i < AchievementManager.ACHIEVEMENTS.Count; i++)
+			{
+				menuData.achievementsCompleted.Add(AchievementManager.ACHIEVEMENTS[i].achieved);		
+			}
 
 			return menuData;
 		}

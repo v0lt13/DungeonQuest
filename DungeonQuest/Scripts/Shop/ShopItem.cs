@@ -28,6 +28,8 @@ namespace DungeonQuest.Shop
 		[SerializeField] private Text itemPriceText;
 		[SerializeField] private Text problemText;
 
+		[HideInInspector] public bool isUpgradeMaxed;
+
 		private const int MAX_UPGARDE_LEVEL = 20;
 
 		private PlayerManager playerManager;
@@ -46,14 +48,38 @@ namespace DungeonQuest.Shop
 		{
 			var playerLeveling = playerManager.playerLeveling;
 
+			switch (itemNameText.text)
+			{
+				case "Health Upgrade":
+					if (isUpgradeMaxed) GameManager.INSTANCE.achievementManager.UnlockAchivement(17);
+					break;
+
+				case "Lifesteal":
+					if (isUpgradeMaxed) GameManager.INSTANCE.achievementManager.UnlockAchivement(18);
+					break;
+
+				case "Armor Upgrade":
+					if (isUpgradeMaxed) GameManager.INSTANCE.achievementManager.UnlockAchivement(15);
+					break;
+
+				case "Speed Upgrade":
+					if (isUpgradeMaxed) GameManager.INSTANCE.achievementManager.UnlockAchivement(16);
+					break;
+
+				case "Sword Upgrade":
+					if (isUpgradeMaxed) GameManager.INSTANCE.achievementManager.UnlockAchivement(14);
+					break;
+			}
+
+			if (minRequiredLevel > MAX_UPGARDE_LEVEL)
+			{
+				isUpgradeMaxed = true;
+				HoustonWeHaveProblem("Maxed out");
+				return;
+			}
+
 			if (playerLeveling.playerLevel < minRequiredLevel)
 			{
-				if (playerLeveling.playerLevel >= MAX_UPGARDE_LEVEL)
-				{
-					HoustonWeHaveProblem("Maxed out");
-					return;
-				}
-
 				HoustonWeHaveProblem("Level " + minRequiredLevel.ToString() + " required");
 			}
 			else if (playerManager.coinsAmount < item.itemPrice)

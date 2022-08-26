@@ -1,5 +1,5 @@
-﻿using DungeonQuest.Enemy.Boss.Projectiles;
-using UnityEngine;
+﻿using UnityEngine;
+using DungeonQuest.Enemy.Boss.Projectiles;
 
 namespace DungeonQuest.Enemy.Boss.Special
 {

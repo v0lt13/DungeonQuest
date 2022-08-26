@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using DungeonQuest.UI;
 using DungeonQuest.Grid;
 
 namespace DungeonQuest
@@ -18,13 +19,14 @@ namespace DungeonQuest
 		[Space(10f)]
 		[SerializeField] private AudioClip mapSFX;
 
+		[HideInInspector] public bool isMapOn;
+
 		private const float MAX_MAP_CAMERA_SIZE = 300f;
 		private const float MIN_MAP_CAMERA_SIZE = 75f;
 		
 		private float mapCameraBorderX;
 		private float mapCameraBorderY;
 
-		private bool isMapOn;
 		private bool isDragging;
 
 		private Vector3 origin;
