@@ -25,12 +25,12 @@ namespace DungeonQuest.Traps
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (playerManager.collider2D == collider) isPlayerOnFire = true;
+			if (playerManager.playerCollider == collider) isPlayerOnFire = true;
 		}
 
 		void OnTriggerExit2D(Collider2D collider)
 		{
-			if (playerManager.collider2D == collider) isPlayerOnFire = false;
+			if (playerManager.playerCollider == collider) isPlayerOnFire = false;
 		}
 
 		private IEnumerator DamagePlayer()

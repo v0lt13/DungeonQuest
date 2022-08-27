@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using DungeonQuest.Data;
 using DungeonQuest.Player;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace DungeonQuest.UI.Menus
 {
@@ -21,10 +22,13 @@ namespace DungeonQuest.UI.Menus
 		public static List<bool> achivementCheckboxValues = new List<bool>();
 
 		private int currentMenu;
+		private AudioSource[] audioSources;
 		private GameDataHandler data = new GameDataHandler();
 
 		void Awake()
 		{
+			audioSources = GetComponents<AudioSource>();
+
 			if (!Directory.Exists(Application.dataPath + "/Data"))
 			{
 				Directory.CreateDirectory(Application.dataPath + "/Data");
@@ -42,8 +46,6 @@ namespace DungeonQuest.UI.Menus
 
 			continueButton.interactable = File.Exists(Application.dataPath + "/Data/PlayerData.dat");
 
-			var audioSources = GetComponents<AudioSource>();
-
 			foreach (var audioSource in audioSources)
 			{
 				audioSource.ignoreListenerPause = true;
@@ -59,9 +61,18 @@ namespace DungeonQuest.UI.Menus
 				}
 			}
 
-			var achivevementPercentage = (numberOfUnlockedAchievements / achivementCheckboxValues.Count * 100);
+			var achivevementPercentage = (numberOfUnlockedAchievements / achivementCheckboxValues.Count * 100); // Calculate the percentage of achievements unlocked
 
 			achievementPercentange.text = numberOfUnlockedAchievements != 0 ? "Completed: " + achivevementPercentage.ToString("n0") + "%" : "Completed: 0%";
+		}
+
+		void Start()
+		{
+			// Fix for settings checkboxes SFX playing when the values load
+			foreach (var audioSource in audioSources)
+			{
+				audioSource.enabled = true;
+			}
 		}
 
 		void Update()
@@ -86,7 +97,7 @@ namespace DungeonQuest.UI.Menus
 			File.Delete(Application.dataPath + "/Data/PlayerData.dat");
 			File.Delete(Application.dataPath + "/Data/GameData.dat");
 
-			Application.LoadLevel("Intermission01");
+			SceneManager.LoadScene("Intermission01");
 		}
 
 		public void NewRogueGame() // Called by Button
@@ -96,7 +107,7 @@ namespace DungeonQuest.UI.Menus
 			File.Delete(Application.dataPath + "/Data/PlayerData.dat");
 			File.Delete(Application.dataPath + "/Data/GameData.dat");
 
-			Application.LoadLevel("Intermission01");
+			SceneManager.LoadScene("Intermission01");
 		}
 
 		public void Continue()

@@ -2,6 +2,7 @@
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 using DungeonQuest.Data;
 
 namespace DungeonQuest.UI.Menus
@@ -10,6 +11,7 @@ namespace DungeonQuest.UI.Menus
 	{
 		[Header("Options Config:")]
 		[SerializeField] private Slider volumeSlider;
+		[SerializeField] private AudioMixer audioMixer;
 		[Space(10f)]
 		[SerializeField] private Toggle vSyncToggle;
 		[SerializeField] private Toggle showFPSToggle;
@@ -22,7 +24,7 @@ namespace DungeonQuest.UI.Menus
 
 		public void Volume(float volume) // Called by Slider
 		{
-			AudioListener.volume = volume;
+			audioMixer.SetFloat("volume", volume);
 			SaveSettings();
 		}
 

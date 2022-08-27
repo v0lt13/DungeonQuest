@@ -43,7 +43,7 @@ namespace DungeonQuest.Enemy
 			if (StunTime <= 0f)
 			{
 				StunTime = 0f;
-				enemyManager.rigidbody2D.velocity = Vector2.zero;
+				enemyManager.enemyRigidbody.velocity = Vector2.zero;
 			}
 			else if (StunTime > 0f)
 			{
@@ -146,13 +146,13 @@ namespace DungeonQuest.Enemy
 
 		private void ShootPlayer() // Called by Animation event
 		{
-			var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity) as GameObject;
+			var projectile = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
 
 			projectile.GetComponent<EnemyProjectile>().ProjectileDamage = damage;
 
-			audio.clip = enemyManager.shootSFX;
-			audio.pitch = Random.Range(1f, 1.5f);
-			audio.Play();
+			enemyManager.audioSource.clip = enemyManager.shootSFX;
+			enemyManager.audioSource.pitch = Random.Range(1f, 1.5f);
+			enemyManager.audioSource.Play();
 		}
 	}
 }

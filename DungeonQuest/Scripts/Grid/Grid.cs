@@ -50,32 +50,6 @@ namespace DungeonQuest.Grid
 			if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x , y = y });
 		}
 
-		/*public void SetGridObject(Vector2 worldPosition, TGridObject value)
-		{
-			int x, y;
-			GetXY(worldPosition, out x, out y);
-
-			SetGridObject(x, y, value);
-		}
-
-		public void SetGridObject(int x, int y, TGridObject value)
-		{
-			if (x >= 0 && y >= 0 && x < width && y < height)
-			{
-				gridArray[x, y] = value;
-
-				if (OnGridObjectChanged != null) OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x , y = y });
-			}
-		}*/
-
-		/*public TGridObject GetGridObject(Vector2 worldPosition)
-		{
-			int x, y;
-			GetXY(worldPosition, out x, out y);
-
-			return GetGridObject(x, y);
-		}*/
-
 		public TGridObject GetGridObject(int x, int y)
 		{
 			if (x >= 0 && y >= 0 && x < width && y < height)

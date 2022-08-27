@@ -136,8 +136,8 @@ namespace DungeonQuest.Enemy.Boss
 
 		private void HitPlayer() // Called by Animation event
 		{
-			audio.pitch = 1f;
-			audio.PlayOneShot(attackSFX);
+			bossManager.audioSource.pitch = 1f;
+			bossManager.audioSource.PlayOneShot(attackSFX);
 			bossManager.playerManager.DamagePlayer(damage);
 		}
 
@@ -145,8 +145,8 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			specialAbility.Special();
 
-			audio.pitch = 1f;
-			audio.PlayOneShot(specialSFX);
+			bossManager.audioSource.pitch = 1f;
+			bossManager.audioSource.PlayOneShot(specialSFX);
 
 			yield return new WaitForSeconds(duration);
 

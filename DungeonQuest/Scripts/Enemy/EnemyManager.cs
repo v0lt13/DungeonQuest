@@ -48,7 +48,11 @@ namespace DungeonQuest.Enemy
 		[HideInInspector] public PlayerManager playerManager;
 		[HideInInspector] public EnemyDrops enemyDrops;
 		[HideInInspector] public EnemyAI enemyAI;
+		[HideInInspector] public AudioSource audioSource;
+		[HideInInspector] public Rigidbody2D enemyRigidbody;
 
+		private SpriteRenderer enemyRenderer;
+		private Collider2D enemyCollider;
 		private Slider healthBar;
 		private Text levelText;
 
@@ -66,6 +70,11 @@ namespace DungeonQuest.Enemy
 
 			enemyAI = GetComponent<EnemyAI>();
 			enemyDrops = GetComponent<EnemyDrops>();
+			audioSource = GetComponent<AudioSource>();
+			enemyCollider = GetComponent<Collider2D>();
+			enemyRigidbody = GetComponent<Rigidbody2D>();
+			enemyRenderer = GetComponent<SpriteRenderer>();
+
 			healthBar = GetComponentInChildren<Slider>();
 			levelText = GetComponentInChildren<Text>();
 		}
@@ -98,11 +107,11 @@ namespace DungeonQuest.Enemy
 			switch (playerDir)
 			{
 				case PlayerDirection.DOWN:
-					renderer.sortingOrder = 0;
+					enemyRenderer.sortingOrder = 0;
 					break;
 
 				case PlayerDirection.UP:
-					renderer.sortingOrder = 3;
+					enemyRenderer.sortingOrder = 3;
 					break;
 			}
 
@@ -147,30 +156,31 @@ namespace DungeonQuest.Enemy
 			{
 				enemyHealth -= damage;
 
-				audio.clip = damagedSFX;
-				audio.pitch = Random.Range(0.7f, 1.3f);
-				audio.Play();
+				audioSource.clip = damagedSFX;
+				audioSource.pitch = Random.Range(0.7f, 1.3f);
+				audioSource.Play();
 			}
 		}
 
 		private void Die()
 		{
 			IsDead = true;
-			rigidbody2D.isKinematic = true;
-			renderer.sortingOrder = 0;
+			enemyRigidbody.isKinematic = true;
+			enemyRigidbody.velocity = Vector2.zero;
+			enemyRenderer.sortingOrder = 0;
 
 			GameManager.INSTANCE.killCount++;
 			GameManager.INSTANCE.enemyList.Remove(gameObject);
 
-			audio.clip = deathSFX;
-			audio.pitch = 1f;
-			audio.Play();
+			audioSource.clip = deathSFX;
+			audioSource.pitch = 1f;
+			audioSource.Play();
 
 			healthBar.gameObject.SetActive(false);
 			levelText.gameObject.SetActive(false);
 
 			enemyDrops.DropLoot();
-			Destroy(collider2D);
+			Destroy(enemyCollider);
 			Destroy(enemyAI);
 			Destroy(this);
 			Destroy(gameObject, 5f);

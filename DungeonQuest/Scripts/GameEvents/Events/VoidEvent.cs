@@ -2,20 +2,12 @@
 
 namespace DungeonQuest.GameEvents
 {
+	[CreateAssetMenu(fileName = "VoidEvent", menuName = "ScriptableObjects/VoidEvent", order = 0)]
 	public class VoidEvent : BaseGameEvent<Void>
 	{
 		public void Invoke()
 		{ 
 			Invoke(new Void()); 
 		}
-
-		#if UNITY_EDITOR
-		[UnityEditor.MenuItem("ScriptableObjects/GameEvents/VoidEvent")]
-		private static void CreateVoidEvent()
-		{
-			var @event = ScriptableObject.CreateInstance<VoidEvent>();
-			UnityEditor.AssetDatabase.CreateAsset(@event, "Assets/Events/Void Event.asset");
-		}
-		#endif
 	}
 }

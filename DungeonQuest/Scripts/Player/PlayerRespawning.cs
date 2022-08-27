@@ -41,9 +41,9 @@ namespace DungeonQuest.Player
 			if (canRespawn)
 			{
 				playerManager.isDead = false;
-				rigidbody2D.isKinematic = false;
+				playerManager.playerRigidbody.isKinematic = false;
 
-				collider2D.enabled = true;
+				playerManager.playerCollider.enabled = true;
 				playerManager.playerAttack.enabled = true;
 				playerManager.playerHealing.enabled = true;
 				playerManager.playerMovement.enabled = true;

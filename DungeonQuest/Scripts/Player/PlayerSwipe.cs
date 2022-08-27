@@ -9,10 +9,14 @@ namespace DungeonQuest.Player
 		[SerializeField] private float knockbackPower;
 		[SerializeField] private float stunTime;
 
+		private PlayerManager playerManager;
+
 		void Start()
 		{
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+
 			// Destroy the collider on start due to enemies beeing able to walk back into the swipe after hit and get damaged
-			Destroy(collider2D, 0.05f);
+			Destroy(GetComponent<Collider2D>(), 0.05f);
 			Destroy(gameObject, 0.1f);
 		}
 
@@ -21,8 +25,6 @@ namespace DungeonQuest.Player
 			if (collider.CompareTag("Enemy"))
 			{
 				var enemyManager = collider.GetComponent<EnemyManager>();
-				var playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
-
 				var damage = playerManager.playerAttack.damage;
 
 				if (enemyManager == null) return;
@@ -39,14 +41,13 @@ namespace DungeonQuest.Player
 				Vector2 difference = (enemyManager.transform.position - playerManager.transform.position).normalized * knockbackPower;
 
 				enemyManager.DamageEnemy(damage);
-				enemyManager.rigidbody2D.AddForce(difference, ForceMode2D.Impulse);
+				enemyManager.GetComponent<Rigidbody2D>().AddForce(difference, ForceMode2D.Impulse);
 
 				collider.GetComponent<EnemyAI>().StunEnemy(stunTime);
 			}
 			else if (collider.CompareTag("Boss"))
 			{
 				var bossManager = collider.GetComponent<BossManager>();
-				var playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
 				var damage = playerManager.playerAttack.damage;
 

@@ -15,11 +15,14 @@ namespace DungeonQuest.Traps.Projectiles
 		private Vector3 direction = new Vector3(0f, -1f, 0f);
 
 		private Animator fadeOutAnim;
+		private AudioSource audioSource;
 		private PlayerManager playerManager;
 
 		void Awake()
 		{
 			fadeOutAnim = GetComponent<Animator>();
+			audioSource = GetComponent<AudioSource>();
+
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();			
 			
 			// Set damage to do 25% of the player's max health
@@ -36,7 +39,7 @@ namespace DungeonQuest.Traps.Projectiles
 		{
 			if (itHitObject || playerManager == null) return;
 
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				playerManager.DamagePlayer(damage);
 				Destroy(gameObject);
@@ -48,9 +51,9 @@ namespace DungeonQuest.Traps.Projectiles
 			}
 			else if (collider.CompareTag("Blockable"))
 			{
-				audio.clip = hitSFX;
-				audio.pitch = Random.Range(1f, 1.5f);
-				audio.Play();
+				audioSource.clip = hitSFX;
+				audioSource.pitch = Random.Range(1f, 1.5f);
+				audioSource.Play();
 
 				itHitObject = true;
 				direction = Vector2.zero;

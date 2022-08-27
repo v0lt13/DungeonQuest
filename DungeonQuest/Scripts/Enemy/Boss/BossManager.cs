@@ -36,12 +36,12 @@ namespace DungeonQuest.Enemy.Boss
 		[SerializeField] private float attackDistance;
 		[SerializeField] private int bossHealth;
 		[SerializeField] private int bossID;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Vector2 boxColliderCenterX;
 		[SerializeField] private Vector2 boxColliderSizeX;
 		[SerializeField] private Vector2 boxColliderCenterY;
 		[SerializeField] private Vector2 boxColliderSizeY;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Slider healthBar;
 		[SerializeField]  private VoidEvent gameEvent;
 
@@ -54,10 +54,14 @@ namespace DungeonQuest.Enemy.Boss
 		[HideInInspector] public MoveDirection moveDir;
 
 		[HideInInspector] public PlayerManager playerManager;
+		[HideInInspector] public AudioSource audioSource;
+		[HideInInspector] public Rigidbody2D bossRigidbody;
 		[HideInInspector] public BossDrops bossDrops;
 		[HideInInspector] public BossAI bossAI;
 
 		private BoxCollider2D boxCollider;
+		private SpriteRenderer spriteRenderer;
+
 		private Vector2 lastMoveDirection;
 		private Vector2 playerDirection;
 		private Vector2 moveDirection;
@@ -71,9 +75,12 @@ namespace DungeonQuest.Enemy.Boss
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
-			boxCollider = GetComponent<BoxCollider2D>();
 			bossAI = GetComponent<BossAI>();
 			bossDrops = GetComponent<BossDrops>();
+			audioSource = GetComponent<AudioSource>();
+			boxCollider = GetComponent<BoxCollider2D>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
+			bossRigidbody = GetComponent<Rigidbody2D>();
 		}
 
 		void Start()
@@ -98,11 +105,11 @@ namespace DungeonQuest.Enemy.Boss
 			switch (playerDir)
 			{
 				case PlayerDirection.DOWN:
-					renderer.sortingOrder = 1;
+					spriteRenderer.sortingOrder = 1;
 					break;
 
 				case PlayerDirection.UP:
-					renderer.sortingOrder = 4;
+					spriteRenderer.sortingOrder = 4;
 					break;
 			}
 
@@ -152,9 +159,9 @@ namespace DungeonQuest.Enemy.Boss
 			{
 				bossHealth -= damage;
 
-				audio.clip = damagedSFX;
-				audio.pitch = Random.Range(0.7f, 1.3f);
-				audio.Play();
+				audioSource.clip = damagedSFX;
+				audioSource.pitch = Random.Range(0.7f, 1.3f);
+				audioSource.Play();
 			}
 		}
 
@@ -163,8 +170,8 @@ namespace DungeonQuest.Enemy.Boss
 			var gameManager = GameManager.INSTANCE;
 
 			IsDead = true;
-			rigidbody2D.isKinematic = true;
-			renderer.sortingOrder = 0;
+			bossRigidbody.isKinematic = true;
+			spriteRenderer.sortingOrder = 0;
 
 			gameManager.killCount++;
 			gameManager.enemyList.Remove(gameObject);
@@ -174,16 +181,16 @@ namespace DungeonQuest.Enemy.Boss
 
 			gameManager.enemyList.Clear();
 			
-			audio.clip = deathSFX;
-			audio.pitch = 1f;
-			audio.Play();
+			audioSource.clip = deathSFX;
+			audioSource.pitch = 1f;
+			audioSource.Play();
 
 			gameEvent.Invoke();
 			bossDrops.DropLoot();
 
 			if (gameManager.bossesCompleted < bossID) gameManager.bossesCompleted = bossID;
 
-			Destroy(collider2D);
+			Destroy(boxCollider);
 			Destroy(bossAI);
 			Destroy(this);
 		}
@@ -226,18 +233,18 @@ namespace DungeonQuest.Enemy.Boss
 
 				if (direction.x > 0)
 				{
-					boxCollider.center = new Vector2(-boxColliderCenterX.x, boxColliderCenterX.y);
+					boxCollider.offset = new Vector2(-boxColliderCenterX.x, boxColliderCenterX.y);
 					return 3; // Right
 				}
 				else
 				{
-					boxCollider.center = new Vector2(boxColliderCenterX.x, boxColliderCenterX.y);
+					boxCollider.offset = new Vector2(boxColliderCenterX.x, boxColliderCenterX.y);
 					return 2; // Left
 				}
 			}
 			else
 			{
-				boxCollider.center = boxColliderCenterY;
+				boxCollider.offset = boxColliderCenterY;
 				boxCollider.size = boxColliderSizeY;
 
 				if (direction.y > 0)

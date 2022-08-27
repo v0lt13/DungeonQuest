@@ -14,11 +14,13 @@ namespace DungeonQuest.Shop
 
 		private Collider2D playerCollider;
 		private PauseMenu pauseMenu;
+		private AudioSource audioSource;
 
 		void Awake()
 		{
 			playerCollider = GameObject.Find("Player").GetComponent<Collider2D>();
 			pauseMenu = GameObject.Find("GameCanvas").GetComponent<PauseMenu>();
+			audioSource = GetComponent<AudioSource>();
 		}
 
 		void Update()
@@ -30,7 +32,7 @@ namespace DungeonQuest.Shop
 					isShopOpen = true;
 					pauseMenu.enabled = false;
 
-					audio.Play();
+					audioSource.Play();
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
 				}
 

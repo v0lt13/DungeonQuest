@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using DungeonQuest.Player;
 
 namespace DungeonQuest.Enemy.Boss.Projectiles
@@ -17,12 +18,14 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 		private bool hasExploded;
 
 		private Animator animator;
+		private AudioSource audioSource;
 		private PlayerManager playerManager;
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 			animator = GetComponent<Animator>();
+			audioSource = GetComponent<AudioSource>();
 			
 			damage = playerManager.defaultPlayerHealth / 2;
 		}
@@ -44,7 +47,7 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 		{
 			if (itHitObject || playerManager == null) return;
 
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				Explode();
 			}
@@ -63,10 +66,10 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 			if (hasExploded) return;
 
 			hasExploded = true;
-			audio.clip = explosionSFX;
-			audio.pitch = Random.Range(1f, 1.5f);
+			audioSource.clip = explosionSFX;
+			audioSource.pitch = Random.Range(1f, 1.5f);
 
-			audio.Play();
+			audioSource.Play();
 			animator.Play("Explosion");
 
 			if (Vector2.Distance(transform.position, playerManager.transform.position) <= explosionRange) playerManager.DamagePlayer(damage);

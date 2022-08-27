@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace DungeonQuest.UI.Menus
 {
@@ -38,7 +39,7 @@ namespace DungeonQuest.UI.Menus
 
 		public void LoadIntermission(string intermissionNumber) // Called by Button
 		{
-			Application.LoadLevel("Intermission0" + intermissionNumber);
+			SceneManager.LoadScene("Intermission0" + intermissionNumber);
 		}
 
 	}

@@ -13,7 +13,7 @@ namespace DungeonQuest.Enemy.Boss.Special
 			for (int i = 0; i < 4; i++)
 			{
 				var spawnPosition = new Vector2(transform.position.x + Random.Range(-20, 20), transform.position.y + Random.Range(-20, 20));
-				var enemyObject = Instantiate(skeletonPrefabs[Random.Range(0, skeletonPrefabs.Length)], spawnPosition, Quaternion.identity) as GameObject;
+				var enemyObject = Instantiate(skeletonPrefabs[Random.Range(0, skeletonPrefabs.Length)], spawnPosition, Quaternion.identity);
 
 				enemyObject.GetComponent<EnemyManager>().enemyLevel = 9;				
 			}

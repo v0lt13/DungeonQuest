@@ -87,7 +87,7 @@ namespace DungeonQuest.Enemy.Boss
 
 				case BossAI.AIstate.Attack:
 					// Check if an animation is already playing
-					if (bossAnimator.GetCurrentAnimationClipState(0).Length > bossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
+					if (bossAnimator.GetCurrentAnimatorClipInfo(0).Length > bossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
 
 					switch (bossManager.playerDir)
 					{
@@ -108,7 +108,7 @@ namespace DungeonQuest.Enemy.Boss
 
 				case BossAI.AIstate.Special:
 					// Check if an animation is already playing
-					if (bossAnimator.GetCurrentAnimationClipState(0).Length > bossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
+					if (bossAnimator.GetCurrentAnimatorClipInfo(0).Length > bossAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
 
 					switch (bossManager.playerDir)
 					{

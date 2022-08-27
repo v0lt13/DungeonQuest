@@ -11,7 +11,7 @@ namespace DungeonQuest.Enemy.Boss.Special
 		{
 			for (int i = 1; i <= 8; i++)
 			{
-				var projectile = Instantiate(iceSpikePrefab, transform.position, new Quaternion(0f, 0f, 0f, 0f)) as GameObject;
+				var projectile = Instantiate(iceSpikePrefab, transform.position, new Quaternion(0f, 0f, 0f, 0f));
 				var iceSpike = projectile.GetComponent<BossIceSpike>();
 
 				switch (i)

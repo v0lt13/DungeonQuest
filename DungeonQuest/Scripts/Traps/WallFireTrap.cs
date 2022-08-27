@@ -15,10 +15,12 @@ namespace DungeonQuest.Traps
 		private bool hasFireStarted;
 
 		private PlayerManager playerManager;
+		private AudioSource audioSource;
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+			audioSource = GetComponent<AudioSource>();
 		}
 
 		void FixedUpdate()
@@ -29,7 +31,7 @@ namespace DungeonQuest.Traps
 
 			if (hit.collider != null)
 			{
-				bool itCollided = (hit.collider == playerManager.collider2D && !playerManager.Invisible) || hit.collider.CompareTag("Enemy");
+				bool itCollided = (hit.collider == playerManager.playerCollider && !playerManager.Invisible) || hit.collider.CompareTag("Enemy");
 
 				if (itCollided && !hasFireStarted)
 				{
@@ -55,7 +57,7 @@ namespace DungeonQuest.Traps
 			yield return new WaitForSeconds(0.2f);
 
 			fire.SetActive(true);
-			audio.Play();
+			audioSource.Play();
 		}
 
 		private IEnumerator StopFire()
@@ -63,7 +65,7 @@ namespace DungeonQuest.Traps
 			yield return new WaitForSeconds(1f);
 
 			fire.SetActive(false);
-			audio.Stop();
+			audioSource.Stop();
 
 			hasFireStarted = false;
 		}

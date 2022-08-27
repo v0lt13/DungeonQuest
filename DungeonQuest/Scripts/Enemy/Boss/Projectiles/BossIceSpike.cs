@@ -15,12 +15,16 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 		private bool itHitObject;
 
 		private PlayerManager playerManager;
+		private SpriteRenderer spriteRenderer;
+		private AudioSource audioSource;
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
+			audioSource = GetComponent<AudioSource>();
 
-			damage = playerManager.defaultPlayerHealth / 3;
+			damage = playerManager.defaultPlayerHealth / 2;
 		}
 
 		void Update()
@@ -32,7 +36,7 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 		{
 			if (itHitObject || playerManager == null) return;
 
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				playerManager.DamagePlayer(damage);
 				playerManager.ChillPlayer(5f);
@@ -42,14 +46,14 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 
 			else if (collider.CompareTag("Blockable"))
 			{
-				audio.clip = hitSFX;
-				audio.pitch = Random.Range(1f, 1.5f);
-				audio.Play();
+				audioSource.clip = hitSFX;
+				audioSource.pitch = Random.Range(1f, 1.5f);
+				audioSource.Play();
 
 				itHitObject = true;
 				direction = Vector2.zero;
 
-				Destroy(renderer);
+				Destroy(spriteRenderer);
 				Destroy(gameObject, 5f);
 			}
 		}

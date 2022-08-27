@@ -47,16 +47,16 @@ namespace DungeonQuest.Player
 				if (cooldown <= 0f && healingPotions != 0)
 				{
 					cooldown = defaultCooldown;
-					audio.pitch = 1f;
+					playerManager.audioSource.pitch = 1f;
 					healingPotions--;
 
 					playerManager.HealPlayer(playerManager.defaultPlayerHealth);
-					audio.PlayOneShot(healingSFX);
+					playerManager.audioSource.PlayOneShot(healingSFX);
 				}
 				else
 				{
 					noHealinganim.Play("NoHealing", -1, 0f);
-					audio.PlayOneShot(noHealingSFX);
+					playerManager.audioSource.PlayOneShot(noHealingSFX);
 				}
 			}
 		}

@@ -3,6 +3,7 @@ using DungeonQuest.Grid;
 using System.Collections;
 using DungeonQuest.GameEvents;
 
+
 namespace DungeonQuest
 {
 	public class SecretRoom : MonoBehaviour

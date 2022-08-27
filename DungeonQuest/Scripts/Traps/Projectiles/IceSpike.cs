@@ -15,10 +15,14 @@ namespace DungeonQuest.Traps.Projectiles
 		private Vector3 direction = new Vector3(0f, -1f, 0f);
 
 		private PlayerManager playerManager;
+		private AudioSource audioSource;
+		private SpriteRenderer spriteRenderer;
 
 		void Awake()
 		{
-			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();			
+			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+			audioSource = GetComponent<AudioSource>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
 			
 			// Set damage to do 15% of the player's max health
 			damage = playerManager.defaultPlayerHealth / 8;
@@ -34,7 +38,7 @@ namespace DungeonQuest.Traps.Projectiles
 		{
 			if (itHitObject || playerManager == null) return;
 
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				playerManager.DamagePlayer(damage);
 				playerManager.ChillPlayer(3f);
@@ -48,14 +52,14 @@ namespace DungeonQuest.Traps.Projectiles
 			}
 			else if (collider.CompareTag("Blockable"))
 			{
-				audio.clip = hitSFX;
-				audio.pitch = Random.Range(1f, 1.5f);
-				audio.Play();
+				audioSource.clip = hitSFX;
+				audioSource.pitch = Random.Range(1f, 1.5f);
+				audioSource.Play();
 
 				itHitObject = true;
 				direction = Vector2.zero;
 
-				Destroy(renderer);
+				Destroy(spriteRenderer);
 				Destroy(gameObject, 5f);
 			}
 		}

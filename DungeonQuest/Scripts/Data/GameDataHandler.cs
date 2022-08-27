@@ -185,9 +185,9 @@ namespace DungeonQuest.Data
 
 			menuData.gameCompleted = MenuManager.GAME_COMPLETED;
 
-			for (int i = 0; i < AchievementManager.ACHIEVEMENTS.Count; i++)
+			for (int i = 0; i < AchievementManager.ACHIEVEMENT_LIST.Count; i++)
 			{
-				menuData.achievementsCompleted.Add(AchievementManager.ACHIEVEMENTS[i].achieved);		
+				menuData.achievementsCompleted.Add(AchievementManager.ACHIEVEMENT_LIST[i].achieved);		
 			}
 
 			return menuData;

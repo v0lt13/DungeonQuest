@@ -14,7 +14,7 @@ namespace DungeonQuest.Traps
 
 		void OnTriggerEnter2D(Collider2D collider)
 		{
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				playerManager.playerMovement.isWalkingOnGoo = true;
 			}
@@ -22,7 +22,7 @@ namespace DungeonQuest.Traps
 
 		void OnTriggerExit2D(Collider2D collider)
 		{
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				playerManager.playerMovement.isWalkingOnGoo = false;
 			}

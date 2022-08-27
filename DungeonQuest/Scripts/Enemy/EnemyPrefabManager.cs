@@ -81,7 +81,7 @@ namespace DungeonQuest.Enemy
 			var playerPosition = GameManager.INSTANCE.playerManager.transform.position;
 			var spawnPosition = new Vector2(playerPosition.x + Random.Range(-5, 5), playerPosition.y + Random.Range(-5, 5));
 
-			var enemyObject = Object.Instantiate(enemy, spawnPosition, Quaternion.identity) as GameObject;
+			var enemyObject = Object.Instantiate(enemy, spawnPosition, Quaternion.identity);
 
 			enemyObject.GetComponent<EnemyManager>().enemyLevel = (int)level;
 		}

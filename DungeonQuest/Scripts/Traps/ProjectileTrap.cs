@@ -16,10 +16,12 @@ namespace DungeonQuest.Traps
 		private bool corroutineActivated;
 
 		private PlayerManager playerManager;
+		private AudioSource audioSource;
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
+			audioSource = GetComponent<AudioSource>();
 		}
 
 		void FixedUpdate()
@@ -30,7 +32,7 @@ namespace DungeonQuest.Traps
 
 			if (hit.collider != null)
 			{
-				bool itCollided = (hit.collider == playerManager.collider2D && !playerManager.Invisible) || hit.collider.CompareTag("Enemy");
+				bool itCollided = (hit.collider == playerManager.playerCollider && !playerManager.Invisible) || hit.collider.CompareTag("Enemy");
 
 				if (itCollided && !corroutineActivated) StartCoroutine(TriggerTrap());
 			}
@@ -57,7 +59,7 @@ namespace DungeonQuest.Traps
 		{
 			Instantiate(projectilePrefab, new Vector2(transform.position.x, transform.position.y - 1), Quaternion.Euler(0, 0, -180));
 
-			audio.Play();
+			audioSource.Play();
 		}
 	}
 }

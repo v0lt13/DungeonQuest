@@ -8,7 +8,7 @@ namespace DungeonQuest.Achievements
 	public class Achievement
 	{
 		public bool achieved;
-		private string name;
+		public string name;
 
 		private Predicate<object> requirement;
 		private GameDataHandler gameData = new GameDataHandler();
@@ -43,7 +43,7 @@ namespace DungeonQuest.Achievements
 			achieved = true;
 
 			// Check if the first animation popup plays and play the animation on the second popup if it does
-			if (popupAnimators[0].GetCurrentAnimationClipState(0).Length < popupAnimators[0].GetCurrentAnimatorStateInfo(0).normalizedTime)
+			if (popupAnimators[0].GetCurrentAnimatorClipInfo(0).Length < popupAnimators[0].GetCurrentAnimatorStateInfo(0).normalizedTime)
 			{
 				popupAnimators[0].Play("AchievementPopup");
 				achievementNameTexts[0].text = name;

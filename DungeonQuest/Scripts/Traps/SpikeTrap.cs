@@ -16,23 +16,25 @@ namespace DungeonQuest.Traps
 		
 		private PlayerManager playerManager;
 		private SpriteRenderer spriteRenderer;
+		private AudioSource audioSource;
 
 		void Awake()
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 
 			spriteRenderer = GetComponent<SpriteRenderer>();
+			audioSource = GetComponent<AudioSource>();
 		}
 
 		void OnTriggerStay2D(Collider2D collider)
 		{
-			bool canTriggerTrap = (collider == playerManager.collider2D && !playerManager.Invisible) || collider.CompareTag("Enemy");
+			bool canTriggerTrap = (collider == playerManager.playerCollider && !playerManager.Invisible) || collider.CompareTag("Enemy");
 
 			if (!corroutineActivated && canTriggerTrap) StartCoroutine(TriggerTrap());
 
 			if (!isTrapActive) return;
 
-			if (playerManager.collider2D == collider)
+			if (playerManager.playerCollider == collider)
 			{
 				playerManager.DamagePlayer(int.MaxValue);
 			}
@@ -60,7 +62,7 @@ namespace DungeonQuest.Traps
 		private void ActivateTrap()
 		{
 			spriteRenderer.sprite = sprites[1];
-			audio.PlayOneShot(audioClips[1]);
+			audioSource.PlayOneShot(audioClips[1]);
 
 			isTrapActive = true;
 		}
@@ -68,7 +70,7 @@ namespace DungeonQuest.Traps
 		private void DeactivateTrap()
 		{
 			spriteRenderer.sprite = sprites[0];
-			audio.PlayOneShot(audioClips[0]);
+			audioSource.PlayOneShot(audioClips[0]);
 
 			isTrapActive = false;
 		}

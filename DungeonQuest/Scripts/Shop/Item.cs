@@ -2,20 +2,12 @@
 
 namespace DungeonQuest.Shop
 {
+	[CreateAssetMenu(fileName = "ShopItem", menuName = "ScriptableObjects/ShopItem", order = 1)]
 	public class Item : ScriptableObject
 	{
 		public int itemPrice;
 		public string itemName;
 		public string itemDescription;
 		public Sprite itemIcon;
-
-		#if UNITY_EDITOR
-		[UnityEditor.MenuItem("ScriptableObjects/NewShopItem")]
-		private static void CreateItem()
-		{
-			var item = ScriptableObject.CreateInstance<Item>();
-			UnityEditor.AssetDatabase.CreateAsset(item, "Assets/Shop Items/Item.asset");
-		}
-		#endif
 	}
 }

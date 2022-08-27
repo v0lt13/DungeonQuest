@@ -17,7 +17,7 @@ namespace DungeonQuest.Enemy.Boss.Special
 		{
 			for (int i = 0; i < 5; i++)
 			{
-				var dynamiteObject = Instantiate(dynamitePrefab, transform.position, Quaternion.identity) as GameObject;
+				var dynamiteObject = Instantiate(dynamitePrefab, transform.position, Quaternion.identity);
 
 				var dynamite = dynamiteObject.GetComponent<Dynamite>();
 				var playerTransform = player.GetComponent<PlayerManager>().transform.position;

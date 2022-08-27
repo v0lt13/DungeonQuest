@@ -26,10 +26,10 @@ namespace DungeonQuest.Player
 
 			if (timeBetwenFootsteps < 0 && !playerManager.isDead)
 			{
-				audio.pitch = 1f;
+				playerManager.audioSource.pitch = 1f;
 
 				// Plays a random SFX from the array
-				audio.PlayOneShot(playerFootsteps[Random.Range(0, playerFootsteps.Length)]);
+				playerManager.audioSource.PlayOneShot(playerFootsteps[Random.Range(0, playerFootsteps.Length)]);
 
 				timeBetwenFootsteps = DEFAULT_TIME_BETWEEN_FOOTSTEPS;
 			}

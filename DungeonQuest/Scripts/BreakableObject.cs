@@ -12,16 +12,26 @@ namespace DungeonQuest
 
 		[Header("Prefab Config:")]
 		[SerializeField] private GameObject pileOfCoinsPrefab;
-		[SerializeField] private GameObject coinsPrefab;		
+		[SerializeField] private GameObject coinsPrefab;
+
+		private AudioSource audioSource;
+		private Collider2D objectCollider;
+		private SpriteRenderer spriteRenderer;
+
+		void Awake()
+		{
+			audioSource = GetComponent<AudioSource>();
+			objectCollider = GetComponent<Collider2D>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
+		}
 
 		public void BreakObject()
 		{
 			DropLoot();
 
-			audio.Play();
-			collider2D.enabled = false;
-
-			GetComponent<SpriteRenderer>().sprite = brokenSprite;
+			audioSource.Play();
+			objectCollider.enabled = false;
+			spriteRenderer.sprite = brokenSprite;
 
 			// We mark the node for the AI pathfinding as walkable
 			FindObjectOfType<Grid.GridGenerator>().MarkObstacle(transform.position, true);

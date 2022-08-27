@@ -6,6 +6,7 @@ using DungeonQuest.Player;
 using DungeonQuest.UI.Menus;
 using DungeonQuest.Achievements;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace DungeonQuest
 {
@@ -68,7 +69,7 @@ namespace DungeonQuest
 			AudioListener.pause = false;
 			SetGameState(GameState.Running);
 
-			if (Application.loadedLevelName == "Lobby")
+			if (SceneManager.GetActiveScene().name == "Lobby")
 			{
 				gameData.LoadPlayerData();
 				gameData.LoadGameData();
@@ -90,7 +91,7 @@ namespace DungeonQuest
 		void Start()
 		{
 			// Unlock secret level achievements
-			switch (Application.loadedLevel)
+			switch (SceneManager.GetActiveScene().buildIndex)
 			{
 				case 9:
 					achievementManager.UnlockAchivement(9);
@@ -112,7 +113,7 @@ namespace DungeonQuest
 
 		void Update()
 		{
-			if (Application.loadedLevelName == "Lobby")
+			if (SceneManager.GetActiveScene().name == "Lobby")
 			{
 				if (!isCheckingUpgrades) StartCoroutine(CheckUpgrades());
 			}
@@ -126,20 +127,22 @@ namespace DungeonQuest
 		public static void LoadScene(string sceneName)
 		{
 			LoadingScreen.SCENE_NAME = sceneName;
-			Application.LoadLevel("LoadingScreen");
+			SceneManager.LoadScene("LoadingScreen");
 		}
 
 		public void LoadScene(int index) // For buttons, events and debug console
 		{
 			LoadingScreen.SCENE_INDEX = index;
-			Application.LoadLevel("LoadingScreen");
+			SceneManager.LoadScene("LoadingScreen");
 		}
 
 		public void SetGameState(GameState gameState)
 		{
 			CurrentGameState = gameState;
 
-			Screen.lockCursor = gameState != GameState.Paused;
+			Cursor.visible = gameState == GameState.Paused;
+			Cursor.lockState = gameState == GameState.Paused ? CursorLockMode.None : CursorLockMode.Locked;
+
 			Time.timeScale = gameState == GameState.Paused ? 0f : 1f;
 		}
 
@@ -147,9 +150,9 @@ namespace DungeonQuest
 		{
 			SetGameState(GameState.Paused);
 
-			playerManager.renderer.enabled = false;
+			playerManager.spriteRenderer.enabled = false;
 			playerManager.playerAttack.enabled = false;
-			playerManager.collider2D.enabled = false;
+			playerManager.playerCollider.enabled = false;
 			playerManager.enabled = false;
 
 			gameData.SaveData(GameDataHandler.DataType.Player);

@@ -27,7 +27,7 @@ namespace DungeonQuest.Enemy.Boss.Special
 			for (int i = 0; i < 4; i++)
 			{
 				var spawnPosition = new Vector2(transform.position.x + Random.Range(-20, 20), transform.position.y + Random.Range(-20, 20));
-				var enemyObject = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity) as GameObject;
+				var enemyObject = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length)], spawnPosition, Quaternion.identity);
 
 				enemyObject.GetComponent<EnemyManager>().enemyLevel = 24;
 			}
@@ -37,7 +37,7 @@ namespace DungeonQuest.Enemy.Boss.Special
 		{
 			for (int i = 1; i <= 8; i++)
 			{
-				var projectile = Instantiate(fireballPrefab, transform.position, new Quaternion(0f, 0f, 0f, 0f)) as GameObject;
+				var projectile = Instantiate(fireballPrefab, transform.position, new Quaternion(0f, 0f, 0f, 0f));
 				var fireball = projectile.GetComponent<BossFireball>();
 
 				switch (i)

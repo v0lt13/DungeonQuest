@@ -12,8 +12,12 @@ namespace DungeonQuest.Traps
 		private bool hasFireStarted;
 		private float fireActivationInterval;
 
+		private AudioSource audioSource;
+
 		void Awake()
 		{
+			audioSource = GetComponent<AudioSource>();
+
 			fireActivationInterval = defaultFireActivationInterval;
 		}
 
@@ -33,7 +37,7 @@ namespace DungeonQuest.Traps
 		{
 			hasFireStarted = true;
 
-			audio.Play();
+			audioSource.Play();
 			fire.SetActive(true);
 
 			yield return new WaitForSeconds(fireDeactivationInterval);

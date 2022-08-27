@@ -1,7 +1,7 @@
-﻿using DungeonQuest.Achievements;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace DungeonQuest.Player
 {
@@ -35,12 +35,16 @@ namespace DungeonQuest.Player
 		[HideInInspector] public PlayerAttack playerAttack;
 		[HideInInspector] public PlayerMap playerMap;
 
+		[HideInInspector] public SpriteRenderer spriteRenderer;
+		[HideInInspector] public Rigidbody2D playerRigidbody;
+		[HideInInspector] public Collider2D playerCollider;
+		[HideInInspector] public AudioSource audioSource;
+
 		[HideInInspector] public Slider healthBar;
 		[HideInInspector] public Slider armorBar;
 
 		private float chillTimer;
 
-		private SpriteRenderer spriteRenderer;
 		private Text coinsAmountText;
 		private Animator vignetteAnimator;
 
@@ -56,6 +60,10 @@ namespace DungeonQuest.Player
 			vignetteAnimator = GameObject.Find("Vignette").GetComponent<Animator>();
 
 			spriteRenderer = GetComponent<SpriteRenderer>();
+			playerRigidbody = GetComponent<Rigidbody2D>();
+			playerCollider = GetComponent<Collider2D>();
+			audioSource = GetComponent<AudioSource>();
+
 			playerMovement = GetComponent<PlayerMovement>();
 			playerLeveling = GetComponent<PlayerLeveling>();
 			playerHealing = GetComponent<PlayerHealing>();
@@ -65,7 +73,7 @@ namespace DungeonQuest.Player
 
 		void Start()
 		{
-			if (Application.loadedLevelName != "Lobby") GameManager.INSTANCE.gameData.LoadPlayerData();
+			if (SceneManager.GetActiveScene().name != "Lobby") GameManager.INSTANCE.gameData.LoadPlayerData();
 
 			if (ROGUE_MODE)
 			{
@@ -85,7 +93,7 @@ namespace DungeonQuest.Player
 			healthBar.value = playerHealth;
 			armorBar.value = playerArmor;
 			coinsAmountText.text = coinsAmount.ToString();
-			collider2D.enabled = !noClip;
+			playerCollider.enabled = !noClip;
 
 			if (coinsAmount > COINS_CAP) coinsAmount = COINS_CAP;
 
@@ -140,9 +148,9 @@ namespace DungeonQuest.Player
 			// We check if the player's health is less then 25% then play the animation that makes the vignette red
 			if (playerHealth < defaultPlayerHealth / 4) vignetteAnimator.Play("LowHealth");
 
-			audio.clip = hitSFX;
-			audio.pitch = Random.Range(1f, 1.3f);
-			audio.Play();
+			audioSource.clip = hitSFX;
+			audioSource.pitch = Random.Range(1f, 1.3f);
+			audioSource.Play();
 		}
 
 		public void HealPlayer(int amount)
@@ -215,7 +223,7 @@ namespace DungeonQuest.Player
 		private void Die()
 		{
 			isDead = true;
-			rigidbody2D.isKinematic = true;
+			playerRigidbody.isKinematic = true;
 
 			UnchillPlayer();
 
@@ -231,13 +239,13 @@ namespace DungeonQuest.Player
 				File.Delete(Application.dataPath + "/Data/GameData.dat");
 			}
 
-			audio.clip = deathSFX;
-			audio.pitch = 1f;
+			audioSource.clip = deathSFX;
+			audioSource.pitch = 1f;
 
-			audio.Play();
+			audioSource.Play();
 			vignetteAnimator.Play("Default");
 
-			collider2D.enabled = false;
+			playerCollider.enabled = false;
 			playerAttack.enabled = false;
 			playerHealing.enabled = false;
 			playerMovement.enabled = false;

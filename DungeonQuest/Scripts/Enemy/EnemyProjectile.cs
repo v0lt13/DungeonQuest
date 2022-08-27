@@ -20,7 +20,10 @@ namespace DungeonQuest.Enemy
 		private bool itHitObject;
 
 		private PlayerManager playerManager;
+		private AudioSource audioSource;
 		private Animator animator;
+		private SpriteRenderer spriteRenderer;
+
 		private Vector3 direction;
 
 		public int ProjectileDamage { private get; set; }
@@ -29,6 +32,8 @@ namespace DungeonQuest.Enemy
 		{
 			playerManager = GameObject.Find("Player").GetComponent<PlayerManager>();
 			animator = GetComponent<Animator>();
+			audioSource = GetComponent<AudioSource>();
+			spriteRenderer = GetComponent<SpriteRenderer>();
 
 			direction = (playerManager.transform.position - transform.position).normalized;
 
@@ -47,7 +52,7 @@ namespace DungeonQuest.Enemy
 		{
 			if (itHitObject) return;
 
-			if (collider == playerManager.collider2D)
+			if (collider == playerManager.playerCollider)
 			{
 				playerManager.DamagePlayer(ProjectileDamage);
 
@@ -80,14 +85,14 @@ namespace DungeonQuest.Enemy
 						break;
 
 					default:
-						GetComponent<SpriteRenderer>().enabled = false;
+						spriteRenderer.enabled = false;
 						Destroy(gameObject, 1f);
 						break;
 				}
 
-				audio.clip = hitSFX;
-				audio.pitch = Random.Range(1f, 1.5f);
-				audio.Play();
+				audioSource.clip = hitSFX;
+				audioSource.pitch = Random.Range(1f, 1.5f);
+				audioSource.Play();
 
 				itHitObject = true;
 				direction = Vector2.zero;

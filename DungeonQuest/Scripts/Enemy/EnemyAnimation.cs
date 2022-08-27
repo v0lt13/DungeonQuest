@@ -78,7 +78,7 @@ namespace DungeonQuest.Enemy
 
 				case EnemyAI.AIstate.Attack:
 					// Check if an animation is already playing
-					if (enemyAnimator.GetCurrentAnimationClipState(0).Length > enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
+					if (enemyAnimator.GetCurrentAnimatorClipInfo(0).Length > enemyAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime) return;
 
 					switch (enemyManager.playerDir)
 					{

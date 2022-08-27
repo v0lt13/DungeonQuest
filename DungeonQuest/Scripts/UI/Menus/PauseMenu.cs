@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace DungeonQuest.UI.Menus
 {
@@ -18,10 +19,12 @@ namespace DungeonQuest.UI.Menus
 		private bool isGamePaused = false;
 
 		private GameManager gameManager;
+		private AudioSource audioSource;
 
 		void Awake()
 		{
-			audio.ignoreListenerPause = true;
+			GetComponent<AudioSource>().ignoreListenerPause = true;
+			audioSource = GetComponent<AudioSource>();
 		}
 
 		void Start()
@@ -35,11 +38,12 @@ namespace DungeonQuest.UI.Menus
 			{
 				if (currentMenu == 0)
 				{					
-					if (gameManager.CurrentGameState != GameManager.GameState.Paused && !isGamePaused)
+					if (gameManager.CurrentGameState != GameManager.GameState.Paused && !isGamePaused && !gameManager.playerManager.isDead)
 					{
 						isGamePaused = true;
 						AudioListener.pause = true;
 
+						audioSource.Play();
 						gameManager.SetGameState(GameManager.GameState.Paused);
 					}
 					else if (isGamePaused)
@@ -67,7 +71,7 @@ namespace DungeonQuest.UI.Menus
 
 		public void Restart() // Called by Button
 		{
-			GameManager.LoadScene(Application.loadedLevelName);
+			GameManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 
 		public void ToggleMenu(int menuIndex) // Called by Button

@@ -17,7 +17,7 @@ namespace DungeonQuest.UI
 		void Start()
 		{
 			Time.timeScale = 1f;
-			audio.ignoreListenerPause = true;
+			GetComponent<AudioSource>().ignoreListenerPause = true;
 
 			StartCoroutine(DisplayText());
 		}

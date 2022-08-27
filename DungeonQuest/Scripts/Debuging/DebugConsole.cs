@@ -2,7 +2,9 @@
 using DungeonQuest.Data;
 using DungeonQuest.Enemy;
 using DungeonQuest.Player;
+using DungeonQuest.Achievements;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 namespace DungeonQuest.Debuging
 {
@@ -17,6 +19,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand<int> HEAL;
 		private static DebugCommand<int> ARMOR;
 		private static DebugCommand<int> GIVE_COINS;
+		private static DebugCommand<int> UNLOCK_ACHIEVEMENT;
 		private static DebugCommand<uint> LOAD_SCENE;
 		private static DebugCommand<uint> ADD_POTIONS;
 		private static DebugCommand<uint> SET_DAMAGE;
@@ -30,6 +33,7 @@ namespace DungeonQuest.Debuging
 		private static DebugCommand KILL_ENEMIES;
 		private static DebugCommand ENEMY_LIST;
 		private static DebugCommand SCENE_LIST;
+		private static DebugCommand ACHIEVEMENT_LIST;
 		private static DebugCommand LEVEL_UP;
 		private static DebugCommand UNCOVER_MAP;
 		private static DebugCommand DIE;
@@ -79,9 +83,23 @@ namespace DungeonQuest.Debuging
 				}
 			});
 
+			UNLOCK_ACHIEVEMENT = new DebugCommand<int>("unlockachievement", "Unlocks a specified achievement", "unlockachievement <number>", (value) =>
+			{
+				if (value <= AchievementManager.ACHIEVEMENT_LIST.Count)
+				{
+					GameManager.INSTANCE.achievementManager.UnlockAchivement(value);
+					outputList.Add("Achievement unlocked");
+				}
+				else
+				{
+					outputList.Add("Achievement doesent exist");
+				}
+
+			});
+
 			LOAD_SCENE = new DebugCommand<uint>("loadscene", "Loads a specified scene", "loadscene <index>", (value) =>
 			{
-				if (value < Application.levelCount)
+				if (value < SceneManager.sceneCountInBuildSettings)
 				{
 					GameManager.INSTANCE.SetGameState(GameManager.GameState.Running);
 					GameManager.INSTANCE.LoadScene((int)value);
@@ -236,7 +254,7 @@ namespace DungeonQuest.Debuging
 				outputList.Add("Map Uncovered");
 			});
 
-			ENEMY_LIST = new DebugCommand("enemylist", "Displays a list of all names of enemies", "enemylist", () =>
+			ENEMY_LIST = new DebugCommand("enemylist", "Displays a list of all enemy names", "enemylist", () =>
 			{
 				outputList.Add("Enemy list:");
 
@@ -246,7 +264,7 @@ namespace DungeonQuest.Debuging
 				}
 			});
 
-			SCENE_LIST = new DebugCommand("scenelist", "Displays a list of all scenes and their index", "scenelist", () =>
+			SCENE_LIST = new DebugCommand("scenelist", "Displays a index list of all scenes", "scenelist", () =>
 			{
 				var sceneList = new List<string>
 				{
@@ -293,6 +311,17 @@ namespace DungeonQuest.Debuging
 				}
 			});
 
+			ACHIEVEMENT_LIST = new DebugCommand("achievementlist", "Displays a index list of all achievements", "achievementlist", () =>
+			{
+				outputList.Add("Achievement list:");
+
+				for (int i = 0; i < AchievementManager.ACHIEVEMENT_LIST.Count; i++)
+				{
+					outputList.Add(i + " - " + AchievementManager.ACHIEVEMENT_LIST[i].name);
+				}
+			});
+
+
 			DIE = new DebugCommand("die", "Kills the player", "die", () =>
 			{
 				GameManager.INSTANCE.playerManager.DamagePlayer(int.MaxValue);
@@ -329,6 +358,7 @@ namespace DungeonQuest.Debuging
 				ADD_POTIONS,
 				GIVE_COINS,
 				SET_DAMAGE,
+				UNLOCK_ACHIEVEMENT,
 				SET_SPEED,
 				UNLOCK_LEVEL,
 				UNLOCK_SECRET_LEVEL,
@@ -340,6 +370,7 @@ namespace DungeonQuest.Debuging
 				KILL_ENEMIES,
 				ENEMY_LIST,
 				SCENE_LIST,
+				ACHIEVEMENT_LIST,
 				UNCOVER_MAP,
 				LEVEL_UP,
 				DIE,
