@@ -8,7 +8,7 @@ namespace DungeonQuest.UI
 	{
 		[SerializeField, TextArea] private string story;
 		[SerializeField] private string sceneName;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Text storyText;
 
 		private bool canContinue;

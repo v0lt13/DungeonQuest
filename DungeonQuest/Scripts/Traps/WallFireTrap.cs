@@ -7,9 +7,11 @@ namespace DungeonQuest.Traps
 	public class WallFireTrap : MonoBehaviour 
 	{
 		[Header("Trap Config")]
+		[SerializeField] private float startFireInterval;
+		[SerializeField] private float stopFireInterval;
 		[SerializeField] private float rayDistance;
 		[SerializeField] private bool drawRay;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private GameObject fire;
 
 		private bool hasFireStarted;
@@ -54,7 +56,7 @@ namespace DungeonQuest.Traps
 		{
 			hasFireStarted = true;
 
-			yield return new WaitForSeconds(0.2f);
+			yield return new WaitForSeconds(startFireInterval);
 
 			fire.SetActive(true);
 			audioSource.Play();
@@ -62,7 +64,7 @@ namespace DungeonQuest.Traps
 
 		private IEnumerator StopFire()
 		{
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(stopFireInterval);
 
 			fire.SetActive(false);
 			audioSource.Stop();

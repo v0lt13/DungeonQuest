@@ -10,7 +10,7 @@ namespace DungeonQuest.Traps
 		[SerializeField] private float timeBetweenShots;
 		[SerializeField] private float rayDistance;
 		[SerializeField] private bool drawRay;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private GameObject projectilePrefab;
 
 		private bool corroutineActivated;

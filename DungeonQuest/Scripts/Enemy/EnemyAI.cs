@@ -18,7 +18,7 @@ namespace DungeonQuest.Enemy
 		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float enemySpeed;
 		[SerializeField] private GameObject projectilePrefab;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private bool showPath;
 
 		[HideInInspector] public AIstate state;

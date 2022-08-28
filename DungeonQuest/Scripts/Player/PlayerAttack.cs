@@ -5,10 +5,6 @@ namespace DungeonQuest.Player
 {
 	public class PlayerAttack : MonoBehaviour
 	{
-		private PlayerManager playerManager;
-		private Quaternion swipeRotation;
-		private Vector2 swipeDirection;
-
 		[Header("Attack Config:")]
 		public int damage;
 		[SerializeField] private float defaultTimeBetweenAttacks;
@@ -16,6 +12,10 @@ namespace DungeonQuest.Player
 		[Header("Swipe Config:")]
 		[SerializeField] private GameObject swipePrefab;
 	    [SerializeField] private AudioClip swipeSFX;
+
+		private PlayerManager playerManager;
+		private Quaternion swipeRotation;
+		private Vector2 swipeDirection;
 
 		public bool IsAttacking { get; private set; }
 		private float TimeBetweenAttacks { get; set; }

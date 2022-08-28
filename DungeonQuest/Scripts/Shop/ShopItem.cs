@@ -18,11 +18,11 @@ namespace DungeonQuest.Shop
 		[Header("ItemConfig:")]
 		public int minRequiredLevel;
 		[SerializeField] private AditionalProblem aditionalProblem;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Item item;
 		[SerializeField] private Image itemIcon;
 		[SerializeField] private Button buyButton;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Text itemNameText;
 		[SerializeField] private Text itemDescriptionText;
 		[SerializeField] private Text itemPriceText;

@@ -8,7 +8,7 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 	{
 		[SerializeField] private float speed;
 		[SerializeField] private float explosionRange;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private AudioClip explosionSFX;
 
 		[HideInInspector] public Vector3 direction;

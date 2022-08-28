@@ -8,15 +8,15 @@ namespace DungeonQuest
 	public class PlayerMap : MonoBehaviour
 	{
 		[SerializeField] private float scrollSensitivity;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private GameObject mapUI;
 		[SerializeField] private GameObject playerUI;
 		[SerializeField] private GameObject mapCameraObject;
 		[SerializeField] private GameObject secretRoomTextObject;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Text killCountText;
 		[SerializeField] private Text secretCountText;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private AudioClip mapSFX;
 
 		[HideInInspector] public bool isMapOn;

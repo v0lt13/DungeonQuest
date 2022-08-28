@@ -6,7 +6,7 @@ namespace DungeonQuest.Enemy.Boss.Projectiles
 	public class BossIceSpike : MonoBehaviour
 	{
 		[SerializeField] private float speed;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private AudioClip hitSFX;
 
 		[HideInInspector] public Vector3 direction;

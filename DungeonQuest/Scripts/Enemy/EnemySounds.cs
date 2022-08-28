@@ -7,7 +7,7 @@ namespace DungeonQuest.Enemy
 		[Header ("Sound Config:")]
 		[SerializeField] private float minTimeBetweenSounds;
 		[SerializeField] private float maxTimeBetweenSounds;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private AudioClip[] enemySounds;
 
 		private float timeBetweenSounds;

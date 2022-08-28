@@ -11,7 +11,7 @@ namespace DungeonQuest.Player
 		public int defaultPlayerHealth;
 		public int defaultPlayerArmor;
 		public int lifeCount;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Text lifeCountText;
 		[SerializeField] private Button goToLobbyButton;
 

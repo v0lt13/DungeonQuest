@@ -21,9 +21,9 @@ namespace DungeonQuest.Enemy.Boss
 		[SerializeField] private float defaultTimeBetweenAttacks;
 		[SerializeField] private float defaultTimeBetweenSpecials;
 		[SerializeField] private float bossSpeed;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private bool showPath;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private SpecialAbility specialAbility;
 		[SerializeField] private AudioClip attackSFX;
 		[SerializeField] private AudioClip specialSFX;

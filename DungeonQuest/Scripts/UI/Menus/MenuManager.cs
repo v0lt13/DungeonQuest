@@ -14,7 +14,7 @@ namespace DungeonQuest.UI.Menus
 		[SerializeField] private Button rogueButton;
 		[SerializeField] private Text rogueText;
 		[SerializeField] private Text achievementPercentange;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private GameObject[] menus;
 		[SerializeField] private Toggle[] achievementCheckboxes;
 

@@ -12,7 +12,7 @@ namespace DungeonQuest.UI.Menus
 		[Header("Options Config:")]
 		[SerializeField] private Slider volumeSlider;
 		[SerializeField] private AudioMixer audioMixer;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Toggle vSyncToggle;
 		[SerializeField] private Toggle showFPSToggle;
 		[SerializeField] private Toggle enableConsoleToggle;

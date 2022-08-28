@@ -9,7 +9,7 @@ namespace DungeonQuest.UI
 	public class Dialogue : MonoBehaviour
 	{
 		[SerializeField] private string[] dialogue;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private Text diablogueText;
 		[SerializeField] private GameObject prompt;
 

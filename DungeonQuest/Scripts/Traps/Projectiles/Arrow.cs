@@ -6,7 +6,7 @@ namespace DungeonQuest.Traps.Projectiles
 	public class Arrow : MonoBehaviour
 	{
 		[SerializeField] private float speed;
-		[Space(10f)]
+		[Space]
 		[SerializeField] private AudioClip hitSFX;
 
 		private int damage;
