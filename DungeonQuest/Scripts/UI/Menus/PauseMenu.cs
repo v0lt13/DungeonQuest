@@ -24,11 +24,15 @@ namespace DungeonQuest.UI.Menus
 		void Awake()
 		{
 			GetComponent<AudioSource>().ignoreListenerPause = true;
+
 			audioSource = GetComponent<AudioSource>();
 		}
 
 		void Start()
 		{
+			pauseMenuHolder.GetComponent<OptionsMenu>().LoadSettings();
+
+			audioSource.enabled = true;
 			gameManager = GameManager.INSTANCE;
 		}
 

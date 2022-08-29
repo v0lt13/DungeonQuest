@@ -17,11 +17,6 @@ namespace DungeonQuest.UI.Menus
 		[SerializeField] private Toggle showFPSToggle;
 		[SerializeField] private Toggle enableConsoleToggle;
 
-		void Awake()
-		{
-			LoadSettings();
-		}
-
 		public void Volume(float volume) // Called by Slider
 		{
 			audioMixer.SetFloat("volume", volume);
@@ -102,6 +97,7 @@ namespace DungeonQuest.UI.Menus
 			optionsData.enableConsole = bool.Parse(enableConsole[0].InnerText);
 
 			volumeSlider.value = optionsData.volume;
+			Volume(optionsData.volume);
 			vSyncToggle.isOn = optionsData.vSync;
 			showFPSToggle.isOn = optionsData.showFPS;
 			enableConsoleToggle.isOn = optionsData.enableConsole;

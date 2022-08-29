@@ -68,6 +68,8 @@ namespace DungeonQuest.UI.Menus
 
 		void Start()
 		{
+			GetComponent<OptionsMenu>().LoadSettings();
+
 			// Fix for settings checkboxes SFX playing when the values load
 			foreach (var audioSource in audioSources)
 			{

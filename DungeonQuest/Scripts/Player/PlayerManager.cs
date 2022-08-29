@@ -149,6 +149,7 @@ namespace DungeonQuest.Player
 			if (playerHealth < defaultPlayerHealth / 4) vignetteAnimator.Play("LowHealth");
 
 			audioSource.clip = hitSFX;
+			audioSource.spatialBlend = 0f;
 			audioSource.pitch = Random.Range(1f, 1.3f);
 			audioSource.Play();
 		}
@@ -240,6 +241,7 @@ namespace DungeonQuest.Player
 			}
 
 			audioSource.clip = deathSFX;
+			audioSource.spatialBlend = 1f;
 			audioSource.pitch = 1f;
 
 			audioSource.Play();

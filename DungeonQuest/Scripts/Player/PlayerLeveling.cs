@@ -59,6 +59,7 @@ namespace DungeonQuest.Player
 			playerManager.playerAttack.IncreaseDamage(10);
 
 			playerManager.audioSource.clip = levelUpSFX;
+			playerManager.audioSource.spatialBlend = 0f;
 			playerManager.audioSource.pitch = 1f;
 			playerManager.audioSource.Play();
 		}
