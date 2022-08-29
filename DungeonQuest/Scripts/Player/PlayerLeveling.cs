@@ -58,10 +58,9 @@ namespace DungeonQuest.Player
 			playerManager.IncreaseMaxArmor(20);
 			playerManager.playerAttack.IncreaseDamage(10);
 
-			playerManager.audioSource.clip = levelUpSFX;
-			playerManager.audioSource.spatialBlend = 0f;
-			playerManager.audioSource.pitch = 1f;
-			playerManager.audioSource.Play();
+			playerManager.audioSource2D.clip = levelUpSFX;
+			playerManager.audioSource2D.pitch = 1f;
+			playerManager.audioSource2D.Play();
 		}
 	}
 }

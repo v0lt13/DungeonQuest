@@ -16,6 +16,8 @@ namespace DungeonQuest.Player
 		[SerializeField] private Button goToLobbyButton;
 
 		[Header("Audio Config:")]
+		public AudioSource audioSource2D;
+		public AudioSource audioSource3D;
 		[SerializeField] private AudioClip deathSFX;
 		[SerializeField] private AudioClip hitSFX;
 
@@ -38,7 +40,6 @@ namespace DungeonQuest.Player
 		[HideInInspector] public SpriteRenderer spriteRenderer;
 		[HideInInspector] public Rigidbody2D playerRigidbody;
 		[HideInInspector] public Collider2D playerCollider;
-		[HideInInspector] public AudioSource audioSource;
 
 		[HideInInspector] public Slider healthBar;
 		[HideInInspector] public Slider armorBar;
@@ -62,7 +63,6 @@ namespace DungeonQuest.Player
 			spriteRenderer = GetComponent<SpriteRenderer>();
 			playerRigidbody = GetComponent<Rigidbody2D>();
 			playerCollider = GetComponent<Collider2D>();
-			audioSource = GetComponent<AudioSource>();
 
 			playerMovement = GetComponent<PlayerMovement>();
 			playerLeveling = GetComponent<PlayerLeveling>();
@@ -148,10 +148,9 @@ namespace DungeonQuest.Player
 			// We check if the player's health is less then 25% then play the animation that makes the vignette red
 			if (playerHealth < defaultPlayerHealth / 4) vignetteAnimator.Play("LowHealth");
 
-			audioSource.clip = hitSFX;
-			audioSource.spatialBlend = 0f;
-			audioSource.pitch = Random.Range(1f, 1.3f);
-			audioSource.Play();
+			audioSource3D.clip = hitSFX;
+			audioSource3D.pitch = Random.Range(1f, 1.3f);
+			audioSource3D.Play();
 		}
 
 		public void HealPlayer(int amount)
@@ -240,11 +239,10 @@ namespace DungeonQuest.Player
 				File.Delete(Application.dataPath + "/Data/GameData.dat");
 			}
 
-			audioSource.clip = deathSFX;
-			audioSource.spatialBlend = 1f;
-			audioSource.pitch = 1f;
+			audioSource3D.clip = deathSFX;
+			audioSource3D.pitch = 1f;
 
-			audioSource.Play();
+			audioSource3D.Play();
 			vignetteAnimator.Play("Default");
 
 			playerCollider.enabled = false;

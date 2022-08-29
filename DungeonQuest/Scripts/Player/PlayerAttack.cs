@@ -83,8 +83,7 @@ namespace DungeonQuest.Player
 		{
 			IsAttacking = true;
 
-			playerManager.audioSource.spatialBlend = 1f;
-			playerManager.audioSource.PlayOneShot(swipeSFX);
+			playerManager.audioSource3D.PlayOneShot(swipeSFX);
 
 			SetSwipeTransform();
 			Instantiate(swipePrefab, swipeDirection, swipeRotation);

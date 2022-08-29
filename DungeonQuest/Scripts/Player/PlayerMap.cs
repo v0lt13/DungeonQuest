@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using DungeonQuest.UI;
 using DungeonQuest.Grid;
 
-namespace DungeonQuest
+namespace DungeonQuest.Player
 {
 	public class PlayerMap : MonoBehaviour
 	{
@@ -36,7 +35,7 @@ namespace DungeonQuest
 		private GameObject playerCameraObject;
 		private GameObject levelStartHeader;
 		private GridGenerator grid;
-		private AudioSource audioSource;
+		private PlayerManager playerManager;
 
 		void Start()
 		{
@@ -46,9 +45,9 @@ namespace DungeonQuest
 			grid = GameObject.Find("GameManager").GetComponent<GridGenerator>();
 
 			mapCamera = mapCameraObject.GetComponent<Camera>();
-			audioSource = GetComponent<AudioSource>();
+			playerManager = GetComponent<PlayerManager>();
 
-			audioSource.ignoreListenerPause = true;
+			playerManager.audioSource2D.ignoreListenerPause = true;
 			mapCameraObject.transform.position = playerCameraObject.transform.position;
 
 			mapCameraBorderX = grid.gridX * 10;
@@ -127,7 +126,7 @@ namespace DungeonQuest
 			playerUI.SetActive(false);
 			playerCameraObject.SetActive(false);
 
-			audioSource.PlayOneShot(mapSFX);
+			playerManager.audioSource2D.PlayOneShot(mapSFX);
 
 			GameManager.INSTANCE.SetGameState(GameManager.GameState.Paused);
 		}
