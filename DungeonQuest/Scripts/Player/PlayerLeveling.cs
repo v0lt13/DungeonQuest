@@ -56,7 +56,7 @@ namespace DungeonQuest.Player
 			levelupAnim.Play("Levelup", -1, 0f);
 			playerManager.IncreaseMaxHealth(20);
 			playerManager.IncreaseMaxArmor(20);
-			playerManager.playerAttack.IncreaseDamage(10);
+			playerManager.playerAttack.IncreaseDamage(11);
 
 			playerManager.audioSource2D.clip = levelUpSFX;
 			playerManager.audioSource2D.pitch = 1f;

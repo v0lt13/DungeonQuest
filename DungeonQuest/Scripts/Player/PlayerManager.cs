@@ -224,6 +224,7 @@ namespace DungeonQuest.Player
 		{
 			isDead = true;
 			playerRigidbody.isKinematic = true;
+			playerRigidbody.velocity = Vector2.zero;
 
 			UnchillPlayer();
 

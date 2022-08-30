@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
-using DungeonQuest.GameEvents;
 using DungeonQuest.Data;
+using System.Collections;
 
 namespace DungeonQuest.UI
 {
