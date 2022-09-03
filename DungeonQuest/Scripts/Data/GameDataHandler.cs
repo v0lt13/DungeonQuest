@@ -23,9 +23,9 @@ namespace DungeonQuest.Data
 			FileStream fileStream;
 			var binaryFormatter = new BinaryFormatter();
 
-			if (!Directory.Exists(Application.dataPath + "/Data"))
+			if (!Directory.Exists(Application.persistentDataPath + "/Data"))
 			{
-				Directory.CreateDirectory(Application.dataPath + "/Data");
+				Directory.CreateDirectory(Application.persistentDataPath + "/Data");
 			}
 
 			switch (dataType)
@@ -33,7 +33,7 @@ namespace DungeonQuest.Data
 				case DataType.Player:
 					var playerData = PlayerData();
 
-					fileStream = File.Create(Application.dataPath + "/Data/PlayerData.dat");
+					fileStream = File.Create(Application.persistentDataPath + "/Data/PlayerData.dat");
 
 					binaryFormatter.Serialize(fileStream, playerData);
 					fileStream.Close();
@@ -42,7 +42,7 @@ namespace DungeonQuest.Data
 				case DataType.Game:
 					var gameData = GameData();
 
-					fileStream = File.Create(Application.dataPath + "/Data/GameData.dat");
+					fileStream = File.Create(Application.persistentDataPath + "/Data/GameData.dat");
 
 					binaryFormatter.Serialize(fileStream, gameData);
 					fileStream.Close();
@@ -51,7 +51,7 @@ namespace DungeonQuest.Data
 				case DataType.Menu:
 					var menuData = MenuData();
 
-					fileStream = File.Create(Application.dataPath + "/Data/MenuData.dat");
+					fileStream = File.Create(Application.persistentDataPath + "/Data/MenuData.dat");
 
 					binaryFormatter.Serialize(fileStream, menuData);
 					fileStream.Close();
@@ -63,9 +63,9 @@ namespace DungeonQuest.Data
 		{
 			var gameManager = GameManager.INSTANCE;
 
-			if (!File.Exists(Application.dataPath + "/Data/PlayerData.dat")) return;
+			if (!File.Exists(Application.persistentDataPath + "/Data/PlayerData.dat")) return;
 
-			FileStream fileStream = File.Open(Application.dataPath + "/Data/PlayerData.dat", FileMode.Open);
+			FileStream fileStream = File.Open(Application.persistentDataPath + "/Data/PlayerData.dat", FileMode.Open);
 			PlayerData data = binaryFormatter.Deserialize(fileStream) as PlayerData;
 			
 			fileStream.Close();
@@ -99,9 +99,9 @@ namespace DungeonQuest.Data
 		{
 			var gameManager = GameManager.INSTANCE;
 
-			if (!File.Exists(Application.dataPath + "/Data/GameData.dat")) return;
+			if (!File.Exists(Application.persistentDataPath + "/Data/GameData.dat")) return;
 
-			FileStream fileStream = File.Open(Application.dataPath + "/Data/GameData.dat", FileMode.Open);
+			FileStream fileStream = File.Open(Application.persistentDataPath + "/Data/GameData.dat", FileMode.Open);
 			GameData data = binaryFormatter.Deserialize(fileStream) as GameData;
 
 			fileStream.Close();
@@ -116,9 +116,9 @@ namespace DungeonQuest.Data
 
 		public void LoadMenuData()
 		{
-			if (!File.Exists(Application.dataPath + "/Data/MenuData.dat")) return;
+			if (!File.Exists(Application.persistentDataPath + "/Data/MenuData.dat")) return;
 
-			FileStream fileStream = File.Open(Application.dataPath + "/Data/MenuData.dat", FileMode.Open);
+			FileStream fileStream = File.Open(Application.persistentDataPath + "/Data/MenuData.dat", FileMode.Open);
 			MenuData data = binaryFormatter.Deserialize(fileStream) as MenuData;
 
 			fileStream.Close();

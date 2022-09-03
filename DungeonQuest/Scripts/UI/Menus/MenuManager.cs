@@ -29,9 +29,9 @@ namespace DungeonQuest.UI.Menus
 		{
 			audioSources = GetComponents<AudioSource>();
 
-			if (!Directory.Exists(Application.dataPath + "/Data"))
+			if (!Directory.Exists(Application.persistentDataPath + "/Data"))
 			{
-				Directory.CreateDirectory(Application.dataPath + "/Data");
+				Directory.CreateDirectory(Application.persistentDataPath + "/Data");
 			}
 
 			data.LoadMenuData();
@@ -44,7 +44,7 @@ namespace DungeonQuest.UI.Menus
 			rogueButton.interactable = GAME_COMPLETED;
 			rogueText.text = GAME_COMPLETED ? "Survive the whole campaign with only 1 life" : "Complete the game on Normal mode to unlock Rogue mode";
 
-			continueButton.interactable = File.Exists(Application.dataPath + "/Data/PlayerData.dat");
+			continueButton.interactable = File.Exists(Application.persistentDataPath + "/Data/PlayerData.dat");
 
 			foreach (var audioSource in audioSources)
 			{
@@ -96,8 +96,8 @@ namespace DungeonQuest.UI.Menus
 		{
 			PlayerManager.ROGUE_MODE = false;
 
-			File.Delete(Application.dataPath + "/Data/PlayerData.dat");
-			File.Delete(Application.dataPath + "/Data/GameData.dat");
+			File.Delete(Application.persistentDataPath + "/Data/PlayerData.dat");
+			File.Delete(Application.persistentDataPath + "/Data/GameData.dat");
 
 			SceneManager.LoadScene("Intermission01");
 		}
@@ -106,8 +106,8 @@ namespace DungeonQuest.UI.Menus
 		{
 			PlayerManager.ROGUE_MODE = true;
 
-			File.Delete(Application.dataPath + "/Data/PlayerData.dat");
-			File.Delete(Application.dataPath + "/Data/GameData.dat");
+			File.Delete(Application.persistentDataPath + "/Data/PlayerData.dat");
+			File.Delete(Application.persistentDataPath + "/Data/GameData.dat");
 
 			SceneManager.LoadScene("Intermission01");
 		}

@@ -236,8 +236,8 @@ namespace DungeonQuest.Player
 
 			if (ROGUE_MODE)
 			{
-				File.Delete(Application.dataPath + "/Data/PlayerData.dat");
-				File.Delete(Application.dataPath + "/Data/GameData.dat");
+				File.Delete(Application.persistentDataPath + "/Data/PlayerData.dat");
+				File.Delete(Application.persistentDataPath + "/Data/GameData.dat");
 			}
 
 			audioSource3D.clip = deathSFX;
