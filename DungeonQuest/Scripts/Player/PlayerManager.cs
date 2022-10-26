@@ -148,9 +148,9 @@ namespace DungeonQuest.Player
 			// We check if the player's health is less then 25% then play the animation that makes the vignette red
 			if (playerHealth < defaultPlayerHealth / 4) vignetteAnimator.Play("LowHealth");
 
-			audioSource3D.clip = hitSFX;
-			audioSource3D.pitch = Random.Range(1f, 1.3f);
-			audioSource3D.Play();
+			audioSource2D.clip = hitSFX;
+			audioSource2D.pitch = Random.Range(1f, 1.3f);
+			audioSource2D.Play();
 		}
 
 		public void HealPlayer(int amount)

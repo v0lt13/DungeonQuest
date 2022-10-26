@@ -29,7 +29,7 @@ namespace DungeonQuest.Player
 				Invoke("EnableGameOverScreen", 2f);
 			}
 
-			if (playerManager.isDead && respawnCooldown > 0f && playerManager.lifeCount != 0)
+			if (playerManager.isDead && respawnCooldown > 1f && playerManager.lifeCount != 0)
 			{
 				tipTextObject.SetActive(true);
 				respawnText.gameObject.SetActive(true);

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,7 +26,7 @@ namespace DungeonQuest.UI.Menus
 
 		public void ToggleVSync(bool toggle) // Called by Toggle
 		{
-			QualitySettings.vSyncCount = System.Convert.ToInt32(toggle);
+			QualitySettings.vSyncCount = Convert.ToInt32(toggle);
 			SaveSettings();
 		}
 

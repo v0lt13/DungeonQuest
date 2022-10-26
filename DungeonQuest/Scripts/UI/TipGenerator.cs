@@ -20,7 +20,7 @@ namespace DungeonQuest
 			"Is fine if you take some hits, you have potions",
 			"Triggered a trap? RUN!!!",
 			"Some objects are breakeble",
-			"Timeing is key"
+			"Timing is key"
 		};
 
 		void OnEnable()
